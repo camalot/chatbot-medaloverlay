@@ -1,0 +1,34 @@
+body, html {
+	padding: 0;
+	margin: 0;
+
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  border: none;
+  text-align: center;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+	letter-spacing: 3px;
+	overflow: hidden;
+}
+
+#video-container {
+    position:absolute;
+    top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+    /* width:50vw;
+    height:50vh; */
+		/* margin-top: -25vh; */
+		/*set to a negative number 1/2 of your height*/
+		/* margin-left: -25vw; */
+		/*set to a negative number 1/2 of your width*/
+}
+
+#video-container video {
+	padding: 0;
+	margin: 0;
+	max-height: 975px;
+}

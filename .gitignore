@@ -1,0 +1,7 @@
+.env
+API_Key.js
+settings.json
+settings.js
+videos/
+videos/*
+!videos/.gitkeep

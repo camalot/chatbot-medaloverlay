@@ -1,0 +1,86 @@
+{
+	"output_file": "settings.json",
+	"CasterCommand": {
+	"type": "textbox",
+	"value": "!caster",
+	"label": "Caster Command",
+	"tooltip": "The command you use to shout a caster out",
+	"group": "General"
+	},
+	"Permission": {
+    "type": "dropdown",
+    "value": "Everyone",
+    "items": ["Everyone","Regular","Subscriber","Moderator"],
+    "label": "Permission level",
+    "tooltip": "Set the permission level for the command",
+    "group": "General"
+    },
+	"CasterColor": {
+	"type": "colorpicker",
+	"label": "Caster Color",
+	"value": "rgba(255,0,0,255)",
+	"tooltip": "",
+	"group": "Color Pickers"
+	},
+	"TwitchColor": {
+	"type": "colorpicker",
+	"label": "Twitch Link Color",
+	"value": "rgba(230,126,34,1)",
+	"tooltip": "",
+	"group": "Color Pickers"
+	},	
+	"APIKey": {
+	"type": "textbox",
+	"value": "",
+	"label": "Twitch API Key",
+	"tooltip": "Your twitch api secret key",
+	"group": "API Key (Keep Hidden)"
+	},
+	"InTransition": {
+    "type": "dropdown",
+    "value": "SlideRight",
+    "items": ["SlideUp","SlideDown","SlideLeft","SlideRight","Fade","Bounce"],
+    "label": "In Transition",
+    "tooltip": "Set how the alert transitions in",
+    "group": "Transition"
+    },
+    "OutTransition": {
+    "type": "dropdown",
+    "value": "SlideRight",
+    "items": ["SlideUp","SlideDown","SlideLeft","SlideRight","Fade","Bounce"],
+    "label": "Out Transition",
+    "tooltip": "Set how the alert transitions out",
+    "group": "Transition"
+    },
+	"Duration": {
+	"type": "numberbox",
+	"label": "Duration (seconds)",
+	"value": 5,
+	"tooltip": "How long the overlay is displayed.",
+	"group": "Transition"
+	
+	},
+		"InSound": {
+	"type": "textbox",
+	"value": "",
+	"label": "In Sound",
+	"tooltip": "sound effect to play on in transition",
+	"group": "Sound Effects"
+	},
+		"OutSound": {
+	"type": "textbox",
+	"value": "",
+	"label": "Out Sound",
+	"tooltip": "sound effect to play on out transition",
+	"group": "Sound Effects"
+	},
+	"Open ReadMe": {
+        "type": "button",
+        "label": "Open ReadMe",
+        "tooltip": "Open ReadMe file",
+        "function": "OpenReadMe",
+		"wsevent": "EVENT_NONE"
+
+    }
+
+}

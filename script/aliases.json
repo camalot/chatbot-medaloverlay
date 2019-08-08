@@ -1,0 +1,20 @@
+{
+	"!2up": [
+		{
+			"group": "videooverlay",
+			"action": "1up"
+		}
+	],
+	"!hi": [
+		{
+			"group": "muricabear",
+			"action": "wave"
+		}
+	],
+	"!chug": [
+		{
+			"group": "muricabear",
+			"action": "chug"
+		}
+	]
+}
