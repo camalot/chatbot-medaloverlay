@@ -14,6 +14,19 @@ jQuery(document).ready(function() {
 
 });
 
+function videoLoaded() {
+	console.log("video loaded");
+	$('#video-container video').removeClass().addClass(settings.InTransition + ' animated');
+}
+
+function videoEnded() {
+	console.log("video ended");
+	$("#video-container video").removeClass().addClass(settings.OutTransition + ' animated')
+		.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+			$(this).hide().removeClass();
+		});
+}
+
 // Connect to ChatBot websocket
 // Automatically tries to reconnect on
 // disconnection by recalling this method
@@ -53,20 +66,22 @@ function connectWebsocket() {
 	socket.onmessage = function (message) {
 		console.log(message);
 		// Parse message
-		let socketMessage = JSON.parse(message.data);
-		let eventName = socketMessage.event;
-		let eventData = JSON.parse(socketMessage.data);
-		console.log(eventData);
+		var socketMessage = JSON.parse(message.data);
+		var eventName = socketMessage.event;
+		console.log(socketMessage);
+
 		switch (eventName) {
 			case "EVENT_MEDAL_PLAY":
-				console.log(eventName);
+				var eventData = JSON.parse(socketMessage.data || "{}");
+				console.log(eventData);
 				// <video autoplay src="videos/MuricaBear/orangejustice.webm"></video>
 				$("#video-container video")
 					.show()
 					.prop("autoplay", true)
 					.prop("muted", true)
 					.attr("src", `${settings.VideoPath}/${eventData.video}`)
-					.on("ended", function () { $(this).hide(); });
+					.on("play", function() { return videoLoaded(); })
+					.on("ended", function () { return videoEnded(); });
 				break;
 			case "EVENT_MEDAL_VIDEO_WAIT":
 				console.log(eventName);
@@ -75,6 +90,9 @@ function connectWebsocket() {
 				console.log(eventName);
 				break;
 			case "EVENT_MEDAL_START":
+				console.log(eventName);
+				break;
+			default:
 				console.log(eventName);
 				break;
 		}
@@ -97,10 +115,5 @@ function connectWebsocket() {
 		// Try to reconnect every 5s
 		setTimeout(function(){connectWebsocket()}, 5000);
 	};
-
-	function videoEnded() {
-		$("#video-container")
-			.empty();
-	}
 
 }

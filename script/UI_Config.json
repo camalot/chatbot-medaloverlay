@@ -20,20 +20,6 @@
 		"tooltip": "Set the permission level for the command",
 		"group": "General"
 	},
-	"HotKey": {
-		"type": "textbox",
-		"label": "Medal HotKey",
-		"value": "{F8}",
-		"tooltip": "This is the 'SendKeys' formatted hotkey for Medal",
-		"group": "General"
-	},
-	"VideoPath": {
-		"type": "textbox",
-		"label": "Medal Video Path",
-		"value": "videos/",
-		"tooltip": "The path to your medal video files",
-		"group": "General"
-	},
 	"Cooldown": {
 		"type": "numberbox",
 		"label": "Cooldown (seconds)",
@@ -41,7 +27,27 @@
 		"tooltip": "Cooldown in seconds",
 		"group": "General"
 	},
-
+	"Username": {
+		"type": "textbox",
+		"label": "Medal Username",
+		"value": "",
+		"tooltip": "This is your Medal.tv Username",
+		"group": "Medal"
+	},
+	"HotKey": {
+		"type": "textbox",
+		"label": "Medal HotKey",
+		"value": "{F8}",
+		"tooltip": "This is the 'SendKeys' formatted hotkey for Medal",
+		"group": "Medal"
+	},
+	"VideoPath": {
+		"type": "textbox",
+		"label": "Medal Video Path",
+		"value": "videos/",
+		"tooltip": "The path to your medal video files",
+		"group": "Medal"
+	},
 	"PositionVertical": {
 		"type": "dropdown",
 		"value": "Middle",
@@ -54,29 +60,66 @@
 		"tooltip": "The video vertical position",
 		"group": "Position"
 	},
-		"PositionHorizontal": {
-			"type": "dropdown",
-			"value": "Right",
-			"items": [
-				"Left",
-				"Center",
-				"Right"
-			],
-			"label": "Video Horizontal Position",
-			"tooltip": "The video horizontal position",
-			"group": "Position"
-		},
-
+	"PositionHorizontal": {
+		"type": "dropdown",
+		"value": "Right",
+		"items": [
+			"Left",
+			"Center",
+			"Right"
+		],
+		"label": "Video Horizontal Position",
+		"tooltip": "The video horizontal position",
+		"group": "Position"
+	},
 	"InTransition": {
 		"type": "dropdown",
 		"value": "SlideRight",
 		"items": [
-			"SlideUp",
-			"SlideDown",
-			"SlideLeft",
-			"SlideRight",
-			"Fade",
-			"Bounce"
+			"bounce",
+			"flash",
+			"pulse",
+			"rubberBand",
+			"shake",
+			"tada",
+			"wobble",
+			"jello",
+			"heartBeat",
+			"bounceIn",
+			"bounceInDown",
+			"bounceInLeft",
+			"bounceInRight",
+			"bounceInUp",
+			"fadeIn",
+			"fadeInDown",
+			"fadeInDownBig",
+			"fadeInLeft",
+			"fadeInLeftBig",
+			"fadeInRight",
+			"fadeInRightBig",
+			"fadeInUp",
+			"fadeInUpBig",
+			"flip",
+			"flipInX",
+			"flipInY",
+			"lightSpeedIn",
+			"rotateIn",
+			"rotateInDownLeft",
+			"rotateInDownRight",
+			"rotateInUpLeft",
+			"rotateInUpRight",
+			"slideInUp",
+			"slideInDown",
+			"slideInLeft",
+			"slideInRight",
+			"zoomIn",
+			"zoomInDown",
+			"zoomInLeft",
+			"zoomInRight",
+			"zoomInUp",
+			"hinge",
+			"jackInTheBox",
+			"rollIn"
 		],
 		"label": "In Transition",
 		"tooltip": "Set how the alert transitions in",
@@ -84,18 +127,77 @@
 	},
 	"OutTransition": {
 		"type": "dropdown",
-		"value": "SlideRight",
+		"value": "bounce",
 		"items": [
-			"SlideUp",
-			"SlideDown",
-			"SlideLeft",
-			"SlideRight",
-			"Fade",
-			"Bounce"
+			"bounce",
+			"flash",
+			"pulse",
+			"rubberBand",
+			"shake",
+			"tada",
+			"wobble",
+			"jello",
+			"heartBeat",
+			"bounceOut",
+			"bounceOutDown",
+			"bounceOutLeft",
+			"bounceOutRight",
+			"bounceOutUp",
+			"fadeOut",
+			"fadeOutDown",
+			"fadeOutDownBig",
+			"fadeOutLeft",
+			"fadeOutLeftBig",
+			"fadeOutRight",
+			"fadeOutRightBig",
+			"fadeOutUp",
+			"fadeOutUpBig",
+			"flip",
+			"flipOutX",
+			"flipOutY",
+			"lightSpeedOut",
+			"rotateOut",
+			"rotateOutDownLeft",
+			"rotateOutDownRight",
+			"rotateOutUpLeft",
+			"rotateOutUpRight",
+			"slideOutUp",
+			"slideOutDown",
+			"slideOutLeft",
+			"slideOutRight",
+			"zoomOut",
+			"zoomOutDown",
+			"zoomOutLeft",
+			"zoomOutRight",
+			"zoomOutUp",
+			"hinge",
+			"jackInTheBox",
+			"rollOut"
 		],
 		"label": "Out Transition",
 		"tooltip": "Set how the alert transitions out",
 		"group": "Transition"
+	},
+	"MaxInitWait": {
+		"type": "numberbox",
+		"label": "Clip Start Wait (seconds)",
+		"value": "2",
+		"tooltip": "The number of seconds to wait for Medal to start creating the clip",
+		"group": "General"
+	},
+	"MaxFinishWait": {
+		"type": "numberbox",
+		"label": "Clip Complete Wait (seconds)",
+		"value": "120",
+		"tooltip": "The number of seconds to wait for Medal to finish processing the clip",
+		"group": "General"
+	},
+	"OpenMedalInvite": {
+		"type": "button",
+		"label": "Get Medal",
+		"tooltip": "Get Medal",
+		"function": "OpenMedalInvite",
+		"wsevent": "EVENT_NONE"
 	},
 	"OpenReadMe": {
 		"type": "button",

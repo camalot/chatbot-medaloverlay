@@ -29,7 +29,7 @@ Website = "darthminos.tv"
 Description = "Triggers Medal.tv and plays the video back on stream"
 Creator = "DarthMinos"
 Version = "1.0.0-snapshot"
-
+MedalInviteUrl = "https://medal.tv/invite/"
 # ---------------------------------------
 #	Set Variables
 # ---------------------------------------
@@ -57,10 +57,13 @@ class Settings(object):
             self.VideoPath = "videos/"
             self.Cooldown = 60
             self.HotKey = "{F8}"
+            self.Username = ""
             self.PositionVertical = "Middle"
             self.PositionHorizontal = "Right"
             self.InTransition = "SlideRight"
             self.OutTransition = "SlideRight"
+            self.MaxInitWait = 2
+            self.MaxFinishWait = 120
 
     def Reload(self, jsonData):
         """ Reload settings from the user interface by given json data. """
@@ -86,7 +89,8 @@ def RunVideo(video):
     payload = {
         "video": video
     }
-    Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO", json.dumps(payload))
+    Parent.Log(ScriptName, "EVENT_MEDAL_PLAY: " + json.dumps(payload))
+    Parent.BroadcastWsEvent("EVENT_MEDAL_PLAY", json.dumps(payload))
     return
 
 #---------------------------------------
@@ -108,15 +112,15 @@ def WaitForFile(data, timestamp):
     path = os.path.join(os.path.dirname(__file__),ScriptSettings.VideoPath)
     waiting = True
     counter = 0
-    max_file_wait = 20
-    max_finish_wait = 1200
+    max_file_wait = ScriptSettings.MaxInitWait * 10
+    max_finish_wait = ScriptSettings.MaxFinishWait * 10
 
     Parent.Log(ScriptName, path + "/*" + timestamp + ".mp4")
     Parent.BroadcastWsEvent("EVENT_MEDAL_START", json.dumps({}))
     while(waiting):
         files = glob.glob(path + "/*" + timestamp + ".mp4")
         # if we found the video
-        if(len(files) == 1 or counter >= max_file_wait ):
+        if(len(files) >= 1 or counter >= max_file_wait ):
             if(counter >= max_file_wait):
                 Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_TIMEOUT", json.dumps({
                     "counter": counter
@@ -136,31 +140,36 @@ def WaitForFile(data, timestamp):
     while(waiting):
         thumbfiles = glob.glob(path + "/*" + timestamp + "-thumbnail.jpg")
         # if we found the thumb
-        if(len(thumbfiles) == 1 or counter >= max_finish_wait ):
+        if(len(thumbfiles) >= 1 or counter >= max_finish_wait ):
             if(counter >= max_finish_wait):
-                Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_TIMEOUT", json.dumps({
-                    "counter": counter
-                }))
+                # Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_TIMEOUT", json.dumps({
+                #     "counter": counter
+                # }))
                 Parent.SendTwitchMessage(data.User + ", Processing took too long. The clip will still be created, just not shown.")
                 return
             waiting = False
         else:
             counter += 1
-            Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_WAIT", json.dumps({
-                "counter": counter
-            }))
+            # Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_WAIT", json.dumps({
+            #     "counter": counter
+            # }))
             time.sleep(.1)
 
-    if(len(files) >= 1):
+    if(len(files) >= 1 and len(thumbfiles) >= 1):
         Parent.SendTwitchMessage(data.User + ", clip processing completed. Video will play shortly.")
         filename = os.path.basename(files[0])
+        Parent.Log(ScriptName, "Clip Processing Completed: " + filename)
         RunVideo(filename)
     else:
         Parent.Log(ScriptName, path + "/*" + timestamp + ".mp4")
 def Execute(data):
     if data.IsChatMessage():
         commandTrigger = data.GetParam(0).lower()
-        if commandTrigger == ScriptSettings.Command and not Parent.IsOnCooldown(ScriptName, commandTrigger):
+        if commandTrigger == "!medal"and not Parent.IsOnCooldown(ScriptName, commandTrigger):
+            Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
+            Parent.SendTwitchMessage("Medal.tv is a light weight application that runs in the background that allows you to clip up to 2 minutes of game play with " +
+                    "the push of a button. Get Medal and follow me " + MedalInviteUrl + ScriptSettings.Username)
+        elif commandTrigger == ScriptSettings.Command and not Parent.IsOnCooldown(ScriptName, commandTrigger):
             if not Parent.IsOnCooldown(ScriptName, commandTrigger):
                 if Parent.HasPermission(data.User, ScriptSettings.Permission, ""):
                     Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
@@ -174,7 +183,9 @@ def Execute(data):
                     thr.start()
             else:
                 Parent.SendTwitchMessage(data.User + ", There is already an active clip being processed.")
-
+                Parent.Log(ScriptName, "On Cooldown")
+        else:
+            Parent.Log(ScriptName, "Not my problem")
     return
 
 def Unload():
@@ -206,4 +217,7 @@ def OpenReadMe():
     return
 def OpenSendKeys():
     os.startfile("https://github.com/camalot/chatbot-medaloverlay/blob/develop/SendKeys.md")
+    return
+def OpenMedalInvite():
+    os.startfile("https://medal.tv/invite/DarthMinos")
     return
