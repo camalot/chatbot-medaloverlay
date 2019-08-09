@@ -22,7 +22,7 @@
 	},
 	"HotKey": {
 		"type": "textbox",
-		"label": "Medal Video Path",
+		"label": "Medal HotKey",
 		"value": "{F8}",
 		"tooltip": "This is the 'SendKeys' formatted hotkey for Medal",
 		"group": "General"

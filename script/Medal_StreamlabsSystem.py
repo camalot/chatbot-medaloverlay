@@ -191,10 +191,7 @@ def ReloadSettings(jsondata):
     Parent.Log(ScriptName, "Reload Settings")
     # Reload saved settings and validate values
     ScriptSettings.Reload(jsondata)
-
     return
-
-
 
 
 def Tick():
@@ -208,5 +205,5 @@ def OpenReadMe():
     os.startfile(ReadMeFile)
     return
 def OpenSendKeys():
-    os.startfile("http://www.nncron.ru/help/EN/add_info/keys_mnemonics.htm")
+    os.startfile("https://github.com/camalot/chatbot-medaloverlay/blob/develop/SendKeys.md")
     return
