@@ -8,8 +8,7 @@ jQuery(document).ready(function() {
 	if (typeof API_Key === "undefined") {
 		$("body").html("No API Key found or load!<br>Rightclick on the script in ChatBot and select \"Insert API Key\"");
 		$("body").css({"font-size": "20px", "color": "#ff8080", "text-align": "center"});
-	}
-	else {
+	} else {
 		connectWebsocket();
 	}
 
@@ -36,7 +35,10 @@ function connectWebsocket() {
 			website: "darthminos.tv",
 			api_key: API_Key,
 			events: [
-				"EVENT_VIDEO"
+				"EVENT_MEDAL_PLAY",
+				"EVENT_MEDAL_VIDEO_WAIT",
+				"EVENT_MEDAL_VIDEO_TIMEOUT",
+				"EVENT_MEDAL_START"
 			]
 		};
 
@@ -51,21 +53,30 @@ function connectWebsocket() {
 	socket.onmessage = function (message) {
 		console.log(message);
 		// Parse message
-		var socketMessage = JSON.parse(message.data);
-
-		// EVENT_USERNAME
-		if (socketMessage.event == "EVENT_VIDEO") {
-			var eventData = JSON.parse(socketMessage.data);
-			console.log("received EVENT_VIDEO");
-			console.log(eventData);
-
-			// <video autoplay src="videos/MuricaBear/orangejustice.webm"></video>
-			$("#video-container video")
-				.show()
-				.attr("autoplay", true)
-				.attr("src", `${settings.VideoPath}/${eventData.group}/${eventData.action}.webm`)
-				.on("ended", function() { $(this).hide(); } );
-
+		let socketMessage = JSON.parse(message.data);
+		let eventName = socketMessage.event;
+		let eventData = JSON.parse(socketMessage.data);
+		console.log(eventData);
+		switch (eventName) {
+			case "EVENT_MEDAL_PLAY":
+				console.log(eventName);
+				// <video autoplay src="videos/MuricaBear/orangejustice.webm"></video>
+				$("#video-container video")
+					.show()
+					.prop("autoplay", true)
+					.prop("muted", true)
+					.attr("src", `${settings.VideoPath}/${eventData.video}`)
+					.on("ended", function () { $(this).hide(); });
+				break;
+			case "EVENT_MEDAL_VIDEO_WAIT":
+				console.log(eventName);
+				break;
+			case "EVENT_MEDAL_VIDEO_TIMEOUT":
+				console.log(eventName);
+				break;
+			case "EVENT_MEDAL_START":
+				console.log(eventName);
+				break;
 		}
 	};
 

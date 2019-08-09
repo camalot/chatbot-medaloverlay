@@ -1,86 +1,114 @@
 {
 	"output_file": "settings.json",
-	"CasterCommand": {
-	"type": "textbox",
-	"value": "!caster",
-	"label": "Caster Command",
-	"tooltip": "The command you use to shout a caster out",
-	"group": "General"
+	"Command": {
+		"type": "textbox",
+		"value": "!clip",
+		"label": "Clip Command",
+		"tooltip": "The command used to create the clip",
+		"group": "General"
 	},
 	"Permission": {
-    "type": "dropdown",
-    "value": "Everyone",
-    "items": ["Everyone","Regular","Subscriber","Moderator"],
-    "label": "Permission level",
-    "tooltip": "Set the permission level for the command",
-    "group": "General"
-    },
-	"CasterColor": {
-	"type": "colorpicker",
-	"label": "Caster Color",
-	"value": "rgba(255,0,0,255)",
-	"tooltip": "",
-	"group": "Color Pickers"
+		"type": "dropdown",
+		"value": "Everyone",
+		"items": [
+			"Everyone",
+			"Regular",
+			"Subscriber",
+			"Moderator"
+		],
+		"label": "Permission level",
+		"tooltip": "Set the permission level for the command",
+		"group": "General"
 	},
-	"TwitchColor": {
-	"type": "colorpicker",
-	"label": "Twitch Link Color",
-	"value": "rgba(230,126,34,1)",
-	"tooltip": "",
-	"group": "Color Pickers"
-	},	
-	"APIKey": {
-	"type": "textbox",
-	"value": "",
-	"label": "Twitch API Key",
-	"tooltip": "Your twitch api secret key",
-	"group": "API Key (Keep Hidden)"
+	"HotKey": {
+		"type": "textbox",
+		"label": "Medal Video Path",
+		"value": "{F8}",
+		"tooltip": "This is the 'SendKeys' formatted hotkey for Medal",
+		"group": "General"
 	},
+	"VideoPath": {
+		"type": "textbox",
+		"label": "Medal Video Path",
+		"value": "videos/",
+		"tooltip": "The path to your medal video files",
+		"group": "General"
+	},
+	"Cooldown": {
+		"type": "numberbox",
+		"label": "Cooldown (seconds)",
+		"value": "60",
+		"tooltip": "Cooldown in seconds",
+		"group": "General"
+	},
+
+	"PositionVertical": {
+		"type": "dropdown",
+		"value": "Middle",
+		"items": [
+			"Top",
+			"Middle",
+			"Bottom"
+		],
+		"label": "Video Vertical Position",
+		"tooltip": "The video vertical position",
+		"group": "Position"
+	},
+		"PositionHorizontal": {
+			"type": "dropdown",
+			"value": "Right",
+			"items": [
+				"Left",
+				"Center",
+				"Right"
+			],
+			"label": "Video Horizontal Position",
+			"tooltip": "The video horizontal position",
+			"group": "Position"
+		},
+
 	"InTransition": {
-    "type": "dropdown",
-    "value": "SlideRight",
-    "items": ["SlideUp","SlideDown","SlideLeft","SlideRight","Fade","Bounce"],
-    "label": "In Transition",
-    "tooltip": "Set how the alert transitions in",
-    "group": "Transition"
-    },
-    "OutTransition": {
-    "type": "dropdown",
-    "value": "SlideRight",
-    "items": ["SlideUp","SlideDown","SlideLeft","SlideRight","Fade","Bounce"],
-    "label": "Out Transition",
-    "tooltip": "Set how the alert transitions out",
-    "group": "Transition"
-    },
-	"Duration": {
-	"type": "numberbox",
-	"label": "Duration (seconds)",
-	"value": 5,
-	"tooltip": "How long the overlay is displayed.",
-	"group": "Transition"
-	
+		"type": "dropdown",
+		"value": "SlideRight",
+		"items": [
+			"SlideUp",
+			"SlideDown",
+			"SlideLeft",
+			"SlideRight",
+			"Fade",
+			"Bounce"
+		],
+		"label": "In Transition",
+		"tooltip": "Set how the alert transitions in",
+		"group": "Transition"
 	},
-		"InSound": {
-	"type": "textbox",
-	"value": "",
-	"label": "In Sound",
-	"tooltip": "sound effect to play on in transition",
-	"group": "Sound Effects"
+	"OutTransition": {
+		"type": "dropdown",
+		"value": "SlideRight",
+		"items": [
+			"SlideUp",
+			"SlideDown",
+			"SlideLeft",
+			"SlideRight",
+			"Fade",
+			"Bounce"
+		],
+		"label": "Out Transition",
+		"tooltip": "Set how the alert transitions out",
+		"group": "Transition"
 	},
-		"OutSound": {
-	"type": "textbox",
-	"value": "",
-	"label": "Out Sound",
-	"tooltip": "sound effect to play on out transition",
-	"group": "Sound Effects"
-	},
-	"Open ReadMe": {
-        "type": "button",
-        "label": "Open ReadMe",
-        "tooltip": "Open ReadMe file",
-        "function": "OpenReadMe",
+	"OpenReadMe": {
+		"type": "button",
+		"label": "Open ReadMe",
+		"tooltip": "Open ReadMe file",
+		"function": "OpenReadMe",
 		"wsevent": "EVENT_NONE"
-
-    }
-
+	},
+	"OpenSendKeysDocumentation": {
+		"type": "button",
+		"label": "Open SendKeys Documentation",
+		"tooltip": "Open SendKeys Documentation",
+		"function": "OpenSendKeys",
+		"wsevent": "EVENT_NONE"
+	}
 }

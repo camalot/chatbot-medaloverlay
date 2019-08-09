@@ -30,5 +30,37 @@ body, html {
 #video-container video {
 	padding: 0;
 	margin: 0;
-	max-height: 975px;
+	max-width: 320px;
+	min-width: 320px;
+	position: absolute;
+}
+
+#video-container.center video {
+	left: 45%;
+	right: initial;
+}
+
+#video-container.left video {
+	left: 0;
+	right: initial;
+}
+
+#video-container.right video {
+	right: 0;
+	left: initial;
+}
+
+#video-container.middle video {
+	top: 45%;
+	bottom: initial;
+}
+
+#video-container.top video {
+	top: 0;
+	bottom: initial;
+}
+
+#video-container.bottom video {
+	bottom: 0;
+	top: initial;
 }
