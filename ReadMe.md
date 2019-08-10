@@ -2,7 +2,12 @@
 
 [![](https://i.imgur.com/bby6d49.png)](https://medal.tv/invite/DarthMinos)
 
-This is a StreamLabs Chatbot Script that allows chat to trigger a [Medal](https://medal.tv/) clip creation, and then play the clip back on stream.
+This is a [StreamLabs Chatbot](https://streamlabs.com/chatbot) Script that allows chat to trigger a [Medal](https://medal.tv/) clip creation, and then play the clip back on stream.
+
+## REQUIREMENTS
+
+- Install [StreamLabs Chatbot](https://streamlabs.com/chatbot)
+- [Enable Scripts in StreamLabs Chatbot](https://github.com/StreamlabsSupport/Streamlabs-Chatbot/wiki/Prepare-&-Import-Scripts)
 
 
 [![](https://i.imgur.com/btO3tM8m.gif)](https://i.imgur.com/btO3tM8.mp4)
