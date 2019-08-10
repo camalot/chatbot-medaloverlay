@@ -12,7 +12,7 @@ jQuery(document).ready(function () {
 		.addClass(positionHorizontalClass)
 		.addClass(positionVerticalClass);
 
-	if (usePositionHorizontal) {
+	if (!usePositionHorizontal) {
 		$("#video-container")
 			.removeClass(positionHorizontalClass);
 		$("#video-container video")
@@ -20,7 +20,7 @@ jQuery(document).ready(function () {
 			.css("right", settings.AbsolutePositionRight !== 0 ? `${settings.AbsolutePositionRight}px` : 'initial');
 	}
 
-	if (usePositionVertical) {
+	if (!usePositionVertical) {
 		$("#video-container")
 			.removeClass(positionVerticalClass);
 		$("#video-container video")

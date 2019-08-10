@@ -32,6 +32,11 @@ body, html {
 	margin: 0;
 	position: absolute;
 	display: none;
+
+	right: initial;
+	left: initial;
+	top: initial;
+	bottom: initial;
 }
 
 #video-container.center video {
