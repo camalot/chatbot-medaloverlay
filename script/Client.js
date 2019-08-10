@@ -2,12 +2,16 @@
 
 // Start ws connection after document is loaded
 jQuery(document).ready(function() {
+	$("#video-container")
+		.addClass((settings.PositionVertical || "middle"))
+		.addClass((settings.PositionHorizontal || "right"));
 
 	// Connect if API_Key is inserted
 	// Else show an error on the overlay
 	if (typeof API_Key === "undefined") {
 		$("body").html("No API Key found or load!<br>Rightclick on the script in ChatBot and select \"Insert API Key\"");
 		$("body").css({"font-size": "20px", "color": "#ff8080", "text-align": "center"});
+
 	} else {
 		connectWebsocket();
 	}
