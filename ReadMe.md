@@ -22,59 +22,67 @@ Make sure the script is enabled
 
 Click on the script in the list to bring up the configuration.
 
-### GENERAL SETTINGS
+### GENERAL SETTINGS  
+
 [![](https://i.imgur.com/YSfPNiWl.png)](https://i.imgur.com/YSfPNiW.png)  
 
-| ITEM | DESCRIPTION | DEFAULT |
-| ---- | ----------- | ------- |
+| ITEM | DESCRIPTION | DEFAULT | 
+| ---- | ----------- | ------- | 
 | `Clip Command` | The command to trigger the clip creation | `!clip` |
 | `Permission Level` | The permission level required to trigger the command | `Everyone` |
 | `Cooldown` | The amount of seconds between each allowed clip creation | `60` |
 | `Clip Start Wait` | The amount of time (in seconds) that the bot will wait for Medal to start creating the clip | `2` |
 | `Clip Complete Wait` | The amount of time (in seconds) that the bot will wait for Medal to complete the creation of the clip | `120` |
 
-### MEDAL SETTINGS
+### MEDAL SETTINGS  
+
 [![](https://i.imgur.com/dGo9JEAl.png)](https://i.imgur.com/dGo9JEA.png)  
 
-| ITEM | DESCRIPTION | DEFAULT |
-| ---- | ----------- | ------- |
-| `Username` | Your Medal Username | `""` |
-| `HotKey` | Your Medal HotKey in [SendKeys Format](SendKeys.md) | `{F8}` |
-| `Videos Path` | The path to your Medal Videos | `videos/` |
+
+| ITEM | DESCRIPTION | DEFAULT | 
+| ---- | ----------- | ------- | 
+| `Username` | Your Medal Username | `""` | 
+| `HotKey` | Your Medal HotKey in [SendKeys Format](SendKeys.md) | `{F8}` | 
+| `Videos Path` | The path to your Medal Videos | `videos/` | 
 
 > **NOTE:** Changes this will require you to refresh the cache of the browser source in your broadcast software
 
-### POSITION SETTINGS
+### POSITION SETTINGS  
+
 [![](https://i.imgur.com/MiVeB2Sl.png)](https://i.imgur.com/MiVeB2S.png)  
 
-| ITEM | DESCRIPTION | DEFAULT |
-| ---- | ----------- | ------- |
-| `Vertical` | Vertical position of the video | `Middle` |
-| `Horizontal` | Horizontal position of the video | `Right` |
+
+| ITEM | DESCRIPTION | DEFAULT | 
+| ---- | ----------- | ------- | 
+| `Vertical` | Vertical position of the video | `Middle` | 
+| `Horizontal` | Horizontal position of the video | `Right` | 
 
 > **NOTE:** Changes this will require you to refresh the cache of the browser source in your broadcast software
 
-### TRAMSITION SETTINGS
+### TRAMSITION SETTINGS  
+
 [![](https://i.imgur.com/0Kzcmmvl.png)](https://i.imgur.com/0Kzcmmv.png)  
 
-| ITEM | DESCRIPTION | DEFAULT |
-| ---- | ----------- | ------- |
-| `IN` | The video entrance transition when the video initially loads | `slideInDown` |
-| `OUT` | The video exit transition when the video ends | `slideOutDown` |
+
+| ITEM | DESCRIPTION | DEFAULT | 
+| ---- | ----------- | ------- | 
+| `IN` | The video entrance transition when the video initially loads | `slideInDown` | 
+| `OUT` | The video exit transition when the video ends | `slideOutDown` | 
 
 > **NOTE:** Changes this will require you to refresh the cache of the browser source in your broadcast software
 
-### INFORMATION
+### INFORMATION  
+
 [![](https://i.imgur.com/UYRuqdbl.png)](https://i.imgur.com/UYRuqdb.png)  
 
-| ITEM | DESCRIPTION |
-| ---- | ----------- |
-| `GET MEDAL` | Opens a link to get Medal |
-| `OPEN README` | Opens the link to this document |
-| `OPEN SENDKEYS DOCS` | Opens the link to the [SendKeys](SendKeys.md) documentation |
-| `SAVE SETTINGS` | Save any changes to the Medal Overlay settings |
+| ITEM | DESCRIPTION | 
+| ---- | ----------- | 
+| `GET MEDAL` | Opens a link to get Medal | 
+| `OPEN README` | Opens the link to this document | 
+| `OPEN SENDKEYS DOCS` | Opens the link to the [SendKeys](SendKeys.md) documentation | 
+| `SAVE SETTINGS` | Save any changes to the Medal Overlay settings | 
 
-## OBS / SLOBS
+## OBS / SLOBS  
 
 - Add a new `Browser Source` in OBS / SLOBS  
 [![](https://i.imgur.com/TAMQkeql.png)](https://i.imgur.com/TAMQkeq.png)
