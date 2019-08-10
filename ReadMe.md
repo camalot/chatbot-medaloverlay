@@ -15,7 +15,7 @@ This is a [StreamLabs Chatbot](https://streamlabs.com/chatbot) Script that allow
 
 ## INSTALL
 
-- Download the latest zip file from [Releases](https://github.com/camalot/chatbot-medaloverlay/releases)
+- Download the latest zip file from [Releases](https://github.com/camalot/chatbot-medaloverlay/releases/latest)
 - Extract to `[Chatbot Install Directory]/Services/Scripts/`
 - Reload Scripts in StreamLabs Chatbot
 - Right click on `Medal Overlay` and select `Insert API Key`. Click yes on the dialog.  
@@ -30,15 +30,16 @@ Click on the script in the list to bring up the configuration.
 
 ### GENERAL SETTINGS  
 
-[![](https://i.imgur.com/YSfPNiWl.png)](https://i.imgur.com/YSfPNiW.png)  
+[![](https://i.imgur.com/bcj2qvFl.png)](https://i.imgur.com/bcj2qvF.png)  
 
 | ITEM | DESCRIPTION | DEFAULT | 
 | ---- | ----------- | ------- | 
 | `Clip Command` | The command to trigger the clip creation | `!clip` |
 | `Permission Level` | The permission level required to trigger the command | `Everyone` |
 | `Cooldown` | The amount of seconds between each allowed clip creation | `60` |
-| `Clip Start Wait` | The amount of time (in seconds) that the bot will wait for Medal to start creating the clip | `2` |
-| `Clip Complete Wait` | The amount of time (in seconds) that the bot will wait for Medal to complete the creation of the clip | `120` |
+| `Video Width` | The width of the video. Height will scale automatically | `320` | 
+| `Clip Start Wait` | The amount of time (in seconds) that the bot will wait for Medal to start creating the clip | `2` | 
+| `Clip Complete Wait` | The amount of time (in seconds) that the bot will wait for Medal to complete the creation of the clip | `120` | 
 
 ### MEDAL SETTINGS  
 
@@ -55,17 +56,23 @@ Click on the script in the list to bring up the configuration.
 
 ### POSITION SETTINGS  
 
-[![](https://i.imgur.com/MiVeB2Sl.png)](https://i.imgur.com/MiVeB2S.png)  
+[![](https://i.imgur.com/BjsAqpjl.png)](https://i.imgur.com/BjsAqpj.png)  
 
 
 | ITEM | DESCRIPTION | DEFAULT | 
 | ---- | ----------- | ------- | 
+| `Use Preset Vertical` | If unchecked, absolute positions will be used | `true` |
 | `Vertical` | Vertical position of the video | `Middle` | 
+| `Use Preset Horizontal` | If unchecked, absolute positions will be used | `true` |
 | `Horizontal` | Horizontal position of the video | `Right` | 
+| `Absolute Top` | Absolute Top position of the video | `0` | 
+| `Absolute Left` | Absolute Left position of the video | `0` | 
+| `Absolute Bottom` | Absolute Bottom position of the video | `0` | 
+| `Absolute Right` | Absolute Right position of the video | `0` | 
 
 > **NOTE:** Changes this will require you to refresh the cache of the browser source in your broadcast software
 
-### TRAMSITION SETTINGS  
+### TRANSITION SETTINGS  
 
 [![](https://i.imgur.com/0Kzcmmvl.png)](https://i.imgur.com/0Kzcmmv.png)  
 

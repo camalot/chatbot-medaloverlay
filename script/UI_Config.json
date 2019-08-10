@@ -55,6 +55,13 @@
 		"tooltip": "Video Width (pixels) Scaled automatically.",
 		"group": "General"
 	},
+	"UsePositionVertical": {
+		"type": "checkbox",
+		"value": true,
+		"label": "Use Preset Vertical Position",
+		"tooltip": "If unchecked, the absolute positions will be used.",
+		"group": "Position"
+	},
 	"PositionVertical": {
 		"type": "dropdown",
 		"value": "Middle",
@@ -67,6 +74,13 @@
 		"tooltip": "The video vertical position.  If absolute is not -1, this is ignored.",
 		"group": "Position"
 	},
+	"UsePositionHorizontal": {
+		"type": "checkbox",
+		"value": true,
+		"label": "Use Preset Horizontal Position",
+		"tooltip": "If unchecked, the absolute positions will be used.",
+		"group": "Position"
+	},
 	"PositionHorizontal": {
 		"type": "dropdown",
 		"value": "Right",
@@ -76,35 +90,35 @@
 			"Right"
 		],
 		"label": "Video Horizontal Position (Preset)",
-		"tooltip": "The video horizontal position. If absolute is not -1, this is ignored.",
+		"tooltip": "The video horizontal position.",
 		"group": "Position"
 	},
 	"AbsolutePositionTop": {
 		"type": "numberbox",
-		"value": -1,
+		"value": 0,
 		"label": "Video Top Absolute Position (pixels)",
-		"tooltip": "The video top absolute position. If not -1 this will be used.",
+		"tooltip": "The video top absolute position.",
 		"group": "Position"
 	},
 	"AbsolutePositionLeft": {
 		"type": "numberbox",
-		"value": -1,
+		"value": 0,
 		"label": "Video Left Absolute Position (pixels)",
-		"tooltip": "The video left absolute position. If not -1 this will be used.",
+		"tooltip": "The video left absolute position.",
 		"group": "Position"
 	},
 	"AbsolutePositionBottom": {
 		"type": "numberbox",
-		"value": -1,
+		"value": 0,
 		"label": "Video Bottom Absolute Position (pixels)",
-		"tooltip": "The video bottom absolute position. If not -1 this will be used.",
+		"tooltip": "The video bottom absolute position.",
 		"group": "Position"
 	},
 	"AbsolutePositionRight": {
 		"type": "numberbox",
-		"value": -1,
+		"value": 0,
 		"label": "Video Right Absolute Position (pixels)",
-		"tooltip": "The video right absolute position. If not -1 this will be used.",
+		"tooltip": "The video right absolute position.",
 		"group": "Position"
 	},
 	"InTransition": {

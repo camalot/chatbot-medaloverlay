@@ -4,24 +4,28 @@
 jQuery(document).ready(function () {
 	let positionHorizontalClass = (settings.PositionHorizontal.toLowerCase() || "right");
 	let positionVerticalClass = (settings.PositionVertical.toLowerCase() || "middle");
+
+	let usePositionHorizontal = settings.UsePositionHorizontal;
+	let usePositionVertical = settings.UsePositionVertical;
+
 	$("#video-container")
 		.addClass(positionHorizontalClass)
 		.addClass(positionVerticalClass);
 
-	if (settings.AbsolutePositionLeft !== -1 || settings.AbsolutePositionRight !== -1) {
+	if (usePositionHorizontal) {
 		$("#video-container")
 			.removeClass(positionHorizontalClass);
 		$("#video-container video")
-			.css("left", settings.AbsolutePositionLeft !== -1 ? `${settings.AbsolutePositionLeft}px` : 'initial')
-			.css("right", settings.AbsolutePositionRight !== -1 ? `${settings.AbsolutePositionRight}px` : 'initial');
+			.css("left", settings.AbsolutePositionLeft !== 0 ? `${settings.AbsolutePositionLeft}px` : 'initial')
+			.css("right", settings.AbsolutePositionRight !== 0 ? `${settings.AbsolutePositionRight}px` : 'initial');
 	}
 
-	if (settings.AbsolutePositionTop !== -1 || settings.AbsolutePositionBottom !== -1) {
+	if (usePositionVertical) {
 		$("#video-container")
 			.removeClass(positionVerticalClass);
 		$("#video-container video")
-			.css("top", settings.AbsolutePositionTop !== -1 ? `${settings.AbsolutePositionTop}px` : 'initial')
-			.css("bottom", settings.AbsolutePositionBottom !== -1 ? `${settings.AbsolutePositionBottom}px` : 'initial');
+			.css("top", settings.AbsolutePositionTop !== 0 ? `${settings.AbsolutePositionTop}px` : 'initial')
+			.css("bottom", settings.AbsolutePositionBottom !== 0 ? `${settings.AbsolutePositionBottom}px` : 'initial');
 	}
 
 	// max-width
