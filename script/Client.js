@@ -122,11 +122,19 @@ function connectWebsocket() {
 				var eventData = JSON.parse(socketMessage.data || "{}");
 				console.log(eventData);
 				// <video autoplay src="videos/MuricaBear/orangejustice.webm"></video>
+
+				let webbedVideoPath = settings.VideoPath.replace(/\\/gi, "/");
+				if (webbedVideoPath[webbedVideoPath.length - 1] !== "/") {
+					webbedVideoPath += "/";
+				}
+
 				$("#video-container video")
 					.show()
 					.prop("autoplay", true)
 					.prop("muted", true)
-					.attr("src", `${settings.VideoPath}/${eventData.video}`)
+					.attr("src", `${webbedVideoPath}${eventData.video}`)
+					.empty()
+					.append(`<source src="${webbedVideoPath}${eventData.video}" type="video/mp4" />`)
 					.on("error", function(e) { console.error(`Error: ${e}`); })
 					.on("loadeddata loadedmetadata loadstart pause playing progress suspend", function(evt) {
 						console.log(`EVENT: ${evt.type}`);
@@ -153,7 +161,7 @@ function connectWebsocket() {
 	//  Websocket Event: OnError
 	//-------------------------------------------
 	socket.onerror = function (error) {
-		console.log(`Error: ${error}`);
+		console.error(`Error: ${error}`);
 	};
 
 	//-------------------------------------------
