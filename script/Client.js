@@ -3,8 +3,8 @@
 // Start ws connection after document is loaded
 jQuery(document).ready(function() {
 	$("#video-container")
-		.addClass((settings.PositionVertical || "middle"))
-		.addClass((settings.PositionHorizontal || "right"));
+		.addClass((settings.PositionVertical.toLowerCase() || "middle"))
+		.addClass((settings.PositionHorizontal.toLowerCase() || "right"));
 
 	// Connect if API_Key is inserted
 	// Else show an error on the overlay
