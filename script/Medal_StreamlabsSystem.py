@@ -36,7 +36,7 @@ MedalInviteUrl = "https://medal.tv/invite/"
 
 
 SettingsFile = os.path.join(os.path.dirname(__file__), "settings.json")
-ReadMeFile = os.path.join(os.path.dirname(__file__), "ReadMe.txt")
+ReadMeFile = "https://github.com/camalot/chatbot-medaloverlay/blob/develop/ReadMe.md"
 ScriptSettings = None
 
 
@@ -212,7 +212,6 @@ def Tick():
 # Script UI Button Functions
 # ---------------------------------------
 def OpenReadMe():
-    """ Open the script readme file in users default .txt application. """
     os.startfile(ReadMeFile)
     return
 def OpenSendKeys():
