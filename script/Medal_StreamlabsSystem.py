@@ -186,7 +186,6 @@ def Execute(data):
                     Parent.SendTwitchMessage(data.User + " has triggered a medal.tv clip. Clip is processing...")
                     MedalRunner.Keys.SendKeys('{F8}')
                     thr = threading.Thread(target=WaitForFile, args=(data, timestamp), kwargs={})
-                    #WaitForFile(data, timestamp)
                     thr.start()
             else:
                 Parent.SendTwitchMessage(data.User + ", There is already an active clip being processed.")
