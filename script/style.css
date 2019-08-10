@@ -30,8 +30,6 @@ body, html {
 #video-container video {
 	padding: 0;
 	margin: 0;
-	max-width: 320px;
-	min-width: 320px;
 	position: absolute;
 	display: none;
 }

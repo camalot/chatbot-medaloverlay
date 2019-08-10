@@ -1,16 +1,46 @@
 "use strict";
 
 // Start ws connection after document is loaded
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
+	let positionHorizontalClass = (settings.PositionHorizontal.toLowerCase() || "right");
+	let positionVerticalClass = (settings.PositionVertical.toLowerCase() || "middle");
 	$("#video-container")
-		.addClass((settings.PositionVertical.toLowerCase() || "middle"))
-		.addClass((settings.PositionHorizontal.toLowerCase() || "right"));
+		.addClass(positionHorizontalClass)
+		.addClass(positionVerticalClass);
+
+	if (settings.AbsolutePositionLeft !== -1 || settings.AbsolutePositionRight !== -1) {
+		$("#video-container")
+			.removeClass(positionHorizontalClass);
+		$("#video-container video")
+			.css("left", settings.AbsolutePositionLeft !== -1 ? `${settings.AbsolutePositionLeft}px` : 'initial')
+			.css("right", settings.AbsolutePositionRight !== -1 ? `${settings.AbsolutePositionRight}px` : 'initial');
+	}
+
+	if (settings.AbsolutePositionTop !== -1 || settings.AbsolutePositionBottom !== -1) {
+		$("#video-container")
+			.removeClass(positionVerticalClass);
+		$("#video-container video")
+			.css("top", settings.AbsolutePositionTop !== -1 ? `${settings.AbsolutePositionTop}px` : 'initial')
+			.css("bottom", settings.AbsolutePositionBottom !== -1 ? `${settings.AbsolutePositionBottom}px` : 'initial');
+	}
+
+	// max-width
+	// min-width
+
+	let vwidth = settings.VideoWidth || 320;
+	if(vwidth <= 0) {
+		vwidth = 320;
+	}
+
+	$("#video-container video")
+		.css("max-width", `${vwidth}px`)
+		.css("min-width", `${vwidth}px`);
 
 	// Connect if API_Key is inserted
 	// Else show an error on the overlay
 	if (typeof API_Key === "undefined") {
-		$("body").html("No API Key found or load!<br>Rightclick on the script in ChatBot and select \"Insert API Key\"");
-		$("body").css({"font-size": "20px", "color": "#ff8080", "text-align": "center"});
+		$("body").html("No API Key found or load!<br>Right click on the script in ChatBot and select \"Insert API Key\"");
+		$("body").css({ "font-size": "20px", "color": "#ff8080", "text-align": "center" });
 
 	} else {
 		connectWebsocket();
@@ -44,7 +74,7 @@ function connectWebsocket() {
 	//-------------------------------------------
 	//  Websocket Event: OnOpen
 	//-------------------------------------------
-	socket.onopen = function() {
+	socket.onopen = function () {
 		console.log("open");
 		// AnkhBot Authentication Information
 		var auth = {
@@ -84,7 +114,7 @@ function connectWebsocket() {
 					.prop("autoplay", true)
 					.prop("muted", true)
 					.attr("src", `${settings.VideoPath}/${eventData.video}`)
-					.on("play", function() { return videoLoaded(); })
+					.on("play", function () { return videoLoaded(); })
 					.on("ended", function () { return videoEnded(); });
 				break;
 			case "EVENT_MEDAL_VIDEO_WAIT":
@@ -105,19 +135,19 @@ function connectWebsocket() {
 	//-------------------------------------------
 	//  Websocket Event: OnError
 	//-------------------------------------------
-	socket.onerror = function(error) {
+	socket.onerror = function (error) {
 		console.log("Error: " + error);
 	};
 
 	//-------------------------------------------
 	//  Websocket Event: OnClose
 	//-------------------------------------------
-	socket.onclose = function() {
+	socket.onclose = function () {
 		console.log("close");
 		// Clear socket to avoid multiple ws objects and EventHandlings
 		socket = null;
 		// Try to reconnect every 5s
-		setTimeout(function(){connectWebsocket()}, 5000);
+		setTimeout(function () { connectWebsocket() }, 5000);
 	};
 
 }

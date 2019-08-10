@@ -48,6 +48,13 @@
 		"tooltip": "The path to your medal video files",
 		"group": "Medal"
 	},
+	"VideoWidth": {
+		"type": "numberbox",
+		"label": "Video Width (pixels)",
+		"value": 320,
+		"tooltip": "Video Width (pixels) Scaled automatically.",
+		"group": "General"
+	},
 	"PositionVertical": {
 		"type": "dropdown",
 		"value": "Middle",
@@ -56,8 +63,8 @@
 			"Middle",
 			"Bottom"
 		],
-		"label": "Video Vertical Position",
-		"tooltip": "The video vertical position",
+		"label": "Video Vertical Position (Preset)",
+		"tooltip": "The video vertical position.  If absolute is not -1, this is ignored.",
 		"group": "Position"
 	},
 	"PositionHorizontal": {
@@ -68,8 +75,36 @@
 			"Center",
 			"Right"
 		],
-		"label": "Video Horizontal Position",
-		"tooltip": "The video horizontal position",
+		"label": "Video Horizontal Position (Preset)",
+		"tooltip": "The video horizontal position. If absolute is not -1, this is ignored.",
+		"group": "Position"
+	},
+	"AbsolutePositionTop": {
+		"type": "numberbox",
+		"value": -1,
+		"label": "Video Top Absolute Position (pixels)",
+		"tooltip": "The video top absolute position. If not -1 this will be used.",
+		"group": "Position"
+	},
+	"AbsolutePositionLeft": {
+		"type": "numberbox",
+		"value": -1,
+		"label": "Video Left Absolute Position (pixels)",
+		"tooltip": "The video left absolute position. If not -1 this will be used.",
+		"group": "Position"
+	},
+	"AbsolutePositionBottom": {
+		"type": "numberbox",
+		"value": -1,
+		"label": "Video Bottom Absolute Position (pixels)",
+		"tooltip": "The video bottom absolute position. If not -1 this will be used.",
+		"group": "Position"
+	},
+	"AbsolutePositionRight": {
+		"type": "numberbox",
+		"value": -1,
+		"label": "Video Right Absolute Position (pixels)",
+		"tooltip": "The video right absolute position. If not -1 this will be used.",
 		"group": "Position"
 	},
 	"InTransition": {

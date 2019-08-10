@@ -64,6 +64,11 @@ class Settings(object):
             self.OutTransition = "SlideRight"
             self.MaxInitWait = 2
             self.MaxFinishWait = 120
+            self.AbsolutePositionTop = -1
+            self.AbsolutePositionLeft = -1
+            self.AbsolutePositionBottom = -1
+            self.AbsolutePositionRight = -1
+            self.VideoWidth = 320
 
     def Reload(self, jsonData):
         """ Reload settings from the user interface by given json data. """
