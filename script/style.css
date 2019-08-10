@@ -28,7 +28,7 @@ body, html {
 }
 
 .hidden {
-	display:none;
+	display:none !important;
 }
 
 #video-container video {

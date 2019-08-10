@@ -54,14 +54,23 @@ jQuery(document).ready(function () {
 
 function videoLoaded() {
 	console.log("video loaded");
-	$('#video-container video').removeClass().addClass(settings.InTransition + ' animated');
+	$('#video-container video')
+		.addClass(settings.InTransition + ' animated')
+		.removeClass("hidden")
+		.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+			console.log("after entrance animation");
+			$(this).removeClass();
+		});
 }
 
 function videoEnded() {
 	console.log("video ended");
-	$("#video-container video").removeClass().addClass(settings.OutTransition + ' animated')
+	$("#video-container video")
+		.removeClass()
+		.addClass(settings.OutTransition + ' animated')
 		.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-			$(this).hide().removeClass();
+			console.log("after exit animation");
+			$(this).removeClass().addClass("hidden");
 		});
 }
 
