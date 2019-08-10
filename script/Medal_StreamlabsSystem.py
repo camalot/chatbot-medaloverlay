@@ -138,9 +138,9 @@ def WaitForFile(data, timestamp):
             waiting = False
         else:
             counter += 1
-            Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_WAIT", json.dumps({
-                "counter": counter
-            }))
+            # Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_WAIT", json.dumps({
+            #     "counter": counter
+            # }))
             time.sleep(.1)
     waiting = True
     counter = 0
