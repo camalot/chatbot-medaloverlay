@@ -27,11 +27,14 @@ body, html {
 		/*set to a negative number 1/2 of your width*/
 }
 
+.hidden {
+	display:none;
+}
+
 #video-container video {
 	padding: 0;
 	margin: 0;
 	position: absolute;
-	display: none;
 
 	right: initial;
 	left: initial;
@@ -40,7 +43,7 @@ body, html {
 }
 
 #video-container.center video {
-	left: 45%;
+	left: 40%;
 	right: initial;
 }
 
@@ -55,7 +58,7 @@ body, html {
 }
 
 #video-container.middle video {
-	top: 45%;
+	top: 40%;
 	bottom: initial;
 }
 
