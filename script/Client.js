@@ -127,7 +127,7 @@ function connectWebsocket() {
 					.prop("autoplay", true)
 					.prop("muted", true)
 					.attr("src", `${settings.VideoPath}/${eventData.video}`)
-					.on("play", function () { return videoLoaded(); })
+					.on("canplay", function () { return videoLoaded(); })
 					.on("ended", function () { return videoEnded(); });
 				break;
 			case "EVENT_MEDAL_VIDEO_WAIT":
