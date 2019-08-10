@@ -127,6 +127,10 @@ function connectWebsocket() {
 					.prop("autoplay", true)
 					.prop("muted", true)
 					.attr("src", `${settings.VideoPath}/${eventData.video}`)
+					.on("error", function(e) { console.error(`Error: ${e}`); })
+					.on("loadeddata loadedmetadata loadstart pause playing progress suspend", function(evt) {
+						console.log(`EVENT: ${evt.type}`);
+					})
 					.on("canplay", function () { return videoLoaded(); })
 					.on("ended", function () { return videoEnded(); });
 				break;
@@ -149,7 +153,7 @@ function connectWebsocket() {
 	//  Websocket Event: OnError
 	//-------------------------------------------
 	socket.onerror = function (error) {
-		console.log("Error: " + error);
+		console.log(`Error: ${error}`);
 	};
 
 	//-------------------------------------------
