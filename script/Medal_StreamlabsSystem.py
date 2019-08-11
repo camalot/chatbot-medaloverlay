@@ -13,6 +13,9 @@ import glob
 import time
 import threading
 
+import SimpleHTTPServer
+import SocketServer
+
 clr.AddReference("IronPython.SQLite.dll")
 clr.AddReference("IronPython.Modules.dll")
 
@@ -43,6 +46,10 @@ ScriptSettings = None
 # ---------------------------------------
 #	Script Classes
 # ---------------------------------------
+
+PORT = 9191
+
+
 class Settings(object):
     """ Class to hold the script settings, matching UI_Config.json. """
 
@@ -87,18 +94,44 @@ class Aliases(object):
     def Reload(self, jsonData):
         """ Reload settings from the user interface by given json data. """
         self.__dict__ = json.loads(jsonData, encoding="utf-8")
+
+# class VideoFileHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+#     def do_GET(self):
+#         possible_name = self.path.strip("/")+'.mp4'
+#         webDirectory = os.path.join(os.path.dirname(__file__), ScriptSettings.VideoPath)
+#         full_path = os.path.join(webDirectory, possible_name)
+#         Parent.Log(ScriptName, full_path)
+#         if os.path.isfile(possible_name):
+#             Parent.Log(ScriptName, full_path)
+#             # extensionless page serving
+#             self.path = possible_name
+#         else:
+#             Parent.Log(ScriptName, "Unable to locate " + full_path)
+
+#         return SimpleHTTPServer.SimpleHTTPRequestHandler.do_GET(self)
 # ---------------------------------------
 #	Functions
 # ---------------------------------------
 
 def RunVideo(video):
+    global PORT
     # Broadcast WebSocket Event
     payload = {
+        "port": PORT,
         "video": video
     }
     Parent.Log(ScriptName, "EVENT_MEDAL_PLAY: " + json.dumps(payload))
     Parent.BroadcastWsEvent("EVENT_MEDAL_PLAY", json.dumps(payload))
     return
+
+def StartHttpd(webdir):
+    tool = os.path.join(os.path.dirname(__file__), "./Libs/tiny.exe")
+    index = os.path.join(webdir, "./index.html")
+    if not os.path.exists(index):
+        with open(index, 'w'): pass
+    Parent.Log(ScriptName, "ROOT DIRECTORY: " + webdir)
+    Parent.Log(ScriptName, tool + " \"" + webdir + "\" " + str(PORT))
+    os.spawnl(os.P_DETACH, tool,tool, webdir, str(PORT))
 
 #---------------------------------------
 #   [Required] Initialize Data / Load Only
@@ -108,11 +141,12 @@ def Init():
     Parent.Log(ScriptName, "Initialize")
     # Globals
     global ScriptSettings
-
+    global PORT
     # Load saved settings and validate values
     ScriptSettings = Settings(SettingsFile)
     Parent.Log(ScriptName, ScriptSettings.Command)
-
+    webDirectory = os.path.join(os.path.dirname(__file__), ScriptSettings.VideoPath)
+    StartHttpd(webDirectory)
     return
 
 def WaitForFile(data, timestamp):
@@ -189,11 +223,26 @@ def Execute(data):
             Parent.Log(ScriptName, "Not my problem")
     return
 
+def Parse(parseString, userid, username, targetid, targetname, message):
+    # if "$myparameter" in parseString:
+    #     return parseString.replace("$myparameter","I am a cat!")
+
+    return parseString
+
 def Unload():
     Parent.Log(ScriptName, "Unload")
+    try:
+        httpd.shutdown()
+    except Exception as e:
+        Parent.Log(ScriptName, "Error Shutting down httpd")
     # End of Unload
     return
 
+#---------------------------
+#   [Optional] ScriptToggled (Notifies you when a user disables your script or enables it)
+#---------------------------
+def ScriptToggled(state):
+    return
 
 # ---------------------------------------
 # Chatbot Save Settings Function
