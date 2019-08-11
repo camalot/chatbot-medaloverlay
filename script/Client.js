@@ -128,6 +128,11 @@ function connectWebsocket() {
 					webbedVideoPath += "/";
 				}
 
+				// if drive rooted prepend file:///
+				if (webbedVideoPath.indexOf(":/") > 0) {
+					webbedVideoPath = `file:///${encodeURI(webbedVideoPath)}`;
+				}
+
 				$("#video-container video")
 					.show()
 					.prop("autoplay", true)

@@ -138,9 +138,6 @@ def WaitForFile(data, timestamp):
             waiting = False
         else:
             counter += 1
-            # Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_WAIT", json.dumps({
-            #     "counter": counter
-            # }))
             time.sleep(.1)
     waiting = True
     counter = 0
@@ -149,17 +146,11 @@ def WaitForFile(data, timestamp):
         # if we found the thumb
         if(len(thumbfiles) >= 1 or counter >= max_finish_wait ):
             if(counter >= max_finish_wait):
-                # Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_TIMEOUT", json.dumps({
-                #     "counter": counter
-                # }))
                 Parent.SendTwitchMessage(data.User + ", Processing took too long. The clip will still be created, just not shown.")
                 return
             waiting = False
         else:
             counter += 1
-            # Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_WAIT", json.dumps({
-            #     "counter": counter
-            # }))
             time.sleep(.1)
 
     if(len(files) >= 1 and len(thumbfiles) >= 1):
@@ -184,7 +175,7 @@ def Execute(data):
                     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
                     Parent.Log(ScriptName, "Timestamp: " + timestamp)
                     Parent.SendTwitchMessage(data.User + " has triggered a medal.tv clip. Clip is processing...")
-                    MedalRunner.Keys.SendKeys('{F8}')
+                    MedalRunner.Keys.SendKeys(ScriptSettings.HotKey)
                     thr = threading.Thread(target=WaitForFile, args=(data, timestamp), kwargs={})
                     thr.start()
             else:

@@ -119,7 +119,7 @@ If video playback doesn't seem to work in SLOBS, you can do the following:
 - Right click on the folder. This case `C:\Users\rconr\Videos`, and click on `Pick Link Source`  
 ![](https://i.imgur.com/GKSs0XF.png)
 - Now navigate to the MedalOverlay Script Directory.
-- Right Click in the directory, not of a file or folder, and choose `Drop As -> Symbolic Link`.  
+- Right Click in the directory, not of a file or folder, and choose `Drop As -> Junction`.  
 ![](https://i.imgur.com/qPSmucw.png)
 - Rename the new `Folder Link` to `videos`.
 - Set the `Medal Videos Path` property of Medal Overlay to `videos/`
