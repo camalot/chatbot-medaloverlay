@@ -132,6 +132,7 @@ def WaitForFile(data, timestamp):
                 Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_TIMEOUT", json.dumps({
                     "counter": counter
                 }))
+                Parent.Log(ScriptName, "Exiting. Took too long to find the clip being created.")
                 Parent.SendTwitchMessage(data.User + ", Processing took too long. The clip will still be created, just not shown.")
                 return
 
@@ -146,6 +147,7 @@ def WaitForFile(data, timestamp):
         # if we found the thumb
         if(len(thumbfiles) >= 1 or counter >= max_finish_wait ):
             if(counter >= max_finish_wait):
+                Parent.Log(ScriptName, "Exiting. Took too long to finish processing the clip.")
                 Parent.SendTwitchMessage(data.User + ", Processing took too long. The clip will still be created, just not shown.")
                 return
             waiting = False
@@ -166,7 +168,8 @@ def Execute(data):
         if commandTrigger == "!medal"and not Parent.IsOnCooldown(ScriptName, commandTrigger):
             Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
             Parent.SendTwitchMessage("The Medal desktop client records clips with one button press, posts them on medal.tv, and gives you a shareable link. No lag, no fuss. " +
-            "Get Medal and follow me " + MedalInviteUrl + ScriptSettings.Username)
+            "Get Medal and follow " + ScriptSettings.Username + ". " + MedalInviteUrl + ScriptSettings.Username + " - Use command " + ScriptSettings.Command +
+            " in the chat to trigger a clip.")
         elif commandTrigger == ScriptSettings.Command and not Parent.IsOnCooldown(ScriptName, commandTrigger):
             if not Parent.IsOnCooldown(ScriptName, commandTrigger):
                 if Parent.HasPermission(data.User, ScriptSettings.Permission, ""):
@@ -175,6 +178,7 @@ def Execute(data):
                     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
                     Parent.Log(ScriptName, "Timestamp: " + timestamp)
                     Parent.SendTwitchMessage(data.User + " has triggered a medal.tv clip. Clip is processing...")
+                    Parent.Log(ScriptName, "Sending HotKey: " + ScriptSettings.HotKey)
                     MedalRunner.Keys.SendKeys(ScriptSettings.HotKey)
                     thr = threading.Thread(target=WaitForFile, args=(data, timestamp), kwargs={})
                     thr.start()
