@@ -12,6 +12,7 @@ import datetime
 import glob
 import time
 import threading
+import signal
 
 import SimpleHTTPServer
 import SocketServer
@@ -42,13 +43,9 @@ SettingsFile = os.path.join(os.path.dirname(__file__), "settings.json")
 ReadMeFile = "https://github.com/camalot/chatbot-medaloverlay/blob/develop/ReadMe.md"
 ScriptSettings = None
 
-
 # ---------------------------------------
 #	Script Classes
 # ---------------------------------------
-
-PORT = 9191
-
 
 class Settings(object):
     """ Class to hold the script settings, matching UI_Config.json. """
@@ -78,6 +75,7 @@ class Settings(object):
             self.VideoWidth = 320
             self.UsePositionVertical = True
             self.UsePositionHorizontal = True
+            self.WebPort = 9191
 
     def Reload(self, jsonData):
         """ Reload settings from the user interface by given json data. """
@@ -94,44 +92,29 @@ class Aliases(object):
     def Reload(self, jsonData):
         """ Reload settings from the user interface by given json data. """
         self.__dict__ = json.loads(jsonData, encoding="utf-8")
-
-# class VideoFileHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
-#     def do_GET(self):
-#         possible_name = self.path.strip("/")+'.mp4'
-#         webDirectory = os.path.join(os.path.dirname(__file__), ScriptSettings.VideoPath)
-#         full_path = os.path.join(webDirectory, possible_name)
-#         Parent.Log(ScriptName, full_path)
-#         if os.path.isfile(possible_name):
-#             Parent.Log(ScriptName, full_path)
-#             # extensionless page serving
-#             self.path = possible_name
-#         else:
-#             Parent.Log(ScriptName, "Unable to locate " + full_path)
-
-#         return SimpleHTTPServer.SimpleHTTPRequestHandler.do_GET(self)
 # ---------------------------------------
 #	Functions
 # ---------------------------------------
 
 def RunVideo(video):
-    global PORT
     # Broadcast WebSocket Event
     payload = {
-        "port": PORT,
+        "port": ScriptSettings.WebPort,
         "video": video
     }
     Parent.Log(ScriptName, "EVENT_MEDAL_PLAY: " + json.dumps(payload))
     Parent.BroadcastWsEvent("EVENT_MEDAL_PLAY", json.dumps(payload))
     return
 
-def StartHttpd(webdir):
-    tool = os.path.join(os.path.dirname(__file__), "./Libs/tiny.exe")
+def StartHttpd(webdir, port):
+    global HTTPD_PID
+    tool = os.path.join(os.path.dirname(__file__), "./Libs/mohttpd.exe")
     index = os.path.join(webdir, "./index.html")
     if not os.path.exists(index):
         with open(index, 'w'): pass
     Parent.Log(ScriptName, "ROOT DIRECTORY: " + webdir)
-    Parent.Log(ScriptName, tool + " \"" + webdir + "\" " + str(PORT))
-    os.spawnl(os.P_DETACH, tool,tool, webdir, str(PORT))
+    Parent.Log(ScriptName, tool + " \"" + webdir + "\" " + str(port) + " 127.0.0.1")
+    os.spawnl(os.P_NOWAITO, tool,tool, webdir, str(port), "127.0.0.1")
 
 #---------------------------------------
 #   [Required] Initialize Data / Load Only
@@ -141,12 +124,11 @@ def Init():
     Parent.Log(ScriptName, "Initialize")
     # Globals
     global ScriptSettings
-    global PORT
     # Load saved settings and validate values
     ScriptSettings = Settings(SettingsFile)
     Parent.Log(ScriptName, ScriptSettings.Command)
     webDirectory = os.path.join(os.path.dirname(__file__), ScriptSettings.VideoPath)
-    StartHttpd(webDirectory)
+    StartHttpd(webDirectory, ScriptSettings.WebPort)
     return
 
 def WaitForFile(data, timestamp):
@@ -232,9 +214,11 @@ def Parse(parseString, userid, username, targetid, targetname, message):
 def Unload():
     Parent.Log(ScriptName, "Unload")
     try:
-        httpd.shutdown()
+        Parent.Log(ScriptName, "Kill mohttpd Process")
+        os.spawnl(os.P_WAIT, "taskkill", "/IM", "mohttpd.exe", "/F")
+        Parent.Log(ScriptName, "Killed mohttpd Process")
     except Exception as e:
-        Parent.Log(ScriptName, "Error Shutting down httpd")
+        Parent.Log(ScriptName, e.message)
     # End of Unload
     return
 
