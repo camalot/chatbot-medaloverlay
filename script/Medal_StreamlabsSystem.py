@@ -12,6 +12,10 @@ import datetime
 import glob
 import time
 import threading
+import signal
+
+import SimpleHTTPServer
+import SocketServer
 
 clr.AddReference("IronPython.SQLite.dll")
 clr.AddReference("IronPython.Modules.dll")
@@ -39,10 +43,10 @@ SettingsFile = os.path.join(os.path.dirname(__file__), "settings.json")
 ReadMeFile = "https://github.com/camalot/chatbot-medaloverlay/blob/develop/ReadMe.md"
 ScriptSettings = None
 
-
 # ---------------------------------------
 #	Script Classes
 # ---------------------------------------
+
 class Settings(object):
     """ Class to hold the script settings, matching UI_Config.json. """
 
@@ -71,6 +75,7 @@ class Settings(object):
             self.VideoWidth = 320
             self.UsePositionVertical = True
             self.UsePositionHorizontal = True
+            self.WebPort = 9191
 
     def Reload(self, jsonData):
         """ Reload settings from the user interface by given json data. """
@@ -94,11 +99,22 @@ class Aliases(object):
 def RunVideo(video):
     # Broadcast WebSocket Event
     payload = {
+        "port": ScriptSettings.WebPort,
         "video": video
     }
     Parent.Log(ScriptName, "EVENT_MEDAL_PLAY: " + json.dumps(payload))
     Parent.BroadcastWsEvent("EVENT_MEDAL_PLAY", json.dumps(payload))
     return
+
+def StartHttpd(webdir, port):
+    global HTTPD_PID
+    tool = os.path.join(os.path.dirname(__file__), "./Libs/mohttpd.exe")
+    index = os.path.join(webdir, "./index.html")
+    if not os.path.exists(index):
+        with open(index, 'w'): pass
+    Parent.Log(ScriptName, "ROOT DIRECTORY: " + webdir)
+    Parent.Log(ScriptName, tool + " \"" + webdir + "\" " + str(port) + " 127.0.0.1")
+    os.spawnl(os.P_NOWAITO, tool,tool, webdir, str(port), "127.0.0.1")
 
 #---------------------------------------
 #   [Required] Initialize Data / Load Only
@@ -108,11 +124,11 @@ def Init():
     Parent.Log(ScriptName, "Initialize")
     # Globals
     global ScriptSettings
-
     # Load saved settings and validate values
     ScriptSettings = Settings(SettingsFile)
     Parent.Log(ScriptName, ScriptSettings.Command)
-
+    webDirectory = os.path.join(os.path.dirname(__file__), ScriptSettings.VideoPath)
+    StartHttpd(webDirectory, ScriptSettings.WebPort)
     return
 
 def WaitForFile(data, timestamp):
@@ -189,11 +205,28 @@ def Execute(data):
             Parent.Log(ScriptName, "Not my problem")
     return
 
+def Parse(parseString, userid, username, targetid, targetname, message):
+    # if "$myparameter" in parseString:
+    #     return parseString.replace("$myparameter","I am a cat!")
+
+    return parseString
+
 def Unload():
     Parent.Log(ScriptName, "Unload")
+    try:
+        Parent.Log(ScriptName, "Kill mohttpd Process")
+        os.spawnl(os.P_WAIT, "taskkill", "/IM", "mohttpd.exe", "/F")
+        Parent.Log(ScriptName, "Killed mohttpd Process")
+    except Exception as e:
+        Parent.Log(ScriptName, e.message)
     # End of Unload
     return
 
+#---------------------------
+#   [Optional] ScriptToggled (Notifies you when a user disables your script or enables it)
+#---------------------------
+def ScriptToggled(state):
+    return
 
 # ---------------------------------------
 # Chatbot Save Settings Function

@@ -106,20 +106,6 @@ Click on the script in the list to bring up the configuration.
 [![](https://i.imgur.com/nouqPh0l.png)](https://i.imgur.com/nouqPh0.png)
 
 
-> **NOTE: For StreamLabs OBS, if you have issues with it not showing the video playback, there is a workaround. See Below.
+## TECHNICAL INFORMATION
 
-## SLOBS ISSUE WORKAROUND
-
-If video playback doesn't seem to work in SLOBS, you can do the following:
-
-- Install [Link Shell Extension](http://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html#download) 
- - Or follow [this guide](https://www.howtogeek.com/howto/16226/complete-guide-to-symbolic-links-symlinks-on-windows-or-linux/) to create a symbolic link in windows
-- Navigate to your Medal Clips Output Directory in Explorer, but one directory up.  
-![](https://i.imgur.com/PUy46ta.png)
-- Right click on the folder. This case `C:\Users\rconr\Videos`, and click on `Pick Link Source`  
-![](https://i.imgur.com/GKSs0XF.png)
-- Now navigate to the MedalOverlay Script Directory.
-- Right Click in the directory, not of a file or folder, and choose `Drop As -> Junction`.  
-![](https://i.imgur.com/qPSmucw.png)
-- Rename the new `Folder Link` to `videos`.
-- Set the `Medal Videos Path` property of Medal Overlay to `videos/`
+Files are served to the overlay via a lightweight http server called [tinyweb](https://www.ritlabs.com/en/products/tinyweb/install.php). It binds to port `9191` by default, and can be configured in the options. It also binds to the local internal address so the files are only accessible to the overlay.

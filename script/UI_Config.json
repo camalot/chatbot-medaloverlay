@@ -48,6 +48,13 @@
 		"tooltip": "The path to your medal video files",
 		"group": "Medal"
 	},
+	"WebPort": {
+		"type": "numberbox",
+		"label": "Web Port",
+		"value": 9191,
+		"tooltip": "The port used by tinyweb. Used for the overlay to request the clips.",
+		"group": "Advanced"
+	},
 	"VideoWidth": {
 		"type": "numberbox",
 		"label": "Video Width (pixels)",
@@ -55,6 +62,7 @@
 		"tooltip": "Video Width (pixels) Scaled automatically.",
 		"group": "General"
 	},
+
 	"UsePositionVertical": {
 		"type": "checkbox",
 		"value": true,

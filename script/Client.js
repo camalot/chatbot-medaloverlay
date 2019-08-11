@@ -119,27 +119,17 @@ function connectWebsocket() {
 
 		switch (eventName) {
 			case "EVENT_MEDAL_PLAY":
-				var eventData = JSON.parse(socketMessage.data || "{}");
+				let eventData = JSON.parse(socketMessage.data || "{}");
 				console.log(eventData);
-				// <video autoplay src="videos/MuricaBear/orangejustice.webm"></video>
-
-				let webbedVideoPath = settings.VideoPath.replace(/\\/gi, "/");
-				if (webbedVideoPath[webbedVideoPath.length - 1] !== "/") {
-					webbedVideoPath += "/";
-				}
-
-				// if drive rooted prepend file:///
-				if (webbedVideoPath.indexOf(":/") > 0) {
-					webbedVideoPath = `file:///${encodeURI(webbedVideoPath)}`;
-				}
+				let webfile = `http://localhost:${eventData.port}/${eventData.video}`;
 
 				$("#video-container video")
 					.show()
 					.prop("autoplay", true)
 					.prop("muted", true)
-					.attr("src", `${webbedVideoPath}${eventData.video}`)
+					.attr("src", webfile)
 					.empty()
-					.append(`<source src="${webbedVideoPath}${eventData.video}" type="video/mp4" />`)
+					.append(`<source src="${webfile}" type="video/mp4" />`)
 					.on("error", function(e) { console.error(`Error: ${e}`); })
 					.on("loadeddata loadedmetadata loadstart pause playing progress suspend", function(evt) {
 						console.log(`EVENT: ${evt.type}`);
