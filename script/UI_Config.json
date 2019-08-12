@@ -137,8 +137,9 @@
 	},
 	"InTransition": {
 		"type": "dropdown",
-		"value": "SlideRight",
+		"value": "slideInRight",
 		"items": [
+			"none",
 			"bounce",
 			"flash",
 			"pulse",
@@ -190,8 +191,9 @@
 	},
 	"OutTransition": {
 		"type": "dropdown",
-		"value": "bounce",
+		"value": "slideOutLeft",
 		"items": [
+			"none",
 			"bounce",
 			"flash",
 			"pulse",
@@ -240,20 +242,6 @@
 		"label": "Out Transition",
 		"tooltip": "Set how the alert transitions out",
 		"group": "Transition"
-	},
-	"MaxInitWait": {
-		"type": "numberbox",
-		"label": "Clip Start Wait (seconds)",
-		"value": "2",
-		"tooltip": "The number of seconds to wait for Medal to start creating the clip",
-		"group": "General"
-	},
-	"MaxFinishWait": {
-		"type": "numberbox",
-		"label": "Clip Complete Wait (seconds)",
-		"value": "120",
-		"tooltip": "The number of seconds to wait for Medal to finish processing the clip",
-		"group": "General"
 	},
 	"OpenMedalInvite": {
 		"type": "button",
