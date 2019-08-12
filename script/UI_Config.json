@@ -51,7 +51,7 @@
 	"VideoPath": {
 		"type": "textbox",
 		"label": "Medal Video Path",
-		"value": "videos/",
+		"value": "",
 		"tooltip": "The path to your medal video files",
 		"group": "Medal"
 	},
