@@ -290,7 +290,7 @@ def ReloadSettings(jsonData):
     """ Set newly saved data from UI after user saved settings. """
     Parent.Log(ScriptName, "Reload Settings")
     # Reload saved settings and validate values
-    ScriptSettings.Reload(jsondata)
+    ScriptSettings.Reload(jsonData)
     return
 
 #---------------------------
