@@ -200,7 +200,7 @@ def Execute(data):
         if commandTrigger == "!medal"and not Parent.IsOnCooldown(ScriptName, commandTrigger):
             Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
             Parent.SendTwitchMessage("The Medal desktop client records clips with one button press, posts them on medal.tv, and gives you a shareable link. No lag, no fuss. " +
-            "Get Medal and follow " + ScriptSettings.Username + ". " + MedalInviteUrl + ScriptSettings.Username + " - Use command " + ScriptSettings.Command +
+            "Get Medal and follow " + Parent.GetChannelName() + ". " + MedalInviteUrl + ScriptSettings.Username + " - Use command " + ScriptSettings.Command +
             " in the chat to trigger a clip.")
         elif commandTrigger == ScriptSettings.Command and not Parent.IsOnCooldown(ScriptName, commandTrigger):
             if not Parent.IsOnCooldown(ScriptName, commandTrigger):
