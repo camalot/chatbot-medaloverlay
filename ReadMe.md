@@ -4,6 +4,8 @@
 
 This is a [StreamLabs Chatbot](https://streamlabs.com/chatbot) Script that allows chat to trigger a [Medal](https://medal.tv/) clip creation, and then play the clip back on stream.  
 
+This will trigger playback on stream if your community triggers the clip creation, or if you press the hotkey to trigger a clip.
+
 [![See Medal Overlay In Action](https://img.youtube.com/vi/q2mIDQ8BcW4/0.jpg)](https://www.youtube.com/watch?v=q2mIDQ8BcW4)
 
 ## REQUIREMENTS
