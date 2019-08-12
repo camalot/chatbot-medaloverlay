@@ -59,7 +59,7 @@ class Settings(object):
         try:
             with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
                 self.__dict__ = json.load(f, encoding="utf-8")
-        except:
+        except Exception:
             self.Command = "!clip"
             self.Permission = "Everyone"
             self.VideoPath = ""
@@ -113,11 +113,11 @@ def OnClipReady(sender, eventArgs):
         global CurrentClipId
         global LastClipTriggerUser
 
-        if(ScriptSettings.OnlyTriggerOffCommand and CurrentClipId is None):
+        if ScriptSettings.OnlyTriggerOffCommand and CurrentClipId is None:
             return
 
         triggerUser = Parent.GetChannelName()
-        if(LastClipTriggerUser is not None):
+        if LastClipTriggerUser is not None:
             triggerUser = LastClipTriggerUser
 
         Parent.SendTwitchMessage(triggerUser + ", clip processing completed. Video will play shortly.")
@@ -142,7 +142,7 @@ def OnClipStarted(sender, eventArgs):
         return
 
     triggerUser = Parent.GetChannelName()
-    if(LastClipTriggerUser is not None):
+    if LastClipTriggerUser is not None:
         triggerUser = LastClipTriggerUser
     # Add a cooldown on the command since a clip is currently processing.
     Parent.AddCooldown(ScriptName, ScriptSettings.Command, ScriptSettings.Cooldown)
@@ -197,7 +197,7 @@ def Execute(data):
     global LastClipTriggerUser
     if data.IsChatMessage():
         commandTrigger = data.GetParam(0).lower()
-        if commandTrigger == "!medal"and not Parent.IsOnCooldown(ScriptName, commandTrigger):
+        if commandTrigger == "!medal" and not Parent.IsOnCooldown(ScriptName, commandTrigger):
             Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
             Parent.SendTwitchMessage("The Medal desktop client records clips with one button press, posts them on medal.tv, and gives you a shareable link. No lag, no fuss. " +
             "Get Medal and follow " + Parent.GetChannelName() + ". " + MedalInviteUrl + ScriptSettings.Username + " - Use command " + ScriptSettings.Command +
@@ -232,7 +232,7 @@ def Unload():
     except Exception as e:
         Parent.Log(ScriptName, str(e))
 
-    if(ClipWatcher is not None):
+    if ClipWatcher is not None:
         ClipWatcher.ClipReady -= OnClipReady
         ClipWatcher.ClipStarted -= OnClipStarted
         ClipWatcher.MonitorStart -= OnMonitorStart
