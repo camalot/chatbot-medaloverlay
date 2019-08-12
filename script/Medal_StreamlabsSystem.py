@@ -68,8 +68,8 @@ class Settings(object):
             self.Username = ""
             self.PositionVertical = "Middle"
             self.PositionHorizontal = "Right"
-            self.InTransition = "SlideRight"
-            self.OutTransition = "SlideRight"
+            self.InTransition = "slideInLeft"
+            self.OutTransition = "slideOutRight"
             self.AbsolutePositionTop = 0
             self.AbsolutePositionLeft = 0
             self.AbsolutePositionBottom = 0
