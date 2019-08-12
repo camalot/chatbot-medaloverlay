@@ -137,7 +137,7 @@ def OnClipReady(sender, eventArgs):
         CurrentClipId = None
         LastClipTriggerUser = None
     except Exception as e:
-        Parent.Log(ScriptName, str(e.message))
+        Parent.Log(ScriptName, str(e))
     return
 
 def OnClipStarted(sender, eventArgs):
@@ -224,7 +224,7 @@ def Unload():
         os.spawnl(os.P_WAIT, "taskkill", "/IM", "mohttpd.exe", "/F")
         Parent.Log(ScriptName, "Killed mohttpd Process")
     except Exception as e:
-        Parent.Log(ScriptName, e.message)
+        Parent.Log(ScriptName, str(e))
 
     if(ClipWatcher is not None):
         ClipWatcher.ClipReady -= OnClipReady
@@ -269,3 +269,5 @@ def OpenSendKeys():
 def OpenMedalInvite():
     os.startfile("https://medal.tv/invite/DarthMinos")
     return
+def OpenScriptUpdater():
+    os.startfile("./Libs/MedalOverlayUpdater.exe")

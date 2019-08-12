@@ -23,8 +23,9 @@ This will trigger playback on stream if your community triggers the clip creatio
 - Click on `Unblock`  
 [![](https://i.imgur.com/vehSSn7l.png)](https://i.imgur.com/vehSSn7.png)  
   > **NOTE:** If you do not see `Unblock`, the file is already unblocked.
-- Extract to `[Chatbot Install Directory]/Services/Scripts/`
-- Reload Scripts in StreamLabs Chatbot
+- In Chatbot, Click on the import icon on the scripts tab.  
+  ![](https://i.imgur.com/16JjCvR.png)
+- Select the downloaded zip file
 - Right click on `Medal Overlay` and select `Insert API Key`. Click yes on the dialog.  
 [![](https://i.imgur.com/AWmtHKFl.png)](https://i.imgur.com/AWmtHKF.png)  
 
