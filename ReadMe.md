@@ -38,7 +38,7 @@ Click on the script in the list to bring up the configuration.
 
 ### GENERAL SETTINGS  
 
-[![](https://i.imgur.com/GulznHXl.png)](https://i.imgur.com/GulznHX.png)  
+[![](https://i.imgur.com/JOfOY3cl.png)](https://i.imgur.com/JOfOY3c.png)  
 
 | ITEM | DESCRIPTION | DEFAULT | 
 | ---- | ----------- | ------- | 
@@ -47,8 +47,6 @@ Click on the script in the list to bring up the configuration.
 | `Permission Level` | The permission level required to trigger the command | `Everyone` |
 | `Cooldown` | The amount of seconds between each allowed clip creation | `60` |
 | `Video Width` | The width of the video. Height will scale automatically | `320` | 
-| `Clip Start Wait` | The amount of time (in seconds) that the bot will wait for Medal to start creating the clip | `2` | 
-| `Clip Complete Wait` | The amount of time (in seconds) that the bot will wait for Medal to complete the creation of the clip | `120` | 
 
 ### MEDAL SETTINGS  
 
@@ -59,7 +57,7 @@ Click on the script in the list to bring up the configuration.
 | ---- | ----------- | ------- | 
 | `Username` | Your Medal Username | `""` | 
 | `HotKey` | Your Medal HotKey in [SendKeys Format](SendKeys.md) | `{F8}` | 
-| `Videos Path` | The path to your Medal Videos | `videos/` | 
+| `Videos Path` | The path to your Medal Videos | `` | 
 
 > **NOTE:** Changes this will require you to refresh the cache of the browser source in your broadcast software
 

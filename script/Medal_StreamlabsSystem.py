@@ -59,10 +59,10 @@ class Settings(object):
         try:
             with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
                 self.__dict__ = json.load(f, encoding="utf-8")
-        except:
+        except Exception:
             self.Command = "!clip"
             self.Permission = "Everyone"
-            self.VideoPath = "videos/"
+            self.VideoPath = ""
             self.Cooldown = 60
             self.HotKey = "{F8}"
             self.Username = ""
@@ -70,8 +70,6 @@ class Settings(object):
             self.PositionHorizontal = "Right"
             self.InTransition = "SlideRight"
             self.OutTransition = "SlideRight"
-            self.MaxInitWait = 2
-            self.MaxFinishWait = 120
             self.AbsolutePositionTop = 0
             self.AbsolutePositionLeft = 0
             self.AbsolutePositionBottom = 0
@@ -97,30 +95,37 @@ class Aliases(object):
     def Reload(self, jsonData):
         """ Reload settings from the user interface by given json data. """
         self.__dict__ = json.loads(jsonData, encoding="utf-8")
-# ---------------------------------------
-#	Functions
-# ---------------------------------------
 
+#---------------------------------------
+#   Functions
+#---------------------------------------
+
+
+#---------------------------------------
+# Starts the mohttpd executable to serve the media files
+#---------------------------------------
 def StartHttpd(webdir, port):
     tool = os.path.join(os.path.dirname(__file__), "./Libs/mohttpd.exe")
     index = os.path.join(webdir, "./index.html")
     if not os.path.exists(index):
         with open(index, 'w'): pass
-    Parent.Log(ScriptName, "ROOT DIRECTORY: " + webdir)
     Parent.Log(ScriptName, tool + " \"" + webdir + "\" " + str(port) + " 127.0.0.1")
     os.spawnl(os.P_NOWAITO, tool,tool, webdir, str(port), "127.0.0.1")
     return
 
+#---------------------------------------
+# Event Handler for ClipWatcher.ClipReady
+#---------------------------------------
 def OnClipReady(sender, eventArgs):
     try:
         global CurrentClipId
         global LastClipTriggerUser
 
-        if(ScriptSettings.OnlyTriggerOffCommand and CurrentClipId is None):
+        if ScriptSettings.OnlyTriggerOffCommand and CurrentClipId is None:
             return
 
         triggerUser = Parent.GetChannelName()
-        if(LastClipTriggerUser is not None):
+        if LastClipTriggerUser is not None:
             triggerUser = LastClipTriggerUser
 
         Parent.SendTwitchMessage(triggerUser + ", clip processing completed. Video will play shortly.")
@@ -140,31 +145,49 @@ def OnClipReady(sender, eventArgs):
         Parent.Log(ScriptName, str(e.message))
     return
 
+#---------------------------------------
+# Event Handler for ClipWatcher.ClipStarted
+#---------------------------------------
 def OnClipStarted(sender, eventArgs):
     if(ScriptSettings.OnlyTriggerOffCommand and CurrentClipId is None):
         return
 
     triggerUser = Parent.GetChannelName()
-    if(LastClipTriggerUser is not None):
+    if LastClipTriggerUser is not None:
         triggerUser = LastClipTriggerUser
-
+    # Add a cooldown on the command since a clip is currently processing.
+    Parent.AddCooldown(ScriptName, ScriptSettings.Command, ScriptSettings.Cooldown)
     Parent.SendTwitchMessage(triggerUser + " has triggered a medal.tv clip. Clip is processing...")
     Parent.Log(ScriptName, "Event: ClipStarted: " + eventArgs.ClipId)
     return
 
+#---------------------------------------
+# Event Handler for ClipWatcher.MonitorStart
+#---------------------------------------
 def OnMonitorStart(sender, eventArgs):
     Parent.Log(ScriptName, "Event: MonitorStart")
     return
-
+#---------------------------------------
+# Event Handler for ClipWatcher.MonitorStop
+#---------------------------------------
 def OnMonitorStop(sender, eventArgs):
     Parent.Log(ScriptName, "Event: MonitorStop")
     return
+#---------------------------------------
+# Event Handler for ClipWatcher.MonitorPause
+#---------------------------------------
 def OnMonitorPause(sender, eventArgs):
     Parent.Log(ScriptName, "Event: MonitorPause")
     return
-#---------------------------------------
-#   [Required] Initialize Data / Load Only
-#---------------------------------------
+
+
+#---------------------------
+#   Chatbot Functions
+#---------------------------
+
+#---------------------------
+#   [Required] Initialize Data (Only called on load)
+#---------------------------
 def Init():
     """ Initialize script or startup or reload. """
     Parent.Log(ScriptName, "Initialize")
@@ -174,9 +197,16 @@ def Init():
 
     # Load saved settings and validate values
     ScriptSettings = Settings(SettingsFile)
-    Parent.Log(ScriptName, ScriptSettings.Command)
+    if(ScriptSettings.VideoPath == ""):
+        Parent.Log(ScriptName, "Video Path Not Currently Set.")
+        return
 
     webDirectory = os.path.join(os.path.dirname(__file__), ScriptSettings.VideoPath)
+
+    if(not os.path.exists(webDirectory)):
+        Parent.Log(ScriptName, "Video Path Does Not Exist: " + webDirectory)
+        return
+
     ClipWatcher = MedalRunner.Watcher(webDirectory)
     ClipWatcher.ClipReady += OnClipReady
     ClipWatcher.ClipStarted += OnClipStarted
@@ -187,61 +217,18 @@ def Init():
     StartHttpd(webDirectory, ScriptSettings.WebPort)
     return
 
-# def WaitForFile(data, timestamp):
-#     path = os.path.join(os.path.dirname(__file__),ScriptSettings.VideoPath)
-#     waiting = True
-#     counter = 0
-#     max_file_wait = ScriptSettings.MaxInitWait * 10
-#     max_finish_wait = ScriptSettings.MaxFinishWait * 10
-
-#     Parent.Log(ScriptName, path + "/*" + timestamp + ".mp4")
-#     Parent.BroadcastWsEvent("EVENT_MEDAL_START", json.dumps({}))
-#     while(waiting):
-#         files = glob.glob(path + "/*" + timestamp + ".mp4")
-#         # if we found the video
-#         if(len(files) >= 1 or counter >= max_file_wait ):
-#             if(counter >= max_file_wait):
-#                 Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_TIMEOUT", json.dumps({
-#                     "counter": counter
-#                 }))
-#                 Parent.Log(ScriptName, "Exiting. Took too long to find the clip being created.")
-#                 Parent.SendTwitchMessage(data.User + ", Processing took too long. The clip will still be created, just not shown.")
-#                 return
-
-#             waiting = False
-#         else:
-#             counter += 1
-#             time.sleep(.1)
-#     waiting = True
-#     counter = 0
-#     while(waiting):
-#         thumbfiles = glob.glob(path + "/*" + timestamp + "-thumbnail.jpg")
-#         # if we found the thumb
-#         if(len(thumbfiles) >= 1 or counter >= max_finish_wait ):
-#             if(counter >= max_finish_wait):
-#                 Parent.Log(ScriptName, "Exiting. Took too long to finish processing the clip.")
-#                 Parent.SendTwitchMessage(data.User + ", Processing took too long. The clip will still be created, just not shown.")
-#                 return
-#             waiting = False
-#         else:
-#             counter += 1
-#             time.sleep(.1)
-
-#     if(len(files) >= 1 and len(thumbfiles) >= 1):
-#         Parent.SendTwitchMessage(data.User + ", clip processing completed. Video will play shortly.")
-#         filename = os.path.basename(files[0])
-#         Parent.Log(ScriptName, "Clip Processing Completed: " + filename)
-#         RunVideo(filename)
-#     else:
-#         Parent.Log(ScriptName, path + "/*" + timestamp + ".mp4")
+#---------------------------
+#   [Required] Execute Data / Process messages
+#---------------------------
 def Execute(data):
     global CurrentClipId
+    global LastClipTriggerUser
     if data.IsChatMessage():
         commandTrigger = data.GetParam(0).lower()
-        if commandTrigger == "!medal"and not Parent.IsOnCooldown(ScriptName, commandTrigger):
+        if commandTrigger == "!medal" and not Parent.IsOnCooldown(ScriptName, commandTrigger):
             Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
             Parent.SendTwitchMessage("The Medal desktop client records clips with one button press, posts them on medal.tv, and gives you a shareable link. No lag, no fuss. " +
-            "Get Medal and follow " + ScriptSettings.Username + ". " + MedalInviteUrl + ScriptSettings.Username + " - Use command " + ScriptSettings.Command +
+            "Get Medal and follow " + Parent.GetChannelName() + ". " + MedalInviteUrl + ScriptSettings.Username + " - Use command " + ScriptSettings.Command +
             " in the chat to trigger a clip.")
         elif commandTrigger == ScriptSettings.Command and not Parent.IsOnCooldown(ScriptName, commandTrigger):
             if not Parent.IsOnCooldown(ScriptName, commandTrigger):
@@ -253,21 +240,23 @@ def Execute(data):
                     Parent.Log(ScriptName, "Timestamp: " + CurrentClipId)
                     Parent.Log(ScriptName, "Sending HotKey: " + ScriptSettings.HotKey)
                     MedalRunner.Keys.SendKeys(ScriptSettings.HotKey)
-                    # thr = threading.Thread(target=WaitForFile, args=(data, CurrentClipId), kwargs={})
-                    # thr.start()
             else:
                 Parent.SendTwitchMessage(data.User + ", There is already an active clip being processed.")
                 Parent.Log(ScriptName, "On Cooldown")
-        else:
-            Parent.Log(ScriptName, "Not my problem")
     return
 
+#---------------------------
+#   [Optional] Parse method (Allows you to create your own custom $parameters)
+#---------------------------
 def Parse(parseString, userid, username, targetid, targetname, message):
     # if "$myparameter" in parseString:
     #     return parseString.replace("$myparameter","I am a cat!")
 
     return parseString
 
+#---------------------------
+#   [Optional] Unload (Called when a user reloads their scripts or closes the bot / cleanup stuff)
+#---------------------------
 def Unload():
     Parent.Log(ScriptName, "Unload")
     try:
@@ -275,9 +264,9 @@ def Unload():
         os.spawnl(os.P_WAIT, "taskkill", "/IM", "mohttpd.exe", "/F")
         Parent.Log(ScriptName, "Killed mohttpd Process")
     except Exception as e:
-        Parent.Log(ScriptName, e.message)
+        Parent.Log(ScriptName, str(e))
 
-    if(ClipWatcher is not None):
+    if ClipWatcher is not None:
         ClipWatcher.ClipReady -= OnClipReady
         ClipWatcher.ClipStarted -= OnClipStarted
         ClipWatcher.MonitorStart -= OnMonitorStart
@@ -295,16 +284,18 @@ def ScriptToggled(state):
     return
 
 # ---------------------------------------
-# Chatbot Save Settings Function
+# [Optional] Reload Settings (Called when a user clicks the Save Settings button in the Chatbot UI)
 # ---------------------------------------
-def ReloadSettings(jsondata):
+def ReloadSettings(jsonData):
     """ Set newly saved data from UI after user saved settings. """
     Parent.Log(ScriptName, "Reload Settings")
     # Reload saved settings and validate values
     ScriptSettings.Reload(jsondata)
     return
 
-
+#---------------------------
+#   [Required] Tick method (Gets called during every iteration even when there is no incoming data)
+#---------------------------
 def Tick():
     return
 
