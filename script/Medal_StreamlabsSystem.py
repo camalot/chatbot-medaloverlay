@@ -43,6 +43,10 @@ SettingsFile = os.path.join(os.path.dirname(__file__), "settings.json")
 ReadMeFile = "https://github.com/camalot/chatbot-medaloverlay/blob/develop/ReadMe.md"
 ScriptSettings = None
 
+CurrentClipId = None
+LastClipTriggerUser = None
+ClipWatcher = None
+
 # ---------------------------------------
 #	Script Classes
 # ---------------------------------------
@@ -96,18 +100,7 @@ class Aliases(object):
 #	Functions
 # ---------------------------------------
 
-def RunVideo(video):
-    # Broadcast WebSocket Event
-    payload = {
-        "port": ScriptSettings.WebPort,
-        "video": video
-    }
-    Parent.Log(ScriptName, "EVENT_MEDAL_PLAY: " + json.dumps(payload))
-    Parent.BroadcastWsEvent("EVENT_MEDAL_PLAY", json.dumps(payload))
-    return
-
 def StartHttpd(webdir, port):
-    global HTTPD_PID
     tool = os.path.join(os.path.dirname(__file__), "./Libs/mohttpd.exe")
     index = os.path.join(webdir, "./index.html")
     if not os.path.exists(index):
@@ -115,7 +108,52 @@ def StartHttpd(webdir, port):
     Parent.Log(ScriptName, "ROOT DIRECTORY: " + webdir)
     Parent.Log(ScriptName, tool + " \"" + webdir + "\" " + str(port) + " 127.0.0.1")
     os.spawnl(os.P_NOWAITO, tool,tool, webdir, str(port), "127.0.0.1")
+    return
 
+def OnClipReady(sender, eventArgs):
+    try:
+        global CurrentClipId
+        global LastClipTriggerUser
+        triggerUser = Parent.GetChannelName()
+        if(LastClipTriggerUser is not None):
+            triggerUser = LastClipTriggerUser
+
+        Parent.SendTwitchMessage(triggerUser + ", clip processing completed. Video will play shortly.")
+        Parent.Log(ScriptName, "Event: ClipReady: " + eventArgs.ClipId)
+
+        # Broadcast WebSocket Event
+        payload = {
+            "port": ScriptSettings.WebPort,
+            "video": str(eventArgs.ClipId) + ".mp4"
+        }
+        Parent.Log(ScriptName, "EVENT_MEDAL_PLAY: " + json.dumps(payload))
+        Parent.BroadcastWsEvent("EVENT_MEDAL_PLAY", json.dumps(payload))
+
+        CurrentClipId = None
+        LastClipTriggerUser = None
+    except Exception as e:
+        Parent.Log(ScriptName, str(e.message))
+    return
+
+def OnClipStarted(sender, eventArgs):
+    triggerUser = Parent.GetChannelName()
+    if(LastClipTriggerUser is not None):
+        triggerUser = LastClipTriggerUser
+
+    Parent.SendTwitchMessage(triggerUser + " has triggered a medal.tv clip. Clip is processing...")
+    Parent.Log(ScriptName, "Event: ClipStarted: " + eventArgs.ClipId)
+    return
+
+def OnMonitorStart(sender, eventArgs):
+    Parent.Log(ScriptName, "Event: MonitorStart")
+    return
+
+def OnMonitorStop(sender, eventArgs):
+    Parent.Log(ScriptName, "Event: MonitorStop")
+    return
+def OnMonitorPause(sender, eventArgs):
+    Parent.Log(ScriptName, "Event: MonitorPause")
+    return
 #---------------------------------------
 #   [Required] Initialize Data / Load Only
 #---------------------------------------
@@ -124,61 +162,72 @@ def Init():
     Parent.Log(ScriptName, "Initialize")
     # Globals
     global ScriptSettings
+    global ClipWatcher
+
     # Load saved settings and validate values
     ScriptSettings = Settings(SettingsFile)
     Parent.Log(ScriptName, ScriptSettings.Command)
+
     webDirectory = os.path.join(os.path.dirname(__file__), ScriptSettings.VideoPath)
+    ClipWatcher = MedalRunner.Watcher(webDirectory)
+    ClipWatcher.ClipReady += OnClipReady
+    ClipWatcher.ClipStarted += OnClipStarted
+    ClipWatcher.MonitorStart += OnMonitorStart
+    ClipWatcher.MonitorStop += OnMonitorStop
+    ClipWatcher.MonitorPause += OnMonitorPause
+    ClipWatcher.Start()
     StartHttpd(webDirectory, ScriptSettings.WebPort)
     return
 
-def WaitForFile(data, timestamp):
-    path = os.path.join(os.path.dirname(__file__),ScriptSettings.VideoPath)
-    waiting = True
-    counter = 0
-    max_file_wait = ScriptSettings.MaxInitWait * 10
-    max_finish_wait = ScriptSettings.MaxFinishWait * 10
+# def WaitForFile(data, timestamp):
+#     path = os.path.join(os.path.dirname(__file__),ScriptSettings.VideoPath)
+#     waiting = True
+#     counter = 0
+#     max_file_wait = ScriptSettings.MaxInitWait * 10
+#     max_finish_wait = ScriptSettings.MaxFinishWait * 10
 
-    Parent.Log(ScriptName, path + "/*" + timestamp + ".mp4")
-    Parent.BroadcastWsEvent("EVENT_MEDAL_START", json.dumps({}))
-    while(waiting):
-        files = glob.glob(path + "/*" + timestamp + ".mp4")
-        # if we found the video
-        if(len(files) >= 1 or counter >= max_file_wait ):
-            if(counter >= max_file_wait):
-                Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_TIMEOUT", json.dumps({
-                    "counter": counter
-                }))
-                Parent.Log(ScriptName, "Exiting. Took too long to find the clip being created.")
-                Parent.SendTwitchMessage(data.User + ", Processing took too long. The clip will still be created, just not shown.")
-                return
+#     Parent.Log(ScriptName, path + "/*" + timestamp + ".mp4")
+#     Parent.BroadcastWsEvent("EVENT_MEDAL_START", json.dumps({}))
+#     while(waiting):
+#         files = glob.glob(path + "/*" + timestamp + ".mp4")
+#         # if we found the video
+#         if(len(files) >= 1 or counter >= max_file_wait ):
+#             if(counter >= max_file_wait):
+#                 Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_TIMEOUT", json.dumps({
+#                     "counter": counter
+#                 }))
+#                 Parent.Log(ScriptName, "Exiting. Took too long to find the clip being created.")
+#                 Parent.SendTwitchMessage(data.User + ", Processing took too long. The clip will still be created, just not shown.")
+#                 return
 
-            waiting = False
-        else:
-            counter += 1
-            time.sleep(.1)
-    waiting = True
-    counter = 0
-    while(waiting):
-        thumbfiles = glob.glob(path + "/*" + timestamp + "-thumbnail.jpg")
-        # if we found the thumb
-        if(len(thumbfiles) >= 1 or counter >= max_finish_wait ):
-            if(counter >= max_finish_wait):
-                Parent.Log(ScriptName, "Exiting. Took too long to finish processing the clip.")
-                Parent.SendTwitchMessage(data.User + ", Processing took too long. The clip will still be created, just not shown.")
-                return
-            waiting = False
-        else:
-            counter += 1
-            time.sleep(.1)
+#             waiting = False
+#         else:
+#             counter += 1
+#             time.sleep(.1)
+#     waiting = True
+#     counter = 0
+#     while(waiting):
+#         thumbfiles = glob.glob(path + "/*" + timestamp + "-thumbnail.jpg")
+#         # if we found the thumb
+#         if(len(thumbfiles) >= 1 or counter >= max_finish_wait ):
+#             if(counter >= max_finish_wait):
+#                 Parent.Log(ScriptName, "Exiting. Took too long to finish processing the clip.")
+#                 Parent.SendTwitchMessage(data.User + ", Processing took too long. The clip will still be created, just not shown.")
+#                 return
+#             waiting = False
+#         else:
+#             counter += 1
+#             time.sleep(.1)
 
-    if(len(files) >= 1 and len(thumbfiles) >= 1):
-        Parent.SendTwitchMessage(data.User + ", clip processing completed. Video will play shortly.")
-        filename = os.path.basename(files[0])
-        Parent.Log(ScriptName, "Clip Processing Completed: " + filename)
-        RunVideo(filename)
-    else:
-        Parent.Log(ScriptName, path + "/*" + timestamp + ".mp4")
+#     if(len(files) >= 1 and len(thumbfiles) >= 1):
+#         Parent.SendTwitchMessage(data.User + ", clip processing completed. Video will play shortly.")
+#         filename = os.path.basename(files[0])
+#         Parent.Log(ScriptName, "Clip Processing Completed: " + filename)
+#         RunVideo(filename)
+#     else:
+#         Parent.Log(ScriptName, path + "/*" + timestamp + ".mp4")
 def Execute(data):
+    global CurrentClipId
     if data.IsChatMessage():
         commandTrigger = data.GetParam(0).lower()
         if commandTrigger == "!medal"and not Parent.IsOnCooldown(ScriptName, commandTrigger):
@@ -190,14 +239,15 @@ def Execute(data):
             if not Parent.IsOnCooldown(ScriptName, commandTrigger):
                 if Parent.HasPermission(data.User, ScriptSettings.Permission, ""):
                     Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
-
-                    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-                    Parent.Log(ScriptName, "Timestamp: " + timestamp)
+                    # Get the time stamp format that is used of the file name.
+                    LastClipTriggerUser = data.User
+                    CurrentClipId = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+                    Parent.Log(ScriptName, "Timestamp: " + CurrentClipId)
                     Parent.SendTwitchMessage(data.User + " has triggered a medal.tv clip. Clip is processing...")
                     Parent.Log(ScriptName, "Sending HotKey: " + ScriptSettings.HotKey)
                     MedalRunner.Keys.SendKeys(ScriptSettings.HotKey)
-                    thr = threading.Thread(target=WaitForFile, args=(data, timestamp), kwargs={})
-                    thr.start()
+                    # thr = threading.Thread(target=WaitForFile, args=(data, CurrentClipId), kwargs={})
+                    # thr.start()
             else:
                 Parent.SendTwitchMessage(data.User + ", There is already an active clip being processed.")
                 Parent.Log(ScriptName, "On Cooldown")
@@ -219,6 +269,15 @@ def Unload():
         Parent.Log(ScriptName, "Killed mohttpd Process")
     except Exception as e:
         Parent.Log(ScriptName, e.message)
+
+    if(ClipWatcher is not None):
+        ClipWatcher.ClipReady -= OnClipReady
+        ClipWatcher.ClipStarted -= OnClipStarted
+        ClipWatcher.MonitorStart -= OnMonitorStart
+        ClipWatcher.MonitorStop -= OnMonitorStop
+        ClipWatcher.MonitorPause -= OnMonitorPause
+        ClipWatcher.Stop()
+
     # End of Unload
     return
 
