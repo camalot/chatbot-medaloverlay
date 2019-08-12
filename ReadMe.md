@@ -21,7 +21,7 @@ This will trigger playback on stream if your community triggers the clip creatio
 - Extract to `[Chatbot Install Directory]/Services/Scripts/`
 - Reload Scripts in StreamLabs Chatbot
 - Right click on `Medal Overlay` and select `Insert API Key`. Click yes on the dialog.  
-[![](https://i.imgur.com/Lk13yXml.png)](https://i.imgur.com/Lk13yXm.png)  
+[![](https://i.imgur.com/AWmtHKFl.png)](https://i.imgur.com/AWmtHKF.png)  
 
 ## CONFIGURATION
 
@@ -32,11 +32,12 @@ Click on the script in the list to bring up the configuration.
 
 ### GENERAL SETTINGS  
 
-[![](https://i.imgur.com/bcj2qvFl.png)](https://i.imgur.com/bcj2qvF.png)  
+[![](https://i.imgur.com/GulznHXl.png)](https://i.imgur.com/GulznHX.png)  
 
 | ITEM | DESCRIPTION | DEFAULT | 
 | ---- | ----------- | ------- | 
 | `Clip Command` | The command to trigger the clip creation | `!clip` |
+| `Only Trigger off the Command` | If checked, only clips triggered by chat will show up in the overlay. | `False` |  
 | `Permission Level` | The permission level required to trigger the command | `Everyone` |
 | `Cooldown` | The amount of seconds between each allowed clip creation | `60` |
 | `Video Width` | The width of the video. Height will scale automatically | `320` | 
@@ -55,6 +56,15 @@ Click on the script in the list to bring up the configuration.
 | `Videos Path` | The path to your Medal Videos | `videos/` | 
 
 > **NOTE:** Changes this will require you to refresh the cache of the browser source in your broadcast software
+
+### ADVANCED SETTINGS
+
+[![](https://i.imgur.com/r2xsWgKl.png)](https://i.imgur.com/r2xsWgK.png)  
+
+| ITEM | DESCRIPTION | DEFAULT | 
+| ---- | ----------- | ------- | 
+| `Web Port` | The mort used for the http server for the media files | `9191` | 
+
 
 ### POSITION SETTINGS  
 

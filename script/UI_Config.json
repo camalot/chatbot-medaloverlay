@@ -7,6 +7,13 @@
 		"tooltip": "The command used to create the clip",
 		"group": "General"
 	},
+	"OnlyTriggerOffCommand": {
+		"type": "checkbox",
+		"label": "Only Trigger off the Command",
+		"value": false,
+		"tooltip": "If enabled, videos triggered from pressing the hotkey will now playback on stream.",
+		"group": "General"
+	},
 	"Permission": {
 		"type": "dropdown",
 		"value": "Everyone",
@@ -62,7 +69,6 @@
 		"tooltip": "Video Width (pixels) Scaled automatically.",
 		"group": "General"
 	},
-
 	"UsePositionVertical": {
 		"type": "checkbox",
 		"value": true,

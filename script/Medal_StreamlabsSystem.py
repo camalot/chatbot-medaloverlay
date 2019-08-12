@@ -80,6 +80,7 @@ class Settings(object):
             self.UsePositionVertical = True
             self.UsePositionHorizontal = True
             self.WebPort = 9191
+            self.OnlyTriggerOffCommand = False
 
     def Reload(self, jsonData):
         """ Reload settings from the user interface by given json data. """
@@ -114,6 +115,10 @@ def OnClipReady(sender, eventArgs):
     try:
         global CurrentClipId
         global LastClipTriggerUser
+
+        if(ScriptSettings.OnlyTriggerOffCommand and CurrentClipId is None):
+            return
+
         triggerUser = Parent.GetChannelName()
         if(LastClipTriggerUser is not None):
             triggerUser = LastClipTriggerUser
@@ -136,6 +141,9 @@ def OnClipReady(sender, eventArgs):
     return
 
 def OnClipStarted(sender, eventArgs):
+    if(ScriptSettings.OnlyTriggerOffCommand and CurrentClipId is None):
+        return
+
     triggerUser = Parent.GetChannelName()
     if(LastClipTriggerUser is not None):
         triggerUser = LastClipTriggerUser
@@ -243,7 +251,6 @@ def Execute(data):
                     LastClipTriggerUser = data.User
                     CurrentClipId = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
                     Parent.Log(ScriptName, "Timestamp: " + CurrentClipId)
-                    Parent.SendTwitchMessage(data.User + " has triggered a medal.tv clip. Clip is processing...")
                     Parent.Log(ScriptName, "Sending HotKey: " + ScriptSettings.HotKey)
                     MedalRunner.Keys.SendKeys(ScriptSettings.HotKey)
                     # thr = threading.Thread(target=WaitForFile, args=(data, CurrentClipId), kwargs={})
