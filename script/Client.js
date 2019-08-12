@@ -28,9 +28,9 @@ jQuery(document).ready(function () {
 			.css("bottom", settings.AbsolutePositionBottom !== 0 ? `${settings.AbsolutePositionBottom}px` : 'initial');
 	}
 
+	let isPlaying = false;
 	// max-width
 	// min-width
-
 	let vwidth = settings.VideoWidth || 320;
 	if(vwidth <= 0) {
 		vwidth = 320;
@@ -119,6 +119,10 @@ function connectWebsocket() {
 
 		switch (eventName) {
 			case "EVENT_MEDAL_PLAY":
+				if (isPlaying) {
+					console.log("Received event to play, but video already playing.");
+					return;
+				}
 				let eventData = JSON.parse(socketMessage.data || "{}");
 				console.log(eventData);
 				let webfile = `http://localhost:${eventData.port}/${eventData.video}`;
@@ -131,9 +135,6 @@ function connectWebsocket() {
 					.empty()
 					.append(`<source src="${webfile}" type="video/mp4" />`)
 					.on("error", function(e) { console.error(`Error: ${e}`); })
-					.on("loadeddata loadedmetadata loadstart pause playing progress suspend", function(evt) {
-						console.log(`EVENT: ${evt.type}`);
-					})
 					.on("canplay", function () { return videoLoaded(); })
 					.on("ended", function () { return videoEnded(); });
 				break;
