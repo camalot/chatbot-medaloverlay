@@ -12,12 +12,17 @@ This will trigger playback on stream if your community triggers the clip creatio
 
 - Install [StreamLabs Chatbot](https://streamlabs.com/chatbot)
 - [Enable Scripts in StreamLabs Chatbot](https://github.com/StreamlabsSupport/Streamlabs-Chatbot/wiki/Prepare-&-Import-Scripts)
+- [Microsoft .NET Framework 4.7.2 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net472)
 
 
 
 ## INSTALL
 
 - Download the latest zip file from [Releases](https://github.com/camalot/chatbot-medaloverlay/releases/latest)
+- Right-click on the downloaded zip file and choose `Properties`
+- Click on `Unblock`  
+[![](https://i.imgur.com/vehSSn7l.png)](https://i.imgur.com/vehSSn7.png)  
+  > **NOTE:** If you do not see `Unblock`, the file is already unblocked.
 - Extract to `[Chatbot Install Directory]/Services/Scripts/`
 - Reload Scripts in StreamLabs Chatbot
 - Right click on `Medal Overlay` and select `Insert API Key`. Click yes on the dialog.  

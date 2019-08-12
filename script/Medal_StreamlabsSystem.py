@@ -23,8 +23,8 @@ clr.AddReference("IronPython.Modules.dll")
 sys.path.append(os.path.join(os.path.dirname(__file__), "Libs"))
 clr.AddReferenceToFileAndPath(os.path.join(os.path.dirname(
     os.path.realpath(__file__)), "./Libs/MedalRunner.dll"))
-
 import MedalRunner
+
 #---------------------------------------
 #   [Required] Script Information
 #---------------------------------------
@@ -187,58 +187,11 @@ def Init():
     StartHttpd(webDirectory, ScriptSettings.WebPort)
     return
 
-# def WaitForFile(data, timestamp):
-#     path = os.path.join(os.path.dirname(__file__),ScriptSettings.VideoPath)
-#     waiting = True
-#     counter = 0
-#     max_file_wait = ScriptSettings.MaxInitWait * 10
-#     max_finish_wait = ScriptSettings.MaxFinishWait * 10
-
-#     Parent.Log(ScriptName, path + "/*" + timestamp + ".mp4")
-#     Parent.BroadcastWsEvent("EVENT_MEDAL_START", json.dumps({}))
-#     while(waiting):
-#         files = glob.glob(path + "/*" + timestamp + ".mp4")
-#         # if we found the video
-#         if(len(files) >= 1 or counter >= max_file_wait ):
-#             if(counter >= max_file_wait):
-#                 Parent.BroadcastWsEvent("EVENT_MEDAL_VIDEO_TIMEOUT", json.dumps({
-#                     "counter": counter
-#                 }))
-#                 Parent.Log(ScriptName, "Exiting. Took too long to find the clip being created.")
-#                 Parent.SendTwitchMessage(data.User + ", Processing took too long. The clip will still be created, just not shown.")
-#                 return
-
-#             waiting = False
-#         else:
-#             counter += 1
-#             time.sleep(.1)
-#     waiting = True
-#     counter = 0
-#     while(waiting):
-#         thumbfiles = glob.glob(path + "/*" + timestamp + "-thumbnail.jpg")
-#         # if we found the thumb
-#         if(len(thumbfiles) >= 1 or counter >= max_finish_wait ):
-#             if(counter >= max_finish_wait):
-#                 Parent.Log(ScriptName, "Exiting. Took too long to finish processing the clip.")
-#                 Parent.SendTwitchMessage(data.User + ", Processing took too long. The clip will still be created, just not shown.")
-#                 return
-#             waiting = False
-#         else:
-#             counter += 1
-#             time.sleep(.1)
-
-#     if(len(files) >= 1 and len(thumbfiles) >= 1):
-#         Parent.SendTwitchMessage(data.User + ", clip processing completed. Video will play shortly.")
-#         filename = os.path.basename(files[0])
-#         Parent.Log(ScriptName, "Clip Processing Completed: " + filename)
-#         RunVideo(filename)
-#     else:
-#         Parent.Log(ScriptName, path + "/*" + timestamp + ".mp4")
 def Execute(data):
     global CurrentClipId
     if data.IsChatMessage():
         commandTrigger = data.GetParam(0).lower()
-        if commandTrigger == "!medal"and not Parent.IsOnCooldown(ScriptName, commandTrigger):
+        if commandTrigger == "!medal" and not Parent.IsOnCooldown(ScriptName, commandTrigger):
             Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
             Parent.SendTwitchMessage("The Medal desktop client records clips with one button press, posts them on medal.tv, and gives you a shareable link. No lag, no fuss. " +
             "Get Medal and follow " + ScriptSettings.Username + ". " + MedalInviteUrl + ScriptSettings.Username + " - Use command " + ScriptSettings.Command +
@@ -253,13 +206,9 @@ def Execute(data):
                     Parent.Log(ScriptName, "Timestamp: " + CurrentClipId)
                     Parent.Log(ScriptName, "Sending HotKey: " + ScriptSettings.HotKey)
                     MedalRunner.Keys.SendKeys(ScriptSettings.HotKey)
-                    # thr = threading.Thread(target=WaitForFile, args=(data, CurrentClipId), kwargs={})
-                    # thr.start()
             else:
                 Parent.SendTwitchMessage(data.User + ", There is already an active clip being processed.")
                 Parent.Log(ScriptName, "On Cooldown")
-        else:
-            Parent.Log(ScriptName, "Not my problem")
     return
 
 def Parse(parseString, userid, username, targetid, targetname, message):
