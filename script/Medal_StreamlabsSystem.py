@@ -95,10 +95,15 @@ class Aliases(object):
     def Reload(self, jsonData):
         """ Reload settings from the user interface by given json data. """
         self.__dict__ = json.loads(jsonData, encoding="utf-8")
-# ---------------------------------------
-#	Functions
-# ---------------------------------------
 
+#---------------------------------------
+#   Functions
+#---------------------------------------
+
+
+#---------------------------------------
+# Starts the mohttpd executable to serve the media files
+#---------------------------------------
 def StartHttpd(webdir, port):
     tool = os.path.join(os.path.dirname(__file__), "./Libs/mohttpd.exe")
     index = os.path.join(webdir, "./index.html")
@@ -108,6 +113,9 @@ def StartHttpd(webdir, port):
     os.spawnl(os.P_NOWAITO, tool,tool, webdir, str(port), "127.0.0.1")
     return
 
+#---------------------------------------
+# Event Handler for ClipWatcher.ClipReady
+#---------------------------------------
 def OnClipReady(sender, eventArgs):
     try:
         global CurrentClipId
@@ -137,6 +145,9 @@ def OnClipReady(sender, eventArgs):
         Parent.Log(ScriptName, str(e.message))
     return
 
+#---------------------------------------
+# Event Handler for ClipWatcher.ClipStarted
+#---------------------------------------
 def OnClipStarted(sender, eventArgs):
     if(ScriptSettings.OnlyTriggerOffCommand and CurrentClipId is None):
         return
@@ -150,19 +161,33 @@ def OnClipStarted(sender, eventArgs):
     Parent.Log(ScriptName, "Event: ClipStarted: " + eventArgs.ClipId)
     return
 
+#---------------------------------------
+# Event Handler for ClipWatcher.MonitorStart
+#---------------------------------------
 def OnMonitorStart(sender, eventArgs):
     Parent.Log(ScriptName, "Event: MonitorStart")
     return
-
+#---------------------------------------
+# Event Handler for ClipWatcher.MonitorStop
+#---------------------------------------
 def OnMonitorStop(sender, eventArgs):
     Parent.Log(ScriptName, "Event: MonitorStop")
     return
+#---------------------------------------
+# Event Handler for ClipWatcher.MonitorPause
+#---------------------------------------
 def OnMonitorPause(sender, eventArgs):
     Parent.Log(ScriptName, "Event: MonitorPause")
     return
-#---------------------------------------
-#   [Required] Initialize Data / Load Only
-#---------------------------------------
+
+
+#---------------------------
+#   Chatbot Functions
+#---------------------------
+
+#---------------------------
+#   [Required] Initialize Data (Only called on load)
+#---------------------------
 def Init():
     """ Initialize script or startup or reload. """
     Parent.Log(ScriptName, "Initialize")
@@ -192,6 +217,9 @@ def Init():
     StartHttpd(webDirectory, ScriptSettings.WebPort)
     return
 
+#---------------------------
+#   [Required] Execute Data / Process messages
+#---------------------------
 def Execute(data):
     global CurrentClipId
     global LastClipTriggerUser
@@ -217,12 +245,18 @@ def Execute(data):
                 Parent.Log(ScriptName, "On Cooldown")
     return
 
+#---------------------------
+#   [Optional] Parse method (Allows you to create your own custom $parameters)
+#---------------------------
 def Parse(parseString, userid, username, targetid, targetname, message):
     # if "$myparameter" in parseString:
     #     return parseString.replace("$myparameter","I am a cat!")
 
     return parseString
 
+#---------------------------
+#   [Optional] Unload (Called when a user reloads their scripts or closes the bot / cleanup stuff)
+#---------------------------
 def Unload():
     Parent.Log(ScriptName, "Unload")
     try:
@@ -250,16 +284,18 @@ def ScriptToggled(state):
     return
 
 # ---------------------------------------
-# Chatbot Save Settings Function
+# [Optional] Reload Settings (Called when a user clicks the Save Settings button in the Chatbot UI)
 # ---------------------------------------
-def ReloadSettings(jsondata):
+def ReloadSettings(jsonData):
     """ Set newly saved data from UI after user saved settings. """
     Parent.Log(ScriptName, "Reload Settings")
     # Reload saved settings and validate values
     ScriptSettings.Reload(jsondata)
     return
 
-
+#---------------------------
+#   [Required] Tick method (Gets called during every iteration even when there is no incoming data)
+#---------------------------
 def Tick():
     return
 
