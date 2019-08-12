@@ -1,4 +1,5 @@
 "use strict";
+let isClipPlaying = false;
 
 // Start ws connection after document is loaded
 jQuery(document).ready(function () {
@@ -28,7 +29,6 @@ jQuery(document).ready(function () {
 			.css("bottom", settings.AbsolutePositionBottom !== 0 ? `${settings.AbsolutePositionBottom}px` : 'initial');
 	}
 
-	let isPlaying = false;
 	// max-width
 	// min-width
 	let vwidth = settings.VideoWidth || 320;
@@ -54,6 +54,7 @@ jQuery(document).ready(function () {
 
 function videoLoaded() {
 	console.log("video loaded");
+	isClipPlaying = true;
 	$('#video-container video')
 		.addClass(settings.InTransition + ' animated')
 		.removeClass("hidden")
@@ -65,6 +66,7 @@ function videoLoaded() {
 
 function videoEnded() {
 	console.log("video ended");
+	isClipPlaying = false;
 	$("#video-container video")
 		.removeClass()
 		.addClass(settings.OutTransition + ' animated')
@@ -119,7 +121,7 @@ function connectWebsocket() {
 
 		switch (eventName) {
 			case "EVENT_MEDAL_PLAY":
-				if (isPlaying) {
+				if (isClipPlaying) {
 					console.log("Received event to play, but video already playing.");
 					return;
 				}
