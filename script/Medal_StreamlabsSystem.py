@@ -124,6 +124,11 @@ def OnClipReady(sender, eventArgs):
         if ScriptSettings.OnlyTriggerOffCommand and CurrentClipId is None:
             return
 
+        if CurrentClipId != eventArgs.ClipId:
+            # This clip is not one we expected.
+            return
+
+
         triggerUser = Parent.GetChannelName()
         if LastClipTriggerUser is not None:
             triggerUser = LastClipTriggerUser
@@ -142,16 +147,22 @@ def OnClipReady(sender, eventArgs):
         CurrentClipId = None
         LastClipTriggerUser = None
     except Exception as e:
-        Parent.Log(ScriptName, str(e.message))
+        Parent.Log(ScriptName, str(e))
     return
 
 #---------------------------------------
 # Event Handler for ClipWatcher.ClipStarted
 #---------------------------------------
 def OnClipStarted(sender, eventArgs):
+    global CurrentClipId
     if(ScriptSettings.OnlyTriggerOffCommand and CurrentClipId is None):
         return
 
+    if CurrentClipId == eventArgs.ClipId:
+        # This clip already triggered.
+        return
+
+    CurrentClipId = eventArgs.ClipId
     triggerUser = Parent.GetChannelName()
     if LastClipTriggerUser is not None:
         triggerUser = LastClipTriggerUser

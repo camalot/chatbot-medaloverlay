@@ -1,4 +1,5 @@
 "use strict";
+let isClipPlaying = false;
 
 // Start ws connection after document is loaded
 jQuery(document).ready(function () {
@@ -30,7 +31,6 @@ jQuery(document).ready(function () {
 
 	// max-width
 	// min-width
-
 	let vwidth = settings.VideoWidth || 320;
 	if(vwidth <= 0) {
 		vwidth = 320;
@@ -54,6 +54,7 @@ jQuery(document).ready(function () {
 
 function videoLoaded() {
 	console.log("video loaded");
+	isClipPlaying = true;
 	$('#video-container video')
 		.addClass(settings.InTransition + ' animated')
 		.removeClass("hidden")
@@ -65,6 +66,7 @@ function videoLoaded() {
 
 function videoEnded() {
 	console.log("video ended");
+	isClipPlaying = false;
 	$("#video-container video")
 		.removeClass()
 		.addClass(settings.OutTransition + ' animated')
@@ -119,6 +121,10 @@ function connectWebsocket() {
 
 		switch (eventName) {
 			case "EVENT_MEDAL_PLAY":
+				if (isClipPlaying) {
+					console.log("Received event to play, but video already playing.");
+					return;
+				}
 				let eventData = JSON.parse(socketMessage.data || "{}");
 				console.log(eventData);
 				let webfile = `http://localhost:${eventData.port}/${eventData.video}`;
@@ -131,9 +137,6 @@ function connectWebsocket() {
 					.empty()
 					.append(`<source src="${webfile}" type="video/mp4" />`)
 					.on("error", function(e) { console.error(`Error: ${e}`); })
-					.on("loadeddata loadedmetadata loadstart pause playing progress suspend", function(evt) {
-						console.log(`EVENT: ${evt.type}`);
-					})
 					.on("canplay", function () { return videoLoaded(); })
 					.on("ended", function () { return videoEnded(); });
 				break;
