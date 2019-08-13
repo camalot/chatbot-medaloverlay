@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -59,6 +59,10 @@ namespace Test {
 
 		private void stop_Click ( object sender, EventArgs e ) {
 			watcher.Stop ( );
+		}
+
+		private void Killmohttpd_Click ( object sender, EventArgs e ) {
+			new MedalRunner.Process ( ).Stop ( "mohttpd" );
 		}
 	}
 }
