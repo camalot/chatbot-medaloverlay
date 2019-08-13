@@ -46,7 +46,7 @@ ScriptSettings = None
 CurrentClipId = None
 LastClipTriggerUser = None
 ClipWatcher = None
-
+ProcessManager = None
 # ---------------------------------------
 #	Script Classes
 # ---------------------------------------
@@ -68,8 +68,8 @@ class Settings(object):
             self.Username = ""
             self.PositionVertical = "Middle"
             self.PositionHorizontal = "Right"
-            self.InTransition = "SlideRight"
-            self.OutTransition = "SlideRight"
+            self.InTransition = "slideInLeft"
+            self.OutTransition = "slideOutRight"
             self.AbsolutePositionTop = 0
             self.AbsolutePositionLeft = 0
             self.AbsolutePositionBottom = 0
@@ -205,7 +205,7 @@ def Init():
     # Globals
     global ScriptSettings
     global ClipWatcher
-
+    global ProcessManager
     # Load saved settings and validate values
     ScriptSettings = Settings(SettingsFile)
     if(ScriptSettings.VideoPath == ""):
@@ -218,6 +218,7 @@ def Init():
         Parent.Log(ScriptName, "Video Path Does Not Exist: " + webDirectory)
         return
 
+    ProcessManager = MedalRunner.Process()
     ClipWatcher = MedalRunner.Watcher(webDirectory)
     ClipWatcher.ClipReady += OnClipReady
     ClipWatcher.ClipStarted += OnClipStarted
@@ -236,24 +237,23 @@ def Execute(data):
     global LastClipTriggerUser
     if data.IsChatMessage():
         commandTrigger = data.GetParam(0).lower()
-        if commandTrigger == "!medal" and not Parent.IsOnCooldown(ScriptName, commandTrigger):
-            Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
-            Parent.SendTwitchMessage("The Medal desktop client records clips with one button press, posts them on medal.tv, and gives you a shareable link. No lag, no fuss. " +
-            "Get Medal and follow " + Parent.GetChannelName() + ". " + MedalInviteUrl + ScriptSettings.Username + " - Use command " + ScriptSettings.Command +
-            " in the chat to trigger a clip.")
-        elif commandTrigger == ScriptSettings.Command and not Parent.IsOnCooldown(ScriptName, commandTrigger):
-            if not Parent.IsOnCooldown(ScriptName, commandTrigger):
+        if not Parent.IsOnCooldown(ScriptName, commandTrigger):
+            if commandTrigger == "!medal":
+                Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
+                Parent.SendTwitchMessage("The Medal desktop client records clips with one button press, posts them on medal.tv, and gives you a shareable link. No lag, no fuss. " +
+                "Get Medal and follow " + Parent.GetChannelName() + ". " + MedalInviteUrl + ScriptSettings.Username + " - Use command " + ScriptSettings.Command +
+                " in the chat to trigger a clip.")
+            elif commandTrigger == "!medaloverlay":
+                Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
+                Parent.SendTwitchMessage("Medal Overlay is a StreamLabs Chatbot Script developed by DarthMinos: https://twitch.tv/darthminos To Download or find out more visit https://github.com/camalot/chatbot-medaloverlay")
+            elif commandTrigger == ScriptSettings.Command:
                 if Parent.HasPermission(data.User, ScriptSettings.Permission, ""):
                     Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
                     # Get the time stamp format that is used of the file name.
                     LastClipTriggerUser = data.User
                     CurrentClipId = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-                    Parent.Log(ScriptName, "Timestamp: " + CurrentClipId)
                     Parent.Log(ScriptName, "Sending HotKey: " + ScriptSettings.HotKey)
                     MedalRunner.Keys.SendKeys(ScriptSettings.HotKey)
-            else:
-                Parent.SendTwitchMessage(data.User + ", There is already an active clip being processed.")
-                Parent.Log(ScriptName, "On Cooldown")
     return
 
 #---------------------------
@@ -270,12 +270,14 @@ def Parse(parseString, userid, username, targetid, targetname, message):
 #---------------------------
 def Unload():
     Parent.Log(ScriptName, "Unload")
-    try:
-        Parent.Log(ScriptName, "Kill mohttpd Process")
-        os.spawnl(os.P_WAIT, "taskkill", "/IM", "mohttpd.exe", "/F")
-        Parent.Log(ScriptName, "Killed mohttpd Process")
-    except Exception as e:
-        Parent.Log(ScriptName, str(e))
+    # try:
+    Parent.Log(ScriptName, "Kill mohttpd Process")
+    # os.spawnl(os.P_WAIT, "taskkill", "/IM", "mohttpd.exe", "/F")
+    stop = ProcessManager.Stop("mohttpd")
+    Parent.Log(ScriptName, stop)
+    Parent.Log(ScriptName, "Killed mohttpd Process")
+    # except Exception as e:
+    #     Parent.Log(ScriptName, str(e))
 
     if ClipWatcher is not None:
         ClipWatcher.ClipReady -= OnClipReady

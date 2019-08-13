@@ -27,6 +27,7 @@
 			this.start = new System.Windows.Forms.Button();
 			this.pause = new System.Windows.Forms.Button();
 			this.stop = new System.Windows.Forms.Button();
+			this.killmohttpd = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// trigger
@@ -69,19 +70,30 @@
 			this.stop.UseVisualStyleBackColor = true;
 			this.stop.Click += new System.EventHandler(this.stop_Click);
 			// 
+			// killmohttpd
+			// 
+			this.killmohttpd.Location = new System.Drawing.Point(12, 176);
+			this.killmohttpd.Name = "killmohttpd";
+			this.killmohttpd.Size = new System.Drawing.Size(96, 23);
+			this.killmohttpd.TabIndex = 5;
+			this.killmohttpd.Text = "Kill MOHttpd";
+			this.killmohttpd.UseVisualStyleBackColor = true;
+			this.killmohttpd.Click += new System.EventHandler(this.Killmohttpd_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(120, 179);
+			this.ClientSize = new System.Drawing.Size(120, 211);
+			this.Controls.Add(this.killmohttpd);
 			this.Controls.Add(this.stop);
 			this.Controls.Add(this.pause);
 			this.Controls.Add(this.start);
 			this.Controls.Add(this.trigger);
 			this.MaximizeBox = false;
-			this.MaximumSize = new System.Drawing.Size(136, 218);
+			this.MaximumSize = new System.Drawing.Size(136, 250);
 			this.MinimizeBox = false;
-			this.MinimumSize = new System.Drawing.Size(136, 218);
+			this.MinimumSize = new System.Drawing.Size(136, 250);
 			this.Name = "Form1";
 			this.Text = "Form1";
 			this.ResumeLayout(false);
@@ -93,6 +105,7 @@
 		private System.Windows.Forms.Button start;
 		private System.Windows.Forms.Button pause;
 		private System.Windows.Forms.Button stop;
+		private System.Windows.Forms.Button killmohttpd;
 	}
 }
 
