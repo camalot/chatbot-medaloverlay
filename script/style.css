@@ -13,6 +13,32 @@ body, html {
 	overflow: hidden;
 }
 
+body.bad-config {
+
+}
+
+.config-messages {
+	bottom: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+	position: absolute;
+	background-color: red;
+	color: white;
+	font-size: 4vh;
+	font-weight: bold;
+	text-align: left;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 10px;
+}
+.config-messages header {
+	text-align: center;
+	margin: 2vh 0 5vh 0;
+}
+.config-messages div.group {
+	margin: 0 0 5vh 0;
+}
+
 #video-container {
     position:absolute;
     top: 0;

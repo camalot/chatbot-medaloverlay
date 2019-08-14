@@ -1,22 +1,51 @@
 <!DOCTYPE html>
 <html>
-	<head lang="en">
-			<meta charset="UTF-8">
-			<title>Alert Overlay</title>
-			<link rel="stylesheet" type="text/css" href="style.css" />
-			<link rel="stylesheet" type="text/css" href="https://daneden.github.io/animate.css/animate.min.css" />
-			<script src="API_Key.js"></script>
-			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-			<script src="settings.js"></script>
-			<script src="client.js"></script>
-			<script type="text/javascript" script-name="bangers" src="http://use.edgefonts.net/bangers.js"></script>
 
-	</head>
-	<body>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>Alert Overlay</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<link rel="stylesheet" type="text/css" href="https://daneden.github.io/animate.css/animate.min.css" />
+	<script src="API_Key.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="settings.js"></script>
+	<script src="client.js"></script>
+	<script type="text/javascript" script-name="bangers" src="http://use.edgefonts.net/bangers.js"></script>
 
-		<div class="video-container" id="video-container">
-			<video></video>
+</head>
+
+<body>
+	<div class="config-messages hidden">
+		<header class="group">Medal Overlay</header>
+		<div class="api-key group hidden">
+			<div>No API Key found or load!</div>
+			<div>Right click on the script in ChatBot and select <code>Insert API Key</code></div>
 		</div>
 
-	</body>
+		<div class="medal-username group hidden">
+			<div>Medal Username not set.</div>
+			<div>Please set <code>Medal -> Medal Username</code> in the script settings.</div>
+		</div>
+
+		<div class="medal-video-path group hidden">
+			<div>Medal Video Path not set or doesn't exist.</div>
+			<div>Please set <code>Medal -> Medal Video Path</code> in the script settings.</div>
+		</div>
+
+		<div class="medal-hotkey group hidden">
+			<div>Medal HotKey not set or doesn't exist.</div>
+			<div>Please set <code>Medal -> Medal HotKey</code> in the script settings.</div>
+		</div>
+	</div>
+
+	<div class="progress-container">
+		<div class="progress-bar"></div>
+	</div>
+
+	<div class="video-container" id="video-container">
+		<video></video>
+	</div>
+
+</body>
+
 </html>

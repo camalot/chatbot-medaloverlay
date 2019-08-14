@@ -12,7 +12,6 @@ import datetime
 import glob
 import time
 import threading
-import signal
 
 import SimpleHTTPServer
 import SocketServer
@@ -324,3 +323,5 @@ def OpenSendKeys():
 def OpenMedalInvite():
     os.startfile("https://medal.tv/invite/DarthMinos")
     return
+def OpenOverlayPreview():
+    os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "Overlay.html")))

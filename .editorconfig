@@ -9,7 +9,7 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 indent_size = 2
 
-[*.ps1]
+[*.{json, js, css, html}]
 indent_style = tab
 
 [*.{yaml,yml}]
