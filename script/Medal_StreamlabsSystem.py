@@ -87,23 +87,13 @@ class Settings(object):
                 self.__dict__.update(fileSettings)
 
         except Exception as e:
-            Parent.Log(ScriptName, e)
+            Parent.Log(ScriptName, str(e))
 
     def Reload(self, jsonData):
         """ Reload settings from the user interface by given json data. """
-        self.__dict__ = json.loads(jsonData, encoding="utf-8")
-
-class Aliases(object):
-    def __init__(self, source=None):
-        try:
-            with codecs.open(source, encoding="utf-8-sig", mode="r") as f:
-                self.__dict__ = json.load(f, encoding="utf-8")
-        except:
-            Parent.Log(ScriptName, "Error loading `" + source + "` file")
-
-    def Reload(self, jsonData):
-        """ Reload settings from the user interface by given json data. """
-        self.__dict__ = json.loads(jsonData, encoding="utf-8")
+        Parent.Log(ScriptName, "Reload Settings")
+        fileLoadedSettings = json.loads(jsonData, encoding="utf-8")
+        self.__dict__.update(fileLoadedSettings)
 
 #---------------------------------------
 #   Functions
@@ -121,6 +111,15 @@ def StartHttpd(webdir, port):
     Parent.Log(ScriptName, tool + " \"" + webdir + "\" " + str(port) + " 127.0.0.1")
     os.spawnl(os.P_NOWAITO, tool,tool, webdir, str(port), "127.0.0.1")
     return
+
+def PlayVideoById(videoId):
+    # Broadcast WebSocket Event
+    payload = {
+        "port": ScriptSettings.WebPort,
+        "video": str(videoId) + ".mp4"
+    }
+    Parent.Log(ScriptName, "EVENT_MEDAL_PLAY: " + json.dumps(payload))
+    Parent.BroadcastWsEvent("EVENT_MEDAL_PLAY", json.dumps(payload))
 
 #---------------------------------------
 # Event Handler for ClipWatcher.ClipReady
@@ -144,13 +143,7 @@ def OnClipReady(sender, eventArgs):
         Parent.SendTwitchMessage(triggerUser + ", clip processing completed. Video will play shortly.")
         Parent.Log(ScriptName, "Event: ClipReady: " + eventArgs.ClipId)
 
-        # Broadcast WebSocket Event
-        payload = {
-            "port": ScriptSettings.WebPort,
-            "video": str(eventArgs.ClipId) + ".mp4"
-        }
-        Parent.Log(ScriptName, "EVENT_MEDAL_PLAY: " + json.dumps(payload))
-        Parent.BroadcastWsEvent("EVENT_MEDAL_PLAY", json.dumps(payload))
+        PlayVideoById(eventArgs.ClipId)
 
         CurrentClipId = None
         LastClipTriggerUser = None
@@ -374,3 +367,8 @@ def OpenMedalInvite():
     return
 def OpenOverlayPreview():
     os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "Overlay.html")))
+def SendTestPlayEvent():
+    randomVideo = random.choice(glob.glob(ScriptSettings.VideoPath + "/*.mp4"))
+    if randomVideo is not None:
+        videoId = os.path.splitext(os.path.basename(randomVideo))[0]
+        PlayVideoById(videoId)

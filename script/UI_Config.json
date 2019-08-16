@@ -276,7 +276,18 @@
 		"tooltip": "Open overlay in browser to test",
 		"function": "OpenOverlayPreview",
 		"wsevent": "EVENT_NONE",
+		"group": "Testing"
 	},
+	"SendTestPlayEvent": {
+		"type": "button",
+		"label": "Send Play Video Test",
+		"tooltip": "Play an existing clip (randomly). You must have at least 1 clip",
+		"function": "SendTestPlayEvent",
+		"wsevent": "EVENT_NONE",
+		"group": "Testing"
+	},
+
+
 	"OpenMedalInvite": {
 		"type": "button",
 		"label": "Get Medal",

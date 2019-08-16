@@ -3,6 +3,23 @@ let isClipPlaying = false;
 
 // Start ws connection after document is loaded
 jQuery(document).ready(function () {
+
+	// verify settings...
+	let validatedSettings = validateSettings();
+
+	// Connect if API_Key is inserted
+	// Else show an error on the overlay
+	if (!validatedSettings.isValid) {
+		$(".config-messages").removeClass("hidden");
+		$(".config-messages .settings").removeClass(validatedSettings.hasSettings ? "valid" : "hidden");
+		$(".config-messages .api-key").removeClass(validatedSettings.hasApiKey ? "valid" : "hidden");
+		$(".config-messages .medal-username").removeClass(validatedSettings.hasUsername ? "valid" : "hidden");
+		$(".config-messages .medal-video-path").removeClass(validatedSettings.hasVideoPath ? "valid" : "hidden");
+		$(".config-messages .medal-hotkey").removeClass(validatedSettings.hasHotkey ? "valid" : "hidden");
+
+		return;
+	}
+
 	let positionHorizontalClass = (settings.PositionHorizontal.toLowerCase() || "right");
 	let positionVerticalClass = (settings.PositionVertical.toLowerCase() || "middle");
 
@@ -41,31 +58,21 @@ jQuery(document).ready(function () {
 		.css("min-width", `${vwidth}px`);
 
 
-	// verify settings...
-	let validatedSettings = validateSettings();
+	connectWebsocket();
 
-	// Connect if API_Key is inserted
-	// Else show an error on the overlay
-	if (!validatedSettings.isValid) {
-		$(".config-messages").removeClass("hidden");
-		$(".config-messages .api-key").removeClass(validatedSettings.hasApiKey ? "valid" : "hidden");
-		$(".config-messages .medal-username").removeClass(validatedSettings.hasUsername ? "valid" : "hidden");
-		$(".config-messages .medal-video-path").removeClass(validatedSettings.hasVideoPath ? "valid" : "hidden");
-		$(".config-messages .medal-hotkey").removeClass(validatedSettings.hasHotkey ? "valid" : "hidden");
-	} else {
-		connectWebsocket();
-	}
 
 });
 
 function validateSettings() {
 	let hasApiKey = typeof API_Key !== "undefined";
-	let hasVideoPath = settings.VideoPath !== "";
-	let hasUsername = settings.Username !== "";
-	let hasHotkey = settings.HotKey !== "";
+	let hasSettings = typeof settings !== "undefined";
+	let hasVideoPath = hasSettings && settings.VideoPath !== "";
+	let hasUsername = hasSettings && settings.Username !== "";
+	let hasHotkey = hasSettings && settings.HotKey !== "";
 
 	return {
-		isValid: hasApiKey && hasHotkey && hasUsername && hasVideoPath,
+		isValid: hasApiKey && hasHotkey && hasUsername && hasVideoPath && hasSettings,
+		hasSettings: hasSettings,
 		hasApiKey: hasApiKey,
 		hasHotkey: hasHotkey,
 		hasUsername: hasUsername,
