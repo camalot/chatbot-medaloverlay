@@ -52,7 +52,7 @@ Click on the script in the list to bring up the configuration.
 
 ### MEDAL SETTINGS  
 
-[![](https://i.imgur.com/dGo9JEAl.png)](https://i.imgur.com/dGo9JEA.png)  
+[![](https://i.imgur.com/N1MVzWel.png)](https://i.imgur.com/N1MVzWe.png)  
 
 
 | ITEM | DESCRIPTION | DEFAULT | 
