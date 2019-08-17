@@ -102,6 +102,17 @@ Click on the script in the list to bring up the configuration.
 
 > **NOTE:** Changes this will require you to refresh the cache of the browser source in your broadcast software
 
+### PlayBack
+[![](https://i.imgur.com/VcsPgRhl.png)](https://i.imgur.com/VcsPgRh.png)  
+
+| ITEM | DESCRIPTION | 
+| ---- | ----------- | 
+| `OPEN OVERLAY IN BROWSER` | Opens the Overlay page in browser for testing | 
+| `PLAY MOST RECENT VIDEO` | Plays the most recent video | 
+| `PLAY RANDOM VIDEO` | Plays a random video | 
+
+
+
 ### INFORMATION  
 
 [![](https://i.imgur.com/UYRuqdbl.png)](https://i.imgur.com/UYRuqdb.png)  
