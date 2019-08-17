@@ -25,35 +25,41 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent ( ) {
-			this.label1 = new System.Windows.Forms.Label();
+			this.statusLabel = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
-			// label1
+			// statusLabel
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label1.Location = new System.Drawing.Point(13, 13);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(72, 20);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "[Status]";
+			this.statusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.statusLabel.Location = new System.Drawing.Point(12, 9);
+			this.statusLabel.Name = "statusLabel";
+			this.statusLabel.Size = new System.Drawing.Size(527, 20);
+			this.statusLabel.TabIndex = 0;
+			this.statusLabel.Text = "[Status]";
+			this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(553, 176);
-			this.Controls.Add(this.label1);
+			this.ClientSize = new System.Drawing.Size(551, 174);
+			this.Controls.Add(this.statusLabel);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "MainForm";
+			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Medal Overlay Updater";
+			this.TopMost = true;
+			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label statusLabel;
 	}
 }
 

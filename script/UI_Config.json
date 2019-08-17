@@ -14,6 +14,37 @@
 		"tooltip": "If enabled, videos triggered from pressing the hotkey will now playback on stream.",
 		"group": "General"
 	},
+
+	"RequiredTriggerCount": {
+		"type": "slider",
+		"label": "Required Commands to Trigger",
+		"value": 1,
+		"min": 1,
+		"max": 100,
+		"ticks": 1,
+		"tooltip": "Number of commands required to trigger the clip",
+		"group": "General"
+	},
+	"TriggerCooldown": {
+		"type": "slider",
+		"label": "Trigger Cooldown (seconds)",
+		"value": 30,
+		"min": 1,
+		"max": 120,
+		"ticks": 1,
+		"tooltip": "The time frame in which commands count to trigger a clip",
+		"group": "General"
+	},
+	"Cooldown": {
+		"type": "slider",
+		"label": "Cooldown (seconds)",
+		"value": 60,
+		"min": 1,
+		"max": 600,
+		"ticks": 1,
+		"tooltip": "Cooldown in seconds after triggered.",
+		"group": "General"
+	},
 	"Permission": {
 		"type": "dropdown",
 		"value": "Everyone",
@@ -27,13 +58,14 @@
 		"tooltip": "Set the permission level for the command",
 		"group": "General"
 	},
-	"Cooldown": {
+	"VideoWidth": {
 		"type": "numberbox",
-		"label": "Cooldown (seconds)",
-		"value": "60",
-		"tooltip": "Cooldown in seconds",
+		"label": "Video Width (pixels)",
+		"value": 320,
+		"tooltip": "Video Width (pixels) Scaled automatically.",
 		"group": "General"
 	},
+
 	"Username": {
 		"type": "textbox",
 		"label": "Medal Username",
@@ -51,7 +83,7 @@
 	"VideoPath": {
 		"type": "textbox",
 		"label": "Medal Video Path",
-		"value": "videos/",
+		"value": "",
 		"tooltip": "The path to your medal video files",
 		"group": "Medal"
 	},
@@ -62,13 +94,7 @@
 		"tooltip": "The port used by tinyweb. Used for the overlay to request the clips.",
 		"group": "Advanced"
 	},
-	"VideoWidth": {
-		"type": "numberbox",
-		"label": "Video Width (pixels)",
-		"value": 320,
-		"tooltip": "Video Width (pixels) Scaled automatically.",
-		"group": "General"
-	},
+
 	"UsePositionVertical": {
 		"type": "checkbox",
 		"value": true,
@@ -137,8 +163,9 @@
 	},
 	"InTransition": {
 		"type": "dropdown",
-		"value": "SlideRight",
+		"value": "slideInRight",
 		"items": [
+			"none",
 			"bounce",
 			"flash",
 			"pulse",
@@ -190,8 +217,9 @@
 	},
 	"OutTransition": {
 		"type": "dropdown",
-		"value": "bounce",
+		"value": "slideOutLeft",
 		"items": [
+			"none",
 			"bounce",
 			"flash",
 			"pulse",
@@ -241,19 +269,30 @@
 		"tooltip": "Set how the alert transitions out",
 		"group": "Transition"
 	},
-	"MaxInitWait": {
-		"type": "numberbox",
-		"label": "Clip Start Wait (seconds)",
-		"value": "2",
-		"tooltip": "The number of seconds to wait for Medal to start creating the clip",
-		"group": "General"
+
+	"OpenOverlayPreview": {
+		"type": "button",
+		"label": "Open Overlay In Browser",
+		"tooltip": "Open overlay in browser to test",
+		"function": "OpenOverlayPreview",
+		"wsevent": "EVENT_NONE",
+		"group": "PlayBack"
 	},
-	"MaxFinishWait": {
-		"type": "numberbox",
-		"label": "Clip Complete Wait (seconds)",
-		"value": "120",
-		"tooltip": "The number of seconds to wait for Medal to finish processing the clip",
-		"group": "General"
+	"PlayMostRecent": {
+		"type": "button",
+		"label": "Play Most Recent Video",
+		"tooltip": "Play most recent video clip.",
+		"function": "PlayMostRecent",
+		"wsevent": "EVENT_NONE",
+		"group": "PlayBack"
+	},
+	"PlayRandomVideo": {
+		"type": "button",
+		"label": "Play Random Video",
+		"tooltip": "Play an existing clip (randomly). You must have at least 1 clip",
+		"function": "PlayRandomVideo",
+		"wsevent": "EVENT_NONE",
+		"group": "PlayBack"
 	},
 	"OpenMedalInvite": {
 		"type": "button",

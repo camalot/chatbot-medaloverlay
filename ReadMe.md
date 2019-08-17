@@ -38,28 +38,28 @@ Click on the script in the list to bring up the configuration.
 
 ### GENERAL SETTINGS  
 
-[![](https://i.imgur.com/GulznHXl.png)](https://i.imgur.com/GulznHX.png)  
+[![](https://i.imgur.com/cR7ZnKjl.png)](https://i.imgur.com/cR7ZnKj.png)  
 
 | ITEM | DESCRIPTION | DEFAULT | 
 | ---- | ----------- | ------- | 
 | `Clip Command` | The command to trigger the clip creation | `!clip` |
 | `Only Trigger off the Command` | If checked, only clips triggered by chat will show up in the overlay. | `False` |  
-| `Permission Level` | The permission level required to trigger the command | `Everyone` |
+| `Required Commands to Trigger` | The number of people required to say the command in chat to trigger the clip. | `1` |
+| `Trigger Cooldown` | The amount of time, in seconds, that chat has to reach the required trigger count. | `60` |
 | `Cooldown` | The amount of seconds between each allowed clip creation | `60` |
+| `Permission Level` | The permission level required to trigger the command | `Everyone` |
 | `Video Width` | The width of the video. Height will scale automatically | `320` | 
-| `Clip Start Wait` | The amount of time (in seconds) that the bot will wait for Medal to start creating the clip | `2` | 
-| `Clip Complete Wait` | The amount of time (in seconds) that the bot will wait for Medal to complete the creation of the clip | `120` | 
 
 ### MEDAL SETTINGS  
 
-[![](https://i.imgur.com/dGo9JEAl.png)](https://i.imgur.com/dGo9JEA.png)  
+[![](https://i.imgur.com/N1MVzWel.png)](https://i.imgur.com/N1MVzWe.png)  
 
 
 | ITEM | DESCRIPTION | DEFAULT | 
 | ---- | ----------- | ------- | 
 | `Username` | Your Medal Username | `""` | 
 | `HotKey` | Your Medal HotKey in [SendKeys Format](SendKeys.md) | `{F8}` | 
-| `Videos Path` | The path to your Medal Videos | `videos/` | 
+| `Videos Path` | The path to your Medal Videos | `` | 
 
 > **NOTE:** Changes this will require you to refresh the cache of the browser source in your broadcast software
 
@@ -101,6 +101,17 @@ Click on the script in the list to bring up the configuration.
 | `OUT` | The video exit transition when the video ends | `slideOutDown` | 
 
 > **NOTE:** Changes this will require you to refresh the cache of the browser source in your broadcast software
+
+### PlayBack
+[![](https://i.imgur.com/VcsPgRhl.png)](https://i.imgur.com/VcsPgRh.png)  
+
+| ITEM | DESCRIPTION | 
+| ---- | ----------- | 
+| `OPEN OVERLAY IN BROWSER` | Opens the Overlay page in browser for testing | 
+| `PLAY MOST RECENT VIDEO` | Plays the most recent video | 
+| `PLAY RANDOM VIDEO` | Plays a random video | 
+
+
 
 ### INFORMATION  
 

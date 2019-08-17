@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -59,6 +59,24 @@ namespace Test {
 
 		private void stop_Click ( object sender, EventArgs e ) {
 			watcher.Stop ( );
+		}
+
+		private void Killmohttpd_Click ( object sender, EventArgs e ) {
+			new MedalRunner.Process ( ).Stop ( "mohttpd" );
+		}
+
+		private async void UpdateCheck_Click ( object sender, EventArgs e ) {
+			var updater = new MedalRunner.ScriptUpdater ( );
+
+			var status = await updater.CheckUpdateStatus ( testVersion.Text );
+			if( status.HasUpdate ) {
+				Console.WriteLine ( "Has Update" );
+				Console.WriteLine ( $"User Version: {status.UserVersion}" );
+				Console.WriteLine ( $"Latest Version: {status.LatestVersion}" );
+				Console.WriteLine ( $"Download Url: {status.Asset.DownloadUrl}" );
+			} else {
+				Console.WriteLine ( "No Update Available" );
+			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +15,8 @@ namespace MedalOverlayUpdater
 		static void Main ( ) {
 			Application.EnableVisualStyles ( );
 			Application.SetCompatibleTextRenderingDefault ( false );
-			Application.Run ( new MainForm ( ) );
+			var mainForm = new MainForm();
+			Application.Run ( mainForm );
 		}
 	}
 }
