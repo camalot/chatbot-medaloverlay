@@ -12,7 +12,6 @@ import datetime
 import glob
 import time
 import threading
-import signal
 
 import SimpleHTTPServer
 import SocketServer
@@ -47,6 +46,10 @@ CurrentClipId = None
 LastClipTriggerUser = None
 ClipWatcher = None
 ProcessManager = None
+
+TriggerCooldownTime = None
+TriggerCount = 0
+TriggerList = []
 # ---------------------------------------
 #	Script Classes
 # ---------------------------------------
@@ -57,9 +60,6 @@ class Settings(object):
     def __init__(self, settingsfile=None):
         """ Load in saved settings file if available else set default values. """
         try:
-            with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
-                self.__dict__ = json.load(f, encoding="utf-8")
-        except Exception:
             self.Command = "!clip"
             self.Permission = "Everyone"
             self.VideoPath = ""
@@ -79,22 +79,21 @@ class Settings(object):
             self.UsePositionHorizontal = True
             self.WebPort = 9191
             self.OnlyTriggerOffCommand = False
+            self.TriggerCooldown = 60
+            self.RequiredTriggerCount = 1
+
+            with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
+                fileSettings = json.load(f, encoding="utf-8")
+                self.__dict__.update(fileSettings)
+
+        except Exception as e:
+            Parent.Log(ScriptName, str(e))
 
     def Reload(self, jsonData):
         """ Reload settings from the user interface by given json data. """
-        self.__dict__ = json.loads(jsonData, encoding="utf-8")
-
-class Aliases(object):
-    def __init__(self, source=None):
-        try:
-            with codecs.open(source, encoding="utf-8-sig", mode="r") as f:
-                self.__dict__ = json.load(f, encoding="utf-8")
-        except:
-            Parent.Log(ScriptName, "Error loading `" + source + "` file")
-
-    def Reload(self, jsonData):
-        """ Reload settings from the user interface by given json data. """
-        self.__dict__ = json.loads(jsonData, encoding="utf-8")
+        Parent.Log(ScriptName, "Reload Settings")
+        fileLoadedSettings = json.loads(jsonData, encoding="utf-8")
+        self.__dict__.update(fileLoadedSettings)
 
 #---------------------------------------
 #   Functions
@@ -113,6 +112,15 @@ def StartHttpd(webdir, port):
     os.spawnl(os.P_NOWAITO, tool,tool, webdir, str(port), "127.0.0.1")
     return
 
+def PlayVideoById(videoId):
+    # Broadcast WebSocket Event
+    payload = {
+        "port": ScriptSettings.WebPort,
+        "video": str(videoId) + ".mp4"
+    }
+    Parent.Log(ScriptName, "EVENT_MEDAL_PLAY: " + json.dumps(payload))
+    Parent.BroadcastWsEvent("EVENT_MEDAL_PLAY", json.dumps(payload))
+
 #---------------------------------------
 # Event Handler for ClipWatcher.ClipReady
 #---------------------------------------
@@ -128,7 +136,6 @@ def OnClipReady(sender, eventArgs):
             # This clip is not one we expected.
             return
 
-
         triggerUser = Parent.GetChannelName()
         if LastClipTriggerUser is not None:
             triggerUser = LastClipTriggerUser
@@ -136,13 +143,7 @@ def OnClipReady(sender, eventArgs):
         Parent.SendTwitchMessage(triggerUser + ", clip processing completed. Video will play shortly.")
         Parent.Log(ScriptName, "Event: ClipReady: " + eventArgs.ClipId)
 
-        # Broadcast WebSocket Event
-        payload = {
-            "port": ScriptSettings.WebPort,
-            "video": str(eventArgs.ClipId) + ".mp4"
-        }
-        Parent.Log(ScriptName, "EVENT_MEDAL_PLAY: " + json.dumps(payload))
-        Parent.BroadcastWsEvent("EVENT_MEDAL_PLAY", json.dumps(payload))
+        PlayVideoById(eventArgs.ClipId)
 
         CurrentClipId = None
         LastClipTriggerUser = None
@@ -155,6 +156,9 @@ def OnClipReady(sender, eventArgs):
 #---------------------------------------
 def OnClipStarted(sender, eventArgs):
     global CurrentClipId
+    global TriggerCooldownTime
+    global TriggerCount
+
     if(ScriptSettings.OnlyTriggerOffCommand and CurrentClipId is None):
         return
 
@@ -162,6 +166,8 @@ def OnClipStarted(sender, eventArgs):
         # This clip already triggered.
         return
 
+    TriggerCooldownTime = None
+    TriggerCount = 0
     CurrentClipId = eventArgs.ClipId
     triggerUser = Parent.GetChannelName()
     if LastClipTriggerUser is not None:
@@ -235,6 +241,10 @@ def Init():
 def Execute(data):
     global CurrentClipId
     global LastClipTriggerUser
+    global TriggerCooldownTime
+    global TriggerCount
+    global TriggerList
+
     if data.IsChatMessage():
         commandTrigger = data.GetParam(0).lower()
         if not Parent.IsOnCooldown(ScriptName, commandTrigger):
@@ -248,12 +258,34 @@ def Execute(data):
                 Parent.SendTwitchMessage("Medal Overlay is a StreamLabs Chatbot Script developed by DarthMinos: https://twitch.tv/darthminos To Download or find out more visit https://github.com/camalot/chatbot-medaloverlay")
             elif commandTrigger == ScriptSettings.Command:
                 if Parent.HasPermission(data.User, ScriptSettings.Permission, ""):
-                    Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
-                    # Get the time stamp format that is used of the file name.
-                    LastClipTriggerUser = data.User
-                    CurrentClipId = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-                    Parent.Log(ScriptName, "Sending HotKey: " + ScriptSettings.HotKey)
-                    MedalRunner.Keys.SendKeys(ScriptSettings.HotKey)
+                    if data.User in TriggerList:
+                        Parent.Log(ScriptName, "User already triggered the command. Skipping.")
+                        return
+
+
+                    TriggerList.append(data.User)
+                    TriggerCount += 1
+                    # only add normal cooldown if TriggerCount >= RequiredTriggerCount
+                    if TriggerCount >= ScriptSettings.RequiredTriggerCount:
+                        Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
+                        # Get the time stamp format that is used of the file name.
+                        LastClipTriggerUser = data.User
+                        CurrentClipId = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+                        Parent.Log(ScriptName, "Sending HotKey: " + ScriptSettings.HotKey)
+                        MedalRunner.Keys.SendKeys(ScriptSettings.HotKey)
+                        TriggerCount = 0
+                        TriggerCooldownTime = None
+                        TriggerList = []
+                    else:
+                        triggerDiff = ScriptSettings.RequiredTriggerCount - TriggerCount
+                        if TriggerCount == 1:
+                            Parent.Log(ScriptName, "init clip trigger.")
+                            TriggerCooldownTime = datetime.datetime.now() + datetime.timedelta(seconds=ScriptSettings.TriggerCooldown)
+                            Parent.SendTwitchMessage(data.User + " has initialized a medal.tv clip. Need " + str(triggerDiff) + " more to generate the clip.")
+                        else:
+                            Parent.Log(ScriptName, "Additional trigger of clip generation.")
+                            Parent.SendTwitchMessage(data.User + " triggered a medal.tv clip. Need " + str(triggerDiff) + " more to generate the clip.")
+
     return
 
 #---------------------------
@@ -310,6 +342,15 @@ def ReloadSettings(jsonData):
 #   [Required] Tick method (Gets called during every iteration even when there is no incoming data)
 #---------------------------
 def Tick():
+    global TriggerCooldownTime
+    global TriggerCount
+    global TriggerList
+    if TriggerCooldownTime is not None and datetime.datetime.now() >= TriggerCooldownTime:
+        TriggerCooldownTime = None
+        TriggerCount = 0
+        TriggerList = []
+        Parent.Log(ScriptName, "Reset clip trigger due to cooldown exceeded")
+        Parent.SendTwitchMessage("Medal.tv clip generation did not get the required triggers of " + str(ScriptSettings.RequiredTriggerCount) + " to generate the clip.")
     return
 
 # ---------------------------------------
@@ -324,3 +365,16 @@ def OpenSendKeys():
 def OpenMedalInvite():
     os.startfile("https://medal.tv/invite/DarthMinos")
     return
+def OpenOverlayPreview():
+    os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "Overlay.html")))
+def PlayRandomVideo():
+    randomVideo = random.choice(glob.glob(ScriptSettings.VideoPath + "/*.mp4"))
+    if randomVideo is not None:
+        videoId = os.path.splitext(os.path.basename(randomVideo))[0]
+        PlayVideoById(videoId)
+def PlayMostRecent():
+    fileList = glob.glob(ScriptSettings.VideoPath + "/*.mp4")
+    if fileList is not None:
+        mostRecent = max(fileList, key=os.path.getctime)
+        videoId = os.path.splitext(os.path.basename(mostRecent))[0]
+        PlayVideoById(videoId)

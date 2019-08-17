@@ -38,19 +38,21 @@ Click on the script in the list to bring up the configuration.
 
 ### GENERAL SETTINGS  
 
-[![](https://i.imgur.com/JOfOY3cl.png)](https://i.imgur.com/JOfOY3c.png)  
+[![](https://i.imgur.com/cR7ZnKjl.png)](https://i.imgur.com/cR7ZnKj.png)  
 
 | ITEM | DESCRIPTION | DEFAULT | 
 | ---- | ----------- | ------- | 
 | `Clip Command` | The command to trigger the clip creation | `!clip` |
 | `Only Trigger off the Command` | If checked, only clips triggered by chat will show up in the overlay. | `False` |  
-| `Permission Level` | The permission level required to trigger the command | `Everyone` |
+| `Required Commands to Trigger` | The number of people required to say the command in chat to trigger the clip. | `1` |
+| `Trigger Cooldown` | The amount of time, in seconds, that chat has to reach the required trigger count. | `60` |
 | `Cooldown` | The amount of seconds between each allowed clip creation | `60` |
+| `Permission Level` | The permission level required to trigger the command | `Everyone` |
 | `Video Width` | The width of the video. Height will scale automatically | `320` | 
 
 ### MEDAL SETTINGS  
 
-[![](https://i.imgur.com/dGo9JEAl.png)](https://i.imgur.com/dGo9JEA.png)  
+[![](https://i.imgur.com/N1MVzWel.png)](https://i.imgur.com/N1MVzWe.png)  
 
 
 | ITEM | DESCRIPTION | DEFAULT | 

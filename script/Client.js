@@ -3,6 +3,23 @@ let isClipPlaying = false;
 
 // Start ws connection after document is loaded
 jQuery(document).ready(function () {
+
+	// verify settings...
+	let validatedSettings = validateSettings();
+
+	// Connect if API_Key is inserted
+	// Else show an error on the overlay
+	if (!validatedSettings.isValid) {
+		$(".config-messages").removeClass("hidden");
+		$(".config-messages .settings").removeClass(validatedSettings.hasSettings ? "valid" : "hidden");
+		$(".config-messages .api-key").removeClass(validatedSettings.hasApiKey ? "valid" : "hidden");
+		$(".config-messages .medal-username").removeClass(validatedSettings.hasUsername ? "valid" : "hidden");
+		$(".config-messages .medal-video-path").removeClass(validatedSettings.hasVideoPath ? "valid" : "hidden");
+		$(".config-messages .medal-hotkey").removeClass(validatedSettings.hasHotkey ? "valid" : "hidden");
+
+		return;
+	}
+
 	let positionHorizontalClass = (settings.PositionHorizontal.toLowerCase() || "right");
 	let positionVerticalClass = (settings.PositionVertical.toLowerCase() || "middle");
 
@@ -40,17 +57,28 @@ jQuery(document).ready(function () {
 		.css("max-width", `${vwidth}px`)
 		.css("min-width", `${vwidth}px`);
 
-	// Connect if API_Key is inserted
-	// Else show an error on the overlay
-	if (typeof API_Key === "undefined") {
-		$("body").html("No API Key found or load!<br>Right click on the script in ChatBot and select \"Insert API Key\"");
-		$("body").css({ "font-size": "20px", "color": "#ff8080", "text-align": "center" });
 
-	} else {
-		connectWebsocket();
-	}
+	connectWebsocket();
+
 
 });
+
+function validateSettings() {
+	let hasApiKey = typeof API_Key !== "undefined";
+	let hasSettings = typeof settings !== "undefined";
+	let hasVideoPath = hasSettings && settings.VideoPath !== "";
+	let hasUsername = hasSettings && settings.Username !== "";
+	let hasHotkey = hasSettings && settings.HotKey !== "";
+
+	return {
+		isValid: hasApiKey && hasHotkey && hasUsername && hasVideoPath && hasSettings,
+		hasSettings: hasSettings,
+		hasApiKey: hasApiKey,
+		hasHotkey: hasHotkey,
+		hasUsername: hasUsername,
+		hasVideoPath: hasVideoPath
+	};
+}
 
 function videoLoaded() {
 	console.log("video loaded");
