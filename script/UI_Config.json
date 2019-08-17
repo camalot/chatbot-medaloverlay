@@ -276,18 +276,24 @@
 		"tooltip": "Open overlay in browser to test",
 		"function": "OpenOverlayPreview",
 		"wsevent": "EVENT_NONE",
-		"group": "Testing"
+		"group": "PlayBack"
 	},
-	"SendTestPlayEvent": {
+	"PlayMostRecent": {
 		"type": "button",
-		"label": "Send Play Video Test",
-		"tooltip": "Play an existing clip (randomly). You must have at least 1 clip",
-		"function": "SendTestPlayEvent",
+		"label": "Play Most Recent Video",
+		"tooltip": "Play most recent video clip.",
+		"function": "PlayMostRecent",
 		"wsevent": "EVENT_NONE",
-		"group": "Testing"
+		"group": "PlayBack"
 	},
-
-
+	"PlayRandomVideo": {
+		"type": "button",
+		"label": "Play Random Video",
+		"tooltip": "Play an existing clip (randomly). You must have at least 1 clip",
+		"function": "PlayRandomVideo",
+		"wsevent": "EVENT_NONE",
+		"group": "PlayBack"
+	},
 	"OpenMedalInvite": {
 		"type": "button",
 		"label": "Get Medal",

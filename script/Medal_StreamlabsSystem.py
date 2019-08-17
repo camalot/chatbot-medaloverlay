@@ -367,8 +367,14 @@ def OpenMedalInvite():
     return
 def OpenOverlayPreview():
     os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "Overlay.html")))
-def SendTestPlayEvent():
+def PlayRandomVideo():
     randomVideo = random.choice(glob.glob(ScriptSettings.VideoPath + "/*.mp4"))
     if randomVideo is not None:
         videoId = os.path.splitext(os.path.basename(randomVideo))[0]
+        PlayVideoById(videoId)
+def PlayMostRecent():
+    fileList = glob.glob(ScriptSettings.VideoPath + "/*.mp4")
+    if fileList is not None:
+        mostRecent = max(fileList, key=os.path.getctime)
+        videoId = os.path.splitext(os.path.basename(mostRecent))[0]
         PlayVideoById(videoId)
