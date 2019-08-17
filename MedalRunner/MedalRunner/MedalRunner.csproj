@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\UnableToLoadReleaseException.cs" />
     <Compile Include="Github\Release.cs" />
     <Compile Include="Keys.cs" />
     <Compile Include="Process.cs" />

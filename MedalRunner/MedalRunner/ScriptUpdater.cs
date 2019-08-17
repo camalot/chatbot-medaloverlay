@@ -7,35 +7,53 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MedalRunner.Exceptions;
 using Newtonsoft.Json;
 using Semver;
 
 namespace MedalRunner {
 	public class ScriptUpdater {
+
+		public class Configuration {
+			[JsonProperty ( "path" )]
+			public string Path { get; set; }
+			[JsonProperty ( "version" )]
+			public string Version { get; set; }
+			[JsonProperty ( "chatbot" )]
+			public string Chatbot { get; set; }
+		}
+
 		public class UpdateStatusEventArgs {
 			public Github.UpdateCheck Status { get; set; }
 		}
 		public event EventHandler BeginUpdateCheck;
 		public event EventHandler<UpdateStatusEventArgs> EndUpdateCheck;
+		public event EventHandler<ErrorEventArgs> Error;
 
 		public ScriptUpdater ( ) {
 
 		}
 
-		public async Task<string> GetScriptVersion () {
-			var pattern = @"^Version\s+=\s+""([^""]+)""";
-			var file = "Medal_StreamlabsSystem.py";
-			var path = System.IO.Path.GetDirectoryName ( Assembly.GetExecutingAssembly ( ).Location );
+		public bool HasError { get; set; }
+
+		public Configuration GetConfiguration ( ) {
+			var path = Path.GetDirectoryName ( Assembly.GetExecutingAssembly ( ).Location );
+			var file = "chatbot.json";
 			var fullPath = Path.Combine ( path, file );
-			using(var fr = new StreamReader(fullPath)) {
-				var python = await fr.ReadToEndAsync ( );
-				var regex = new Regex ( pattern, RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.CultureInvariant |RegexOptions.IgnorePatternWhitespace );
-				var m = regex.Match ( python );
-				if(m.Success) {
-					return m.Groups[1].Value;
-				} else {
-					return "0.0.1";
+			if ( File.Exists ( fullPath ) ) {
+				using ( var fr = new StreamReader ( fullPath ) ) {
+					using ( var jr = new JsonTextReader ( fr ) ) {
+						var ser = new JsonSerializer ( );
+						return ser.Deserialize<Configuration> ( jr );
+					}
 				}
+			} else {
+				HasError = true;
+				Error?.Invoke ( this, new ErrorEventArgs ( new FileNotFoundException ( "Unable to locate required chatbot.json config file" ) ) );
+
+				return new Configuration {
+					Version = "0.0.0"
+				};
 			}
 		}
 
@@ -46,7 +64,7 @@ namespace MedalRunner {
 			var result = new Github.UpdateCheck ( ) {
 				HasUpdate = false,
 				UserVersion = userVersion,
-				LatestVersion = SemVersion.Parse("0.0.0-unknown")
+				LatestVersion = SemVersion.Parse ( "0.0.0" )
 			};
 			if ( release != null && release.Assets?.Count ( ) > 0 ) {
 				var releaseVersion = SemVersion.Parse ( release.TagName );
@@ -56,6 +74,10 @@ namespace MedalRunner {
 					UserVersion = userVersion,
 					Asset = release.Assets.First ( )
 				};
+			} else {
+				HasError = true;
+				Error?.Invoke ( this, new ErrorEventArgs ( new UnableToLoadReleaseException ( ) ) );
+				return result;
 			}
 
 			EndUpdateCheck?.Invoke ( this, new UpdateStatusEventArgs ( ) { Status = result } );

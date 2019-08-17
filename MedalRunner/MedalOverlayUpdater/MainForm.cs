@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MedalRunner;
 
 namespace MedalOverlayUpdater {
 	public partial class MainForm : Form {
@@ -25,10 +26,18 @@ namespace MedalOverlayUpdater {
 			Updater = new MedalRunner.ScriptUpdater ( );
 			Updater.BeginUpdateCheck += Updater_BeginUpdateCheck;
 			Updater.EndUpdateCheck += Updater_EndUpdateCheck;
-			
-			this.Version = "1.0.0";
+			Updater.Error += Updater_Error;
+			Configuration = new ScriptUpdater.Configuration {
+				Version = "0.0.0"
+			};
+
+
 			InitializeComponent ( );
 			this.statusLabel.Text = "";
+		}
+
+		private void Updater_Error ( object sender, System.IO.ErrorEventArgs e ) {
+			this.statusLabel.Text = e.GetException().Message;
 		}
 
 		private void Updater_EndUpdateCheck ( object sender, MedalRunner.ScriptUpdater.UpdateStatusEventArgs e ) {
@@ -45,11 +54,13 @@ namespace MedalOverlayUpdater {
 
 		public MedalRunner.ScriptUpdater Updater { get; set; }
 
-		public string Version { get; set; }
+		public ScriptUpdater.Configuration Configuration { get; set; }
 
 		private async void MainForm_Load ( object sender, EventArgs e ) {
-			Version = await Updater.GetScriptVersion ( );
-			await Updater.CheckUpdateStatus ( Version );
+			Configuration = Updater.GetConfiguration ( );
+			if ( !Updater.HasError ) {
+				await Updater.CheckUpdateStatus ( Configuration.Version );
+			}
 		}
 	}
 }

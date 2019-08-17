@@ -12,6 +12,8 @@ import datetime
 import glob
 import time
 import threading
+import shutil
+import tempfile
 
 import SimpleHTTPServer
 import SocketServer
@@ -365,7 +367,38 @@ def OpenMedalInvite():
     os.startfile("https://medal.tv/invite/DarthMinos")
     return
 def OpenScriptUpdater():
-    os.system("./Libs/MedalOverlayUpdater.exe " + Version)
+
+    currentDir = os.path.realpath(os.path.dirname(__file__))
+    chatbotRoot = os.path.realpath(os.path.join(currentDir, "../../../"))
+    libsDir = os.path.join(currentDir, "Libs/")
+    Parent.Log(ScriptName, libsDir)
+    try:
+        src_files = os.listdir(libsDir)
+
+        tempdir = tempfile.mkdtemp()
+        Parent.Log(ScriptName, tempdir)
+        for file_name in src_files:
+            full_file_name = os.path.join(libsDir, file_name)
+            if os.path.isfile(full_file_name) and file_name != "mohttpd.exe" and "_log" not in file_name:
+                Parent.Log(ScriptName, "Copy: " + full_file_name)
+                shutil.copy(full_file_name, tempdir)
+        updater = os.path.join(tempdir, "MedalOverlayUpdater.exe")
+        updaterConfigFile = os.path.join(tempdir, "chatbot.json")
+        updaterConfig = {
+            "path": os.path.realpath(os.path.join(currentDir,"../")),
+            "version": Version,
+            "chatbot": os.path.join(chatbotRoot, "Streamlabs Chatbot.exe")
+        }
+        Parent.Log(ScriptName, updater)
+        configJson = json.dumps(updaterConfig)
+        Parent.Log(ScriptName, configJson)
+        with open(updaterConfigFile, "w+") as f:
+            f.write(configJson)
+        os.startfile(tempdir)
+    except OSError as exc: # python >2.5
+        raise
+
+    # os.system("./Libs/MedalOverlayUpdater.exe")
 def OpenOverlayPreview():
     os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "Overlay.html")))
 def PlayRandomVideo():

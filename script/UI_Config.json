@@ -318,7 +318,7 @@
 	"UpdateMedalOverlay": {
 		"type": "button",
 		"label": "Check For Updates",
-		"tooltip": "Open SendKeys Documentation",
+		"tooltip": "Check for updates to Medal Overlay",
 		"function": "OpenScriptUpdater",
 		"wsevent": "EVENT_NONE"
 	},
