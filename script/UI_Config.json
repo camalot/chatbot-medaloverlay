@@ -321,5 +321,5 @@
 		"tooltip": "Check for updates to Medal Overlay",
 		"function": "OpenScriptUpdater",
 		"wsevent": "EVENT_NONE"
-	},
+	}
 }

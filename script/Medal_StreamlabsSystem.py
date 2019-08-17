@@ -394,7 +394,7 @@ def OpenScriptUpdater():
         Parent.Log(ScriptName, configJson)
         with open(updaterConfigFile, "w+") as f:
             f.write(configJson)
-        os.startfile(tempdir)
+        os.startfile(updater)
     except OSError as exc: # python >2.5
         raise
 

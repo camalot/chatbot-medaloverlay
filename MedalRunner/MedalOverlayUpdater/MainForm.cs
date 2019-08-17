@@ -46,6 +46,7 @@ namespace MedalOverlayUpdater {
 			} else {
 				this.statusLabel.Text = $"You are running the latest version: {e.Status.UserVersion.ToString()}";
 			}
+			updateNow.Visible = e.Status.HasUpdate;
 		}
 
 		private void Updater_BeginUpdateCheck ( object sender, EventArgs e ) {
