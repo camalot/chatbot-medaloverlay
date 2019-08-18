@@ -314,5 +314,12 @@
 		"tooltip": "Open SendKeys Documentation",
 		"function": "OpenSendKeys",
 		"wsevent": "EVENT_NONE"
+	},
+	"UpdateMedalOverlay": {
+		"type": "button",
+		"label": "Check For Updates",
+		"tooltip": "Check for updates to Medal Overlay",
+		"function": "OpenScriptUpdater",
+		"wsevent": "EVENT_NONE"
 	}
 }

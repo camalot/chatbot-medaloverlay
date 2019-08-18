@@ -115,14 +115,26 @@ Click on the script in the list to bring up the configuration.
 
 ### INFORMATION  
 
-[![](https://i.imgur.com/UYRuqdbl.png)](https://i.imgur.com/UYRuqdb.png)  
+[![](https://i.imgur.com/ZLO8YDdl.png)](https://i.imgur.com/ZLO8YDd.png)  
 
 | ITEM | DESCRIPTION | 
 | ---- | ----------- | 
 | `GET MEDAL` | Opens a link to get Medal | 
 | `OPEN README` | Opens the link to this document | 
 | `OPEN SENDKEYS DOCS` | Opens the link to the [SendKeys](SendKeys.md) documentation | 
+| `CHECK FOR UPDATES` | Will Check if there are updates to the Medal Overlay Script. See below for more info. | 
 | `SAVE SETTINGS` | Save any changes to the Medal Overlay settings | 
+
+
+## MEDAL OVERLAY UPDATER
+
+> **NOTE:** You must launch from within Streamlabs Chatbot. 
+
+The application will open, and if there is an update it will tell you. You click on the `Download & Update` button. 
+
+> **NOTE:** Applying the update will close down Streamlabs Chatbot. It will reopen after the update is complete.
+
+[![](https://i.imgur.com/YKIGYDul.png)](https://i.imgur.com/YKIGYDu.png)
 
 ## OBS / SLOBS  
 
