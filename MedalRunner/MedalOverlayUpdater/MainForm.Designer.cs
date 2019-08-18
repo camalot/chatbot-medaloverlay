@@ -28,7 +28,8 @@
 			this.statusLabel = new System.Windows.Forms.Label();
 			this.cancel = new System.Windows.Forms.Button();
 			this.updateNow = new System.Windows.Forms.Button();
-			this.progressBar1 = new System.Windows.Forms.ProgressBar();
+			this.progress = new System.Windows.Forms.ProgressBar();
+			this.progressLabel = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// statusLabel
@@ -51,9 +52,11 @@
 			this.cancel.TabIndex = 1;
 			this.cancel.Text = "&Close";
 			this.cancel.UseVisualStyleBackColor = true;
+			this.cancel.Click += new System.EventHandler(this.Cancel_Click);
 			// 
 			// updateNow
 			// 
+			this.updateNow.Enabled = false;
 			this.updateNow.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.updateNow.Location = new System.Drawing.Point(12, 40);
 			this.updateNow.Name = "updateNow";
@@ -61,14 +64,23 @@
 			this.updateNow.TabIndex = 2;
 			this.updateNow.Text = "Download && Update";
 			this.updateNow.UseVisualStyleBackColor = true;
-			this.updateNow.Visible = false;
+			this.updateNow.Click += new System.EventHandler(this.UpdateNow_Click);
 			// 
-			// progressBar1
+			// progress
 			// 
-			this.progressBar1.Location = new System.Drawing.Point(12, 93);
-			this.progressBar1.Name = "progressBar1";
-			this.progressBar1.Size = new System.Drawing.Size(527, 23);
-			this.progressBar1.TabIndex = 3;
+			this.progress.Location = new System.Drawing.Point(12, 109);
+			this.progress.Name = "progress";
+			this.progress.Size = new System.Drawing.Size(527, 23);
+			this.progress.Step = 1;
+			this.progress.TabIndex = 3;
+			// 
+			// progressLabel
+			// 
+			this.progressLabel.AutoEllipsis = true;
+			this.progressLabel.Location = new System.Drawing.Point(13, 80);
+			this.progressLabel.Name = "progressLabel";
+			this.progressLabel.Size = new System.Drawing.Size(526, 26);
+			this.progressLabel.TabIndex = 4;
 			// 
 			// MainForm
 			// 
@@ -76,7 +88,8 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.cancel;
 			this.ClientSize = new System.Drawing.Size(551, 198);
-			this.Controls.Add(this.progressBar1);
+			this.Controls.Add(this.progressLabel);
+			this.Controls.Add(this.progress);
 			this.Controls.Add(this.updateNow);
 			this.Controls.Add(this.cancel);
 			this.Controls.Add(this.statusLabel);
@@ -98,7 +111,8 @@
 		private System.Windows.Forms.Label statusLabel;
 		private System.Windows.Forms.Button cancel;
 		private System.Windows.Forms.Button updateNow;
-		private System.Windows.Forms.ProgressBar progressBar1;
+		private System.Windows.Forms.ProgressBar progress;
+		private System.Windows.Forms.Label progressLabel;
 	}
 }
 

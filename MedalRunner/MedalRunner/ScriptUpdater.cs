@@ -85,6 +85,8 @@ namespace MedalRunner {
 
 		}
 
+		
+
 		private async Task<Github.Release> GetLatestRelease ( ) {
 			var api = "https://api.github.com/repos/camalot/chatbot-medaloverlay/releases/latest";
 
@@ -101,5 +103,7 @@ namespace MedalRunner {
 				}
 			}
 		}
+
+
 	}
 }
