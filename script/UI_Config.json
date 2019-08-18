@@ -11,7 +11,7 @@
 		"type": "checkbox",
 		"label": "Only Trigger off the Command",
 		"value": false,
-		"tooltip": "If enabled, videos triggered from pressing the hotkey will now playback on stream.",
+		"tooltip": "If enabled, videos triggered from pressing the hotkey will not playback on stream.",
 		"group": "General"
 	},
 
