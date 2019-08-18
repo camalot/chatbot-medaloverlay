@@ -115,10 +115,9 @@ namespace MedalOverlayUpdater {
 			var path = Path.GetDirectoryName ( Assembly.GetExecutingAssembly ( ).Location );
 			var local = Path.Combine ( path, UpdateStatus.Asset.Name );
 			// the path is the path of Medal Overlay. This gets the parent.
-			var medalOverlayScriptPath = new DirectoryInfo ( Configuration.Path
+			var slcScriptsPath = new DirectoryInfo ( Configuration.Path
 				/*@"D:\Development\projects\github\chatbot-medal\MedalRunner\MedalOverlayUpdater\bin\Debug\Scripts\MedalOverlay"*/
 			);
-			var slcScriptsPath = medalOverlayScriptPath.Parent;
 			if ( File.Exists ( local ) ) {
 				if ( slcScriptsPath.Exists ) {
 					var dest = slcScriptsPath.FullName;
