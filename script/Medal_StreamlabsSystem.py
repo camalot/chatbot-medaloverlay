@@ -303,14 +303,10 @@ def Parse(parseString, userid, username, targetid, targetname, message):
 #---------------------------
 def Unload():
     Parent.Log(ScriptName, "Unload")
-    # try:
     Parent.Log(ScriptName, "Kill mohttpd Process")
-    # os.spawnl(os.P_WAIT, "taskkill", "/IM", "mohttpd.exe", "/F")
     stop = ProcessManager.Stop("mohttpd")
     Parent.Log(ScriptName, stop)
     Parent.Log(ScriptName, "Killed mohttpd Process")
-    # except Exception as e:
-    #     Parent.Log(ScriptName, str(e))
 
     if ClipWatcher is not None:
         ClipWatcher.ClipReady -= OnClipReady
@@ -327,16 +323,20 @@ def Unload():
 #   [Optional] ScriptToggled (Notifies you when a user disables your script or enables it)
 #---------------------------
 def ScriptToggled(state):
+    if state:
+        Init()
+    else:
+        Unload()
     return
 
 # ---------------------------------------
 # [Optional] Reload Settings (Called when a user clicks the Save Settings button in the Chatbot UI)
 # ---------------------------------------
-def ReloadSettings(jsonData):
-    """ Set newly saved data from UI after user saved settings. """
+def ReloadSettings(jsondata):
     Parent.Log(ScriptName, "Reload Settings")
     # Reload saved settings and validate values
-    ScriptSettings.Reload(jsonData)
+    Unload()
+    Init()
     return
 
 #---------------------------
@@ -367,7 +367,6 @@ def OpenMedalInvite():
     os.startfile("https://medal.tv/invite/DarthMinos")
     return
 def OpenScriptUpdater():
-
     currentDir = os.path.realpath(os.path.dirname(__file__))
     chatbotRoot = os.path.realpath(os.path.join(currentDir, "../../../"))
     libsDir = os.path.join(currentDir, "Libs/")
@@ -398,7 +397,6 @@ def OpenScriptUpdater():
     except OSError as exc: # python >2.5
         raise
 
-    # os.system("./Libs/MedalOverlayUpdater.exe")
 def OpenOverlayPreview():
     os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "Overlay.html")))
 def PlayRandomVideo():
