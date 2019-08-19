@@ -367,7 +367,6 @@ def OpenMedalInvite():
     os.startfile("https://medal.tv/invite/DarthMinos")
     return
 def OpenScriptUpdater():
-
     currentDir = os.path.realpath(os.path.dirname(__file__))
     chatbotRoot = os.path.realpath(os.path.join(currentDir, "../../../"))
     libsDir = os.path.join(currentDir, "Libs/")
@@ -398,7 +397,6 @@ def OpenScriptUpdater():
     except OSError as exc: # python >2.5
         raise
 
-    # os.system("./Libs/MedalOverlayUpdater.exe")
 def OpenOverlayPreview():
     os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "Overlay.html")))
 def PlayRandomVideo():
