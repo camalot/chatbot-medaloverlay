@@ -105,6 +105,7 @@ function videoLoaded() {
 			console.log("after entrance animation");
 			$(this).removeClass();
 		});
+	$("#video-container").removeClass("hidden");
 }
 
 function videoEnded() {
@@ -116,6 +117,8 @@ function videoEnded() {
 		.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
 			console.log("after exit animation");
 			$(this).removeClass().addClass("hidden");
+
+			$("#video-container").addClass("hidden");
 		});
 }
 
