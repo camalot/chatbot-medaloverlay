@@ -302,6 +302,7 @@ def Parse(parseString, userid, username, targetid, targetname, message):
 #   [Optional] Unload (Called when a user reloads their scripts or closes the bot / cleanup stuff)
 #---------------------------
 def Unload():
+    global ClipWatcher
     Parent.Log(ScriptName, "Unload")
     Parent.Log(ScriptName, "Kill mohttpd Process")
     stop = ProcessManager.Stop("mohttpd")
@@ -315,6 +316,7 @@ def Unload():
         ClipWatcher.MonitorStop -= OnMonitorStop
         ClipWatcher.MonitorPause -= OnMonitorPause
         ClipWatcher.Stop()
+        ClipWatcher = None
 
     # End of Unload
     return
