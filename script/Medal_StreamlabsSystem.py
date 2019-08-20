@@ -83,6 +83,7 @@ class Settings(object):
             self.OnlyTriggerOffCommand = False
             self.TriggerCooldown = 60
             self.RequiredTriggerCount = 1
+            self.NotifyChatOfClips = True
 
             with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
                 fileSettings = json.load(f, encoding="utf-8")
@@ -141,8 +142,8 @@ def OnClipReady(sender, eventArgs):
         triggerUser = Parent.GetChannelName()
         if LastClipTriggerUser is not None:
             triggerUser = LastClipTriggerUser
-
-        Parent.SendTwitchMessage(triggerUser + ", clip processing completed. Video will play shortly.")
+        if ScriptSettings.NotifyChatOfClips:
+            Parent.SendTwitchMessage(triggerUser + ", clip processing completed. Video will play shortly.")
         Parent.Log(ScriptName, "Event: ClipReady: " + eventArgs.ClipId)
 
         PlayVideoById(eventArgs.ClipId)
@@ -176,7 +177,8 @@ def OnClipStarted(sender, eventArgs):
         triggerUser = LastClipTriggerUser
     # Add a cooldown on the command since a clip is currently processing.
     Parent.AddCooldown(ScriptName, ScriptSettings.Command, ScriptSettings.Cooldown)
-    Parent.SendTwitchMessage(triggerUser + " has triggered a medal.tv clip. Clip is processing...")
+    if ScriptSettings.NotifyChatOfClips:
+        Parent.SendTwitchMessage(triggerUser + " has triggered a medal.tv clip. Clip is processing...")
     Parent.Log(ScriptName, "Event: ClipStarted: " + eventArgs.ClipId)
     return
 
@@ -263,8 +265,6 @@ def Execute(data):
                     if data.User in TriggerList:
                         Parent.Log(ScriptName, "User already triggered the command. Skipping.")
                         return
-
-
                     TriggerList.append(data.User)
                     TriggerCount += 1
                     # only add normal cooldown if TriggerCount >= RequiredTriggerCount
@@ -283,10 +283,12 @@ def Execute(data):
                         if TriggerCount == 1:
                             Parent.Log(ScriptName, "init clip trigger.")
                             TriggerCooldownTime = datetime.datetime.now() + datetime.timedelta(seconds=ScriptSettings.TriggerCooldown)
-                            Parent.SendTwitchMessage(data.User + " has initialized a medal.tv clip. Need " + str(triggerDiff) + " more to generate the clip.")
+                            if ScriptSettings.NotifyChatOfClips:
+                                Parent.SendTwitchMessage(data.User + " has initialized a medal.tv clip. Need " + str(triggerDiff) + " more to generate the clip.")
                         else:
                             Parent.Log(ScriptName, "Additional trigger of clip generation.")
-                            Parent.SendTwitchMessage(data.User + " triggered a medal.tv clip. Need " + str(triggerDiff) + " more to generate the clip.")
+                            if ScriptSettings.NotifyChatOfClips:
+                                Parent.SendTwitchMessage(data.User + " triggered a medal.tv clip. Need " + str(triggerDiff) + " more to generate the clip.")
     return
 
 #---------------------------

@@ -65,7 +65,13 @@
 		"tooltip": "Video Width (pixels) Scaled automatically.",
 		"group": "General"
 	},
-
+	"NotifyChatOfClips": {
+		"type": "checkbox",
+		"label": "Notify Chat About Clip Status",
+		"value": true,
+		"tooltip": "Put a message in chat about new clip being created and when completed",
+		"group": "General"
+	},
 	"Username": {
 		"type": "textbox",
 		"label": "Medal Username",
