@@ -69,6 +69,9 @@ jQuery(document).ready(function () {
 	}
 
 	$("#video-container video")
+		.on("error", function (e) { console.error(`Error: ${e}`); })
+		.on("canplay", function () { return videoLoaded(); })
+		.on("ended", function () { return videoEnded(); })
 		.css("max-width", `${vwidth}px`)
 		.css("min-width", `${vwidth}px`);
 
@@ -181,10 +184,7 @@ function connectWebsocket() {
 					.prop("muted", true)
 					.attr("src", webfile)
 					.empty()
-					.append(`<source src="${webfile}" type="video/mp4" />`)
-					.on("error", function(e) { console.error(`Error: ${e}`); })
-					.on("canplay", function () { return videoLoaded(); })
-					.on("ended", function () { return videoEnded(); });
+					.append(`<source src="${webfile}" type="video/mp4" />`);
 				break;
 			case "EVENT_MEDAL_VIDEO_WAIT":
 				console.log(eventName);
