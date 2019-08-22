@@ -48,6 +48,7 @@ CurrentClipId = None
 LastClipTriggerUser = None
 ClipWatcher = None
 ProcessManager = None
+Initialized = False
 
 TriggerCooldownTime = None
 TriggerCount = 0
@@ -83,6 +84,7 @@ class Settings(object):
             self.OnlyTriggerOffCommand = False
             self.TriggerCooldown = 60
             self.RequiredTriggerCount = 1
+            self.NotifyChatOfClips = True
 
             with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
                 fileSettings = json.load(f, encoding="utf-8")
@@ -141,8 +143,8 @@ def OnClipReady(sender, eventArgs):
         triggerUser = Parent.GetChannelName()
         if LastClipTriggerUser is not None:
             triggerUser = LastClipTriggerUser
-
-        Parent.SendTwitchMessage(triggerUser + ", clip processing completed. Video will play shortly.")
+        if ScriptSettings.NotifyChatOfClips:
+            Parent.SendTwitchMessage(triggerUser + ", clip processing completed. Video will play shortly.")
         Parent.Log(ScriptName, "Event: ClipReady: " + eventArgs.ClipId)
 
         PlayVideoById(eventArgs.ClipId)
@@ -176,7 +178,8 @@ def OnClipStarted(sender, eventArgs):
         triggerUser = LastClipTriggerUser
     # Add a cooldown on the command since a clip is currently processing.
     Parent.AddCooldown(ScriptName, ScriptSettings.Command, ScriptSettings.Cooldown)
-    Parent.SendTwitchMessage(triggerUser + " has triggered a medal.tv clip. Clip is processing...")
+    if ScriptSettings.NotifyChatOfClips:
+        Parent.SendTwitchMessage(triggerUser + " has triggered a medal.tv clip. Clip is processing...")
     Parent.Log(ScriptName, "Event: ClipStarted: " + eventArgs.ClipId)
     return
 
@@ -209,11 +212,17 @@ def OnMonitorPause(sender, eventArgs):
 #---------------------------
 def Init():
     """ Initialize script or startup or reload. """
-    Parent.Log(ScriptName, "Initialize")
     # Globals
     global ScriptSettings
     global ClipWatcher
     global ProcessManager
+    global Initialized
+
+    if Initialized:
+        Parent.Log(ScriptName, "Skip Initialization. Already Initialized.")
+        return
+
+    Parent.Log(ScriptName, "Initialize")
     # Load saved settings and validate values
     ScriptSettings = Settings(SettingsFile)
     if(ScriptSettings.VideoPath == ""):
@@ -235,6 +244,7 @@ def Init():
     ClipWatcher.MonitorPause += OnMonitorPause
     ClipWatcher.Start()
     StartHttpd(webDirectory, ScriptSettings.WebPort)
+    Initialized = True
     return
 
 #---------------------------
@@ -263,8 +273,6 @@ def Execute(data):
                     if data.User in TriggerList:
                         Parent.Log(ScriptName, "User already triggered the command. Skipping.")
                         return
-
-
                     TriggerList.append(data.User)
                     TriggerCount += 1
                     # only add normal cooldown if TriggerCount >= RequiredTriggerCount
@@ -283,10 +291,12 @@ def Execute(data):
                         if TriggerCount == 1:
                             Parent.Log(ScriptName, "init clip trigger.")
                             TriggerCooldownTime = datetime.datetime.now() + datetime.timedelta(seconds=ScriptSettings.TriggerCooldown)
-                            Parent.SendTwitchMessage(data.User + " has initialized a medal.tv clip. Need " + str(triggerDiff) + " more to generate the clip.")
+                            if ScriptSettings.NotifyChatOfClips:
+                                Parent.SendTwitchMessage(data.User + " has initialized a medal.tv clip. Need " + str(triggerDiff) + " more to generate the clip.")
                         else:
                             Parent.Log(ScriptName, "Additional trigger of clip generation.")
-                            Parent.SendTwitchMessage(data.User + " triggered a medal.tv clip. Need " + str(triggerDiff) + " more to generate the clip.")
+                            if ScriptSettings.NotifyChatOfClips:
+                                Parent.SendTwitchMessage(data.User + " triggered a medal.tv clip. Need " + str(triggerDiff) + " more to generate the clip.")
     return
 
 #---------------------------
@@ -302,6 +312,8 @@ def Parse(parseString, userid, username, targetid, targetname, message):
 #   [Optional] Unload (Called when a user reloads their scripts or closes the bot / cleanup stuff)
 #---------------------------
 def Unload():
+    global Initialized
+    global ClipWatcher
     Parent.Log(ScriptName, "Unload")
     Parent.Log(ScriptName, "Kill mohttpd Process")
     stop = ProcessManager.Stop("mohttpd")
@@ -309,13 +321,16 @@ def Unload():
     Parent.Log(ScriptName, "Killed mohttpd Process")
 
     if ClipWatcher is not None:
+        Parent.Log(ScriptName, "Clear ClipWatcher Events")
         ClipWatcher.ClipReady -= OnClipReady
         ClipWatcher.ClipStarted -= OnClipStarted
         ClipWatcher.MonitorStart -= OnMonitorStart
         ClipWatcher.MonitorStop -= OnMonitorStop
         ClipWatcher.MonitorPause -= OnMonitorPause
         ClipWatcher.Stop()
+        ClipWatcher = None
 
+    Initialized = False
     # End of Unload
     return
 
@@ -323,6 +338,7 @@ def Unload():
 #   [Optional] ScriptToggled (Notifies you when a user disables your script or enables it)
 #---------------------------
 def ScriptToggled(state):
+    Parent.Log(ScriptName, "State Changed: " + str(state))
     if state:
         Init()
     else:
@@ -351,7 +367,8 @@ def Tick():
         TriggerCount = 0
         TriggerList = []
         Parent.Log(ScriptName, "Reset clip trigger due to cooldown exceeded")
-        Parent.SendTwitchMessage("Medal.tv clip generation did not get the required triggers of " + str(ScriptSettings.RequiredTriggerCount) + " to generate the clip.")
+        if ScriptSettings.NotifyChatOfClips:
+            Parent.SendTwitchMessage("Medal.tv clip generation did not get the required triggers of " + str(ScriptSettings.RequiredTriggerCount) + " to generate the clip.")
     return
 
 # ---------------------------------------
