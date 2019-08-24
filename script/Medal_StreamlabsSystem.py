@@ -423,7 +423,7 @@ def PlayRandomVideo():
         PlayVideoById(videoId)
 def PlayMostRecent():
     fileList = glob.glob(ScriptSettings.VideoPath + "/*.mp4")
-    if fileList is not None:
+    if fileList is not None and fileList is not []:
         mostRecent = max(fileList, key=os.path.getctime)
         videoId = os.path.splitext(os.path.basename(mostRecent))[0]
         PlayVideoById(videoId)
