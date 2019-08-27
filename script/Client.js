@@ -75,8 +75,9 @@ jQuery(document).ready(function () {
 		.css("max-height", `${vheight}px`);
 	$("#video-container video")
 		.on("error", function (e) { console.error(`Error: ${e}`); })
-		.on("canplay", function () { return videoLoaded(); })
-		.on("ended", function () { return videoEnded(); })
+		.on("canplay", function (e) { return videoLoaded(e); })
+		.on("ended", function (e) { return videoEnded(e); })
+		.on("timeupdate", function(e) { return timelapse(e); } )
 		.css("max-width", `${vwidth}px`)
 		.css("min-width", `${vwidth}px`)
 		.css("min-height", `${vheight}px`)
@@ -105,6 +106,14 @@ function validateSettings() {
 		hasUsername: hasUsername,
 		hasVideoPath: hasVideoPath
 	};
+}
+
+function timelapse() {
+	var video = $("#video-container .video-box video").get(0);
+	var pbar = $("#video-container .video-box progress").get(0);
+	var percent = Math.floor((100 / video.duration) * video.currentTime);
+	console.log(percent);
+	pbar.value = percent;
 }
 
 function videoLoaded() {
