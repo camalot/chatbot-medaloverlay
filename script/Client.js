@@ -112,13 +112,14 @@ function timelapse() {
 	var video = $("#video-container .video-box video").get(0);
 	var pbar = $("#video-container .video-box progress").get(0);
 	var percent = Math.floor((100 / video.duration) * video.currentTime);
-	console.log(percent);
 	pbar.value = percent;
 }
 
 function videoLoaded() {
 	console.log("video loaded");
 	isClipPlaying = true;
+	var pbar = $("#video-container .video-box progress").get(0);
+	pbar.value = 0;
 	$('#video-container .video-box')
 		.addClass(settings.InTransition + ' animated')
 		.removeClass("hidden")
@@ -132,6 +133,8 @@ function videoLoaded() {
 function videoEnded() {
 	console.log("video ended");
 	isClipPlaying = false;
+	var pbar = $("#video-container .video-box progress").get(0);
+	pbar.value = 0;
 	$("#video-container .video-box")
 		.removeClass().addClass("video-box")
 		.addClass(settings.OutTransition + ' animated')
