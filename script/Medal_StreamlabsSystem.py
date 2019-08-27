@@ -231,6 +231,12 @@ def Init():
 
     webDirectory = os.path.join(os.path.dirname(__file__), ScriptSettings.VideoPath)
 
+
+    customcss = os.path.join(os.path.dirname(__file__), "./custom.css")
+    csstemplate = os.path.join(os.path.dirname(__file__), "./custom-sample.css")
+    if not os.path.exists(customcss):
+        shutil.copyfile(csstemplate, customcss)
+
     if(not os.path.exists(webDirectory)):
         Parent.Log(ScriptName, "Video Path Does Not Exist: " + webDirectory)
         return
