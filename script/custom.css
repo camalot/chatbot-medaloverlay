@@ -1,0 +1,14 @@
+#video-container .video-box {
+  /* This is the container that holds the video-border-box and the video elements */
+}
+
+#video-container .video-box .video-border-box {
+	/* This container sits directly on top of the video and is sized the same as the video */
+
+	/* set the background image url */
+	/*background-image: url('https://i.imgur.com/lIl9knQ.png');*/
+}
+
+#video-container .video-box video {
+	/* This is the video container */
+}
