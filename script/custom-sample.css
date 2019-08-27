@@ -6,7 +6,48 @@
 	/* This container sits directly on top of the video and is sized the same as the video */
 
 	/* set the background image url */
+
+	/* Default Gold */
 	/*background-image: url('https://i.imgur.com/2IS05Iw.png');*/
+	/* Blue */
+	/*background-image: url('https://i.imgur.com/UBpIcBB.png');*/
+	/* Cyan */
+	/*background-image: url('https://i.imgur.com/Ds34zjW.png');*/
+	/* Green */
+	/*background-image: url('https://i.imgur.com/JtC7h7X.png');*/
+	/* Light Green */
+	/*background-image: url('https://i.imgur.com/2MLj1Te.png');*/
+	/* Jade */
+	/*background-image: url('https://i.imgur.com/hDTUAfa.png');*/
+	/* Light Blue */
+	/*background-image: url('https://i.imgur.com/b0G1znG.png');*/
+	/* Red */
+	/*background-image: url('https://i.imgur.com/K4HiyQf.png');*/
+	/* Light Purple */
+	/*background-image: url('https://i.imgur.com/IwuyWvA.png');*/
+	/* Purple */
+	/*background-image: url('https://i.imgur.com/BNBWbup.png');*/
+	/* Light Red */
+	/*background-image: url('https://i.imgur.com/eAt7XTG.png');*/
+	/* Lime */
+	/*background-image: url('https://i.imgur.com/ZK0Hklp.png');*/
+	/* Orange */
+	/*background-image: url('https://i.imgur.com/ZovKoDH.png');*/
+	/* Pink */
+	/*background-image: url('https://i.imgur.com/wSstWod.png');*/
+	/* Deep Purple */
+	/*background-image: url('https://i.imgur.com/DTcynXK.png');*/
+	/* RedPink */
+	/*background-image: url('https://i.imgur.com/fI1gjK7.png');*/
+	/* White */
+	/*background-image: url('https://i.imgur.com/c5oShii.png');*/
+	/* Black */
+	/*background-image: url('https://i.imgur.com/4DXNOhR.png');*/
+
+
+	/* CUSTOM IMAGE (make sure it is 16:9 aspect ratio) */
+	/*background-image: url('http://some-cool-domain/path-to-image.png');*/
+
 }
 
 #video-container .video-box video {
