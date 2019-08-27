@@ -147,6 +147,33 @@ The application will open, and if there is an update it will tell you. You click
 [![](https://i.imgur.com/nouqPh0l.png)](https://i.imgur.com/nouqPh0.png)
 
 
+## CUSTOM CSS
+
+You can customize the look with custom css to add a border, or other styles to the video. Just edit the `custom.css` file, or you can use the `custom css` in SLOBS/OBS. 
+
+Here is an example that uses a background uploaded to imgur.
+```css
+#video-container .video-box {
+  /* This is the container that holds the video-border-box and the video elements */
+}
+
+#video-container .video-box .video-border-box {
+	/* This container sits directly on top of the video and is sized the same as the video */
+
+	/* set the background image url */
+	background-image: url('https://i.imgur.com/lIl9knQ.png');
+}
+
+#video-container .video-box video {
+	/* This is the video container */
+}
+```
+
+Here is a sample
+
+![](https://i.imgur.com/rVB5GTr.png)
+
+
 ## TECHNICAL INFORMATION
 
 Files are served to the overlay via a lightweight http server called [tinyweb](https://www.ritlabs.com/en/products/tinyweb/install.php). It binds to port `9191` by default, and can be configured in the options. It also binds to the local internal address so the files are only accessible to the overlay.

@@ -58,7 +58,7 @@ body.bad-config {
 }
 
 .progress-container,
-#video-container video {
+#video-container .video-box {
 	padding: 0;
 	margin: 0;
 	position: absolute;
@@ -70,40 +70,53 @@ body.bad-config {
 }
 
 .progress-container.center,
-#video-container.center video {
+#video-container.center .video-box {
 	left: 40%;
 	right: initial;
 }
 
 .progress-container.left,
-#video-container.left video {
+#video-container.left .video-box {
 	left: 0;
 	right: initial;
 }
 
 .progress-container.right,
-#video-container.right video {
+#video-container.right .video-box {
 	right: 0;
 	left: initial;
 }
 
 .progress-container.middle,
-#video-container.middle video {
+#video-container.middle .video-box {
 	top: 40%;
 	bottom: initial;
 }
 
 .progress-container.top,
-#video-container.top video {
+#video-container.top .video-box {
 	top: 0;
 	bottom: initial;
 }
 
 
 .progress-container.bottom,
-#video-container.bottom video {
+#video-container.bottom .video-box {
 	bottom: 0;
 	top: initial;
+}
+
+#video-container .video-box .video-border-box {
+	z-index: 9999;
+	position: absolute;
+	bottom: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+	background-repeat: no-repeat;
+	border: none;
+	background-color: transparent;
+	background-image: url('https://i.imgur.com/lIl9knQ.png');
 }
 
 .progress-container .progress-bar {

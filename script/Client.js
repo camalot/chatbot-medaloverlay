@@ -36,7 +36,7 @@ jQuery(document).ready(function () {
 	if (!usePositionHorizontal) {
 		$("#video-container")
 			.removeClass(positionHorizontalClass);
-		$("#video-container video")
+		$("#video-container .video-box")
 			.css("left", settings.AbsolutePositionLeft !== 0 ? `${settings.AbsolutePositionLeft}px` : 'initial')
 			.css("right", settings.AbsolutePositionRight !== 0 ? `${settings.AbsolutePositionRight}px` : 'initial');
 
@@ -50,7 +50,7 @@ jQuery(document).ready(function () {
 	if (!usePositionVertical) {
 		$("#video-container")
 			.removeClass(positionVerticalClass);
-		$("#video-container video")
+		$("#video-container .video-box")
 			.css("top", settings.AbsolutePositionTop !== 0 ? `${settings.AbsolutePositionTop}px` : 'initial')
 			.css("bottom", settings.AbsolutePositionBottom !== 0 ? `${settings.AbsolutePositionBottom}px` : 'initial');
 		$(".progress-container")
@@ -61,20 +61,29 @@ jQuery(document).ready(function () {
 
 	}
 
-	// max-width
-	// min-width
 	let vwidth = settings.VideoWidth || 320;
 	if(vwidth <= 0) {
 		vwidth = 320;
 	}
 
+	let vheight = Math.round((vwidth/16)*9);
+
+	$("#video-container .video-box")
+		.css("max-width", `${vwidth}px`)
+		.css("min-width", `${vwidth}px`)
+		.css("min-height", `${vheight}px`)
+		.css("max-height", `${vheight}px`);
 	$("#video-container video")
 		.on("error", function (e) { console.error(`Error: ${e}`); })
 		.on("canplay", function () { return videoLoaded(); })
 		.on("ended", function () { return videoEnded(); })
 		.css("max-width", `${vwidth}px`)
-		.css("min-width", `${vwidth}px`);
+		.css("min-width", `${vwidth}px`)
+		.css("min-height", `${vheight}px`)
+		.css("max-height", `${vheight}px`);
 
+	$("#video-container .video-box .video-border-box")
+		.css("background-size", `${vwidth}px ${vheight}px`);
 
 	connectWebsocket();
 
@@ -101,12 +110,12 @@ function validateSettings() {
 function videoLoaded() {
 	console.log("video loaded");
 	isClipPlaying = true;
-	$('#video-container video')
+	$('#video-container .video-box')
 		.addClass(settings.InTransition + ' animated')
 		.removeClass("hidden")
 		.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
 			console.log("after entrance animation");
-			$(this).removeClass();
+			$(this).removeClass().addClass("video-box");
 		});
 	$("#video-container").removeClass("hidden");
 }
@@ -114,12 +123,12 @@ function videoLoaded() {
 function videoEnded() {
 	console.log("video ended");
 	isClipPlaying = false;
-	$("#video-container video")
-		.removeClass()
+	$("#video-container .video-box")
+		.removeClass().addClass("video-box")
 		.addClass(settings.OutTransition + ' animated')
 		.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
 			console.log("after exit animation");
-			$(this).removeClass().addClass("hidden");
+			$(this).removeClass().addClass("video-box");
 
 			$("#video-container").addClass("hidden");
 		});
