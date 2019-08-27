@@ -237,7 +237,7 @@ def Init():
     if not os.path.exists(customcss):
         shutil.copyfile(csstemplate, customcss)
 
-    if(not os.path.exists(webDirectory)):
+    if not os.path.exists(webDirectory):
         Parent.Log(ScriptName, "Video Path Does Not Exist: " + webDirectory)
         return
 

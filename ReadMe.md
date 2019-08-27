@@ -161,7 +161,7 @@ Here is an example that uses a background uploaded to imgur.
 	/* This container sits directly on top of the video and is sized the same as the video */
 
 	/* set the background image url */
-	background-image: url('https://i.imgur.com/lIl9knQ.png');
+	background-image: url('https://i.imgur.com/2IS05Iw.png');
 }
 
 #video-container .video-box video {
@@ -169,9 +169,12 @@ Here is an example that uses a background uploaded to imgur.
 }
 ```
 
+[Pre-made borders](https://imgur.com/a/Q1xbTj1)  
+[![](https://i.imgur.com/cw6T3obl.png)](https://i.imgur.com/cw6T3ob.png)
+
 Here is a sample
 
-![](https://i.imgur.com/rVB5GTr.png)
+![](https://i.imgur.com/rVB5GTrl.png)
 
 
 ## TECHNICAL INFORMATION
