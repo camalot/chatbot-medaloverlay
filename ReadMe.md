@@ -162,42 +162,45 @@ Here is an example that uses a background uploaded to imgur.
 
 	/* set the background image url */
 
-	/* Default Gold */
-	/*background-image: url('https://i.imgur.com/2IS05Iw.png');*/
-	/* Blue */
-	/*background-image: url('https://i.imgur.com/UBpIcBB.png');*/
-	/* Cyan */
-	/*background-image: url('https://i.imgur.com/Ds34zjW.png');*/
-	/* Dark Green */
-	/*background-image: url('https://i.imgur.com/JtC7h7X.png');*/
-	/* Green */
-	/*background-image: url('https://i.imgur.com/2MLj1Te.png');*/
-	/* Jade */
-	/*background-image: url('https://i.imgur.com/hDTUAfa.png');*/
-	/* Light Blue */
-	/*background-image: url('https://i.imgur.com/b0G1znG.png');*/
-	/* Light Pink */
-	/*background-image: url('https://i.imgur.com/IwuyWvA.png');*/
-	/* Light Purple */
-	/*background-image: url('https://i.imgur.com/BNBWbup.png');*/
-	/* Light Red */
-	/*background-image: url('https://i.imgur.com/eAt7XTG.png');*/
-	/* Lime */
-	/*background-image: url('https://i.imgur.com/ZK0Hklp.png');*/
-	/* Orange */
-	/*background-image: url('https://i.imgur.com/ZovKoDH.png');*/
-	/* Pink */
-	/*background-image: url('https://i.imgur.com/wSstWod.png');*/
-	/* Purple */
-	/*background-image: url('https://i.imgur.com/DTcynXK.png');*/
-	/* Red */
-	/*background-image: url('https://i.imgur.com/K4HiyQf.png');*/
-	/* Dark Red */
-	/*background-image: url('https://i.imgur.com/fI1gjK7.png');*/
-	/* White */
-	/*background-image: url('https://i.imgur.com/c5oShii.png');*/
+	/* Default */
+	/*background-image: url('https://i.imgur.com/Y4MefHd.png');*/
+
 	/* Black */
-	/*background-image: url('https://i.imgur.com/4DXNOhR.png');*/
+	/*background-image: url('https://i.imgur.com/4HoOsZG.png');*/
+	/* Blue */
+	/*background-image: url('https://i.imgur.com/muOdiHv.png');*/
+	/* Cyan */
+	/*background-image: url('https://i.imgur.com/4c7aaLK.png');*/
+	/* Gold */
+	/*background-image: url('https://i.imgur.com/Y4MefHd.png');*/
+	/* Green */
+	/*background-image: url('https://i.imgur.com/PiwlVjd.png');*/
+	/* Green2 */
+	/*background-image: url('https://i.imgur.com/P9ZtCAn.png');*/
+	/* Jade */
+	/*background-image: url('https://i.imgur.com/2i82REJ.png');*/
+	/* LightBlue */
+	/*background-image: url('https://i.imgur.com/9M1EMbk.png');*/
+	/* LightPink */
+	/*background-image: url('https://i.imgur.com/O6bCgau.png');*/
+	/* LightPurple */
+	/*background-image: url('https://i.imgur.com/YuOjaYd.png');*/
+	/* LightRed */
+	/*background-image: url('https://i.imgur.com/PzSm5ja.png');*/
+	/* Lime */
+	/*background-image: url('https://i.imgur.com/xZqA9ve.png');*/
+	/* Orange */
+	/*background-image: url('https://i.imgur.com/ILkW15e.png');*/
+	/* Pink */
+	/*background-image: url('https://i.imgur.com/hcSEair.png');*/
+	/* Purple */
+	/*background-image: url('https://i.imgur.com/YQcy0RK.png');*/
+	/* Red */
+	/*background-image: url('https://i.imgur.com/NCoGlt4.png');*/
+	/* RedPink */
+	/*background-image: url('https://i.imgur.com/NVHo4ch.png');*/
+	/* White */
+	/*background-image: url('https://i.imgur.com/ejtPCBm.png');*/
 
 
 	/* CUSTOM IMAGE (make sure it is 16:9 aspect ratio) */
@@ -210,12 +213,11 @@ Here is an example that uses a background uploaded to imgur.
 }
 ```
 
-[Pre-made borders](https://imgur.com/a/Q1xbTj1)  
-[![](https://i.imgur.com/cw6T3obl.png)](https://i.imgur.com/cw6T3ob.png)
+[Pre-made borders](https://imgur.com/a/5PTkzhR)  
+[![](https://i.imgur.com/qxxcsWgl.png)](https://i.imgur.com/qxxcsWg.png)
 
 Here is a sample
-
-![](https://i.imgur.com/rVB5GTrl.png)
+![](https://i.imgur.com/OMF0MKf.png)
 
 
 ## TECHNICAL INFORMATION
