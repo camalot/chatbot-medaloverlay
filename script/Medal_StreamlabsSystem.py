@@ -225,13 +225,19 @@ def Init():
     Parent.Log(ScriptName, "Initialize")
     # Load saved settings and validate values
     ScriptSettings = Settings(SettingsFile)
-    if(ScriptSettings.VideoPath == ""):
+    if ScriptSettings.VideoPath == "":
         Parent.Log(ScriptName, "Video Path Not Currently Set.")
         return
 
     webDirectory = os.path.join(os.path.dirname(__file__), ScriptSettings.VideoPath)
 
-    if(not os.path.exists(webDirectory)):
+
+    customcss = os.path.join(os.path.dirname(__file__), "./custom.css")
+    csstemplate = os.path.join(os.path.dirname(__file__), "./custom-sample.css")
+    if not os.path.exists(customcss):
+        shutil.copyfile(csstemplate, customcss)
+
+    if not os.path.exists(webDirectory):
         Parent.Log(ScriptName, "Video Path Does Not Exist: " + webDirectory)
         return
 
