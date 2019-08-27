@@ -62,11 +62,11 @@ jQuery(document).ready(function () {
 	}
 
 	let vwidth = settings.VideoWidth || 320;
-	if(vwidth <= 0) {
+	if (vwidth <= 0) {
 		vwidth = 320;
 	}
 
-	let vheight = Math.round((vwidth/16)*9);
+	let vheight = Math.round((vwidth / 16) * 9);
 
 	$("#video-container .video-box")
 		.css("max-width", `${vwidth}px`)
@@ -77,7 +77,7 @@ jQuery(document).ready(function () {
 		.on("error", function (e) { console.error(`Error: ${e}`); })
 		.on("canplay", function (e) { return videoLoaded(e); })
 		.on("ended", function (e) { return videoEnded(e); })
-		.on("timeupdate", function(e) { return timelapse(e); } )
+		.on("timeupdate", function (e) { return timelapse(e); })
 		.css("max-width", `${vwidth}px`)
 		.css("min-width", `${vwidth}px`)
 		.css("min-height", `${vheight}px`)
@@ -111,15 +111,18 @@ function validateSettings() {
 function timelapse() {
 	var video = $("#video-container .video-box video").get(0);
 	var pbar = $("#video-container .video-box progress").get(0);
-	var percent = Math.floor((100 / video.duration) * video.currentTime);
-	pbar.value = percent;
+	if (video.duration && video.currentTime) {
+		var percent = Math.floor((100 / video.duration) * video.currentTime);
+		pbar.value = percent;
+	} else {
+		pbar.value = 0;
+	}
 }
 
 function videoLoaded() {
 	console.log("video loaded");
 	isClipPlaying = true;
-	var pbar = $("#video-container .video-box progress").get(0);
-	pbar.value = 0;
+
 	$('#video-container .video-box')
 		.addClass(settings.InTransition + ' animated')
 		.removeClass("hidden")
@@ -133,8 +136,7 @@ function videoLoaded() {
 function videoEnded() {
 	console.log("video ended");
 	isClipPlaying = false;
-	var pbar = $("#video-container .video-box progress").get(0);
-	pbar.value = 0;
+
 	$("#video-container .video-box")
 		.removeClass().addClass("video-box")
 		.addClass(settings.OutTransition + ' animated')
