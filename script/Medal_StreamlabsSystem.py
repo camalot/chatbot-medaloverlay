@@ -225,7 +225,7 @@ def Init():
     Parent.Log(ScriptName, "Initialize")
     # Load saved settings and validate values
     ScriptSettings = Settings(SettingsFile)
-    if(ScriptSettings.VideoPath == ""):
+    if ScriptSettings.VideoPath == "":
         Parent.Log(ScriptName, "Video Path Not Currently Set.")
         return
 
