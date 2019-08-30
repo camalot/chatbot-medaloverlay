@@ -46,13 +46,23 @@
 	/*background-image: url('https://i.imgur.com/NVHo4ch.png');*/
 	/* White */
 	/*background-image: url('https://i.imgur.com/ejtPCBm.png');*/
-
-
 	/* CUSTOM IMAGE (make sure it is 16:9 aspect ratio) */
 	/*background-image: url('http://some-cool-domain/path-to-image.png');*/
-
 }
 
 #video-container .video-box video {
 	/* This is the video container */
+}
+
+progress[value] {
+	/* change the height and position of the progress bar */
+	/* height: 7px; */
+	/* left: 113px; */
+	/* padding: 0 113px 0 0 */
+	/* margin: 0 0 3px 0 */
+}
+
+progress::-webkit-progress-value {
+	/* set the bar color */
+  /*background: #57d12a;*/
 }

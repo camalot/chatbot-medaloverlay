@@ -65,30 +65,36 @@ jQuery(document).ready(function () {
 	if (vwidth <= 0) {
 		vwidth = 320;
 	}
-
 	let vheight = Math.round((vwidth / 16) * 9);
+	$(":root")
+		.css("--video-width", `${vwidth}px`)
+		.css("--video-height", `${vheight}px`);
 
-	$("#video-container .video-box")
-		.css("max-width", `${vwidth}px`)
-		.css("min-width", `${vwidth}px`)
-		.css("min-height", `${vheight}px`)
-		.css("max-height", `${vheight}px`);
 	$("#video-container video")
 		.on("error", function (e) { console.error(`Error: ${e}`); })
-		.on("canplay", function (e) { return videoLoaded(e); })
-		.on("ended", function (e) { return videoEnded(e); })
-		.on("timeupdate", function (e) { return timelapse(e); })
-		.css("max-width", `${vwidth}px`)
-		.css("min-width", `${vwidth}px`)
-		.css("min-height", `${vheight}px`)
-		.css("max-height", `${vheight}px`);
+		.on("canplay", videoLoaded)
+		.on("ended pause", videoEnded)
+		.on("timeupdate", timelapse);
 
 	$("#video-container .video-box .video-border-box")
-		.css("background-size", `${vwidth}px ${vheight}px`);
+		.addClass(settings.VideoFrameBackground)
+		/*.css("background-size", `${vwidth}px ${vheight}px`)*/;
 
+	if (settings.VideoFrameCustomBackground != null && settings.VideoFrameCustomBackground !== "") {
+		$("#video-container .video-box .video-border-box.custom")
+			.css("background-image", `url('${settings.VideoFrameCustomBackground}')`);
+	}
+
+	if (settings.ProgressBarBackgroundColor != null && settings.ProgressBarBackgroundColor !== "") {
+		$(":root")
+			.css("--progress-bg", settings.ProgressBarBackgroundColor);
+	}
+
+	if (settings.ProgressBarFillColor != null && settings.ProgressBarFillColor !== "") {
+		$(":root")
+			.css("--progress-fill", settings.ProgressBarFillColor);
+	}
 	connectWebsocket();
-
-
 });
 
 function validateSettings() {
@@ -109,25 +115,24 @@ function validateSettings() {
 }
 
 function timelapse() {
-	var video = $("#video-container .video-box video").get(0);
-	var pbar = $("#video-container .video-box progress").get(0);
+	let video = $("#video-container .video-box video").get(0);
+	let pbar = $("#video-container .video-box progress").get(0);
 	if (video.duration && video.currentTime) {
-		var percent = Math.floor((100 / video.duration) * video.currentTime);
+		let percent = (100 / video.duration) * video.currentTime;
 		pbar.value = percent;
 	} else {
 		pbar.value = 0;
 	}
 }
 
-function videoLoaded() {
+function videoLoaded(e) {
 	console.log("video loaded");
 	isClipPlaying = true;
-
+//	$("#video-container .video-box progress").attr("max", this.duration);
 	$('#video-container .video-box')
 		.addClass(settings.InTransition + ' animated')
 		.removeClass("hidden")
 		.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-			console.log("after entrance animation");
 			$(this).removeClass().addClass("video-box");
 		});
 	$("#video-container").removeClass("hidden");
@@ -141,7 +146,6 @@ function videoEnded() {
 		.removeClass().addClass("video-box")
 		.addClass(settings.OutTransition + ' animated')
 		.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-			console.log("after exit animation");
 			$(this).removeClass().addClass("video-box");
 
 			$("#video-container").addClass("hidden");
@@ -156,7 +160,7 @@ function connectWebsocket() {
 	//-------------------------------------------
 	//  Create WebSocket
 	//-------------------------------------------
-	var socket = new WebSocket("ws://127.0.0.1:3337/streamlabs");
+	let socket = new WebSocket("ws://127.0.0.1:3337/streamlabs");
 
 	//-------------------------------------------
 	//  Websocket Event: OnOpen
@@ -164,14 +168,13 @@ function connectWebsocket() {
 	socket.onopen = function () {
 		console.log("open");
 		// AnkhBot Authentication Information
-		var auth = {
+		let auth = {
 			author: "DarthMinos",
 			website: "darthminos.tv",
 			api_key: API_Key,
 			events: [
 				"EVENT_MEDAL_PLAY",
-				"EVENT_MEDAL_VIDEO_WAIT",
-				"EVENT_MEDAL_VIDEO_TIMEOUT",
+				"EVENT_MEDAL_STOP",
 				"EVENT_MEDAL_START"
 			]
 		};
@@ -187,8 +190,8 @@ function connectWebsocket() {
 	socket.onmessage = function (message) {
 		console.log(message);
 		// Parse message
-		var socketMessage = JSON.parse(message.data);
-		var eventName = socketMessage.event;
+		let socketMessage = JSON.parse(message.data);
+		let eventName = socketMessage.event;
 		console.log(socketMessage);
 
 		switch (eventName) {
@@ -209,14 +212,11 @@ function connectWebsocket() {
 					.empty()
 					.append(`<source src="${webfile}" type="video/mp4" />`);
 				break;
-			case "EVENT_MEDAL_VIDEO_WAIT":
-				console.log(eventName);
-				break;
-			case "EVENT_MEDAL_VIDEO_TIMEOUT":
-				console.log(eventName);
-				break;
-			case "EVENT_MEDAL_START":
-				console.log(eventName);
+			case "EVENT_MEDAL_STOP":
+				console.log("STOP VIDEO");
+				$("#video-container video")
+					.get(0)
+					.pause();
 				break;
 			default:
 				console.log(eventName);

@@ -85,7 +85,10 @@ class Settings(object):
             self.TriggerCooldown = 60
             self.RequiredTriggerCount = 1
             self.NotifyChatOfClips = True
-
+            self.VideoFrameCustomBackground = None
+            self.VideoFrameBackground = "default"
+            self.ProgressBarFillColor = "#ffb53b"
+            self.ProgressBarBackgroundColor = "transparent"
             with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
                 fileSettings = json.load(f, encoding="utf-8")
                 self.__dict__.update(fileSettings)
@@ -422,6 +425,8 @@ def OpenScriptUpdater():
 
 def OpenOverlayPreview():
     os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "Overlay.html")))
+def StopCurrentVideo():
+    Parent.BroadcastWsEvent("EVENT_MEDAL_STOP", None)
 def PlayRandomVideo():
     randomVideo = random.choice(glob.glob(ScriptSettings.VideoPath + "/*.mp4"))
     if randomVideo is not None:
@@ -433,3 +438,7 @@ def PlayMostRecent():
         mostRecent = max(fileList, key=os.path.getctime)
         videoId = os.path.splitext(os.path.basename(mostRecent))[0]
         PlayVideoById(videoId)
+
+def OpenCustomCSSFile():
+    customcss = os.path.join(os.path.dirname(__file__), "./custom.css")
+    os.startfile(customcss, "edit")
