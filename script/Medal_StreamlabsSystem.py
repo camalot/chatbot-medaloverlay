@@ -81,7 +81,7 @@ class Settings(object):
             self.UsePositionVertical = True
             self.UsePositionHorizontal = True
             self.WebPort = 9191
-            self.OverlayWebPort = 9292
+            # self.OverlayWebPort = 9292
             self.OnlyTriggerOffCommand = False
             self.TriggerCooldown = 60
             self.RequiredTriggerCount = 1
