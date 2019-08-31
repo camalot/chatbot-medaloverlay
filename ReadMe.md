@@ -36,19 +36,37 @@ Make sure the script is enabled
 
 Click on the script in the list to bring up the configuration.
 
-### GENERAL SETTINGS  
+### COMMAND SETTINGS  
 
-[![](https://i.imgur.com/cR7ZnKjl.png)](https://i.imgur.com/cR7ZnKj.png)  
+[![](https://i.imgur.com/zIEYb0jl.png)](https://i.imgur.com/zIEYb0j.png)  
 
 | ITEM | DESCRIPTION | DEFAULT | 
 | ---- | ----------- | ------- | 
 | `Clip Command` | The command to trigger the clip creation | `!clip` |
+| `Permission Level` | The permission level required to trigger the command | `Everyone` |
 | `Only Trigger off the Command` | If checked, only clips triggered by chat will show up in the overlay. | `False` |  
+| `Notify Chat About Clip Status` | If checked, will send message to chat about the status of the clip. | `True` |  
 | `Required Commands to Trigger` | The number of people required to say the command in chat to trigger the clip. | `1` |
 | `Trigger Cooldown` | The amount of time, in seconds, that chat has to reach the required trigger count. | `60` |
 | `Cooldown` | The amount of seconds between each allowed clip creation | `60` |
-| `Permission Level` | The permission level required to trigger the command | `Everyone` |
+
+### STYLE SETTINGS
+
+
+[![](https://i.imgur.com/WTuUbhUl.png)](https://i.imgur.com/WTuUbhU.png)  
+
+| ITEM | DESCRIPTION | DEFAULT | 
+| ---- | ----------- | ------- | 
 | `Video Width` | The width of the video. Height will scale automatically | `320` | 
+| `Clip Frame Border` | The frame border to use. Select `custom` to use your own iamge | `default` | 
+| `Clip Frame Border Custom Url` | The url to the custom image. | `''` | 
+| `Progress Bar Fill Color` | The color of the progress bar fill color | `#ffb53b` |  
+| `Progress Bar Background Color` | The color of the progress bar background | `transparent` |  
+| `In Transition` | The video entrance transition when the video initially loads | `slideInDown` | 
+| `Out Transition` | The video exit transition when the video ends | `slideOutDown` | 
+| `EDIT ADVANCED CSS` | Opens the `custom.css` file for editing. | |
+
+
 
 ### MEDAL SETTINGS  
 
@@ -62,14 +80,6 @@ Click on the script in the list to bring up the configuration.
 | `Videos Path` | The path to your Medal Videos | `` | 
 
 > **NOTE:** Changes this will require you to refresh the cache of the browser source in your broadcast software
-
-### ADVANCED SETTINGS
-
-[![](https://i.imgur.com/r2xsWgKl.png)](https://i.imgur.com/r2xsWgK.png)  
-
-| ITEM | DESCRIPTION | DEFAULT | 
-| ---- | ----------- | ------- | 
-| `Web Port` | The mort used for the http server for the media files | `9191` | 
 
 
 ### POSITION SETTINGS  
@@ -90,26 +100,23 @@ Click on the script in the list to bring up the configuration.
 
 > **NOTE:** Changes this will require you to refresh the cache of the browser source in your broadcast software
 
-### TRANSITION SETTINGS  
-
-[![](https://i.imgur.com/0Kzcmmvl.png)](https://i.imgur.com/0Kzcmmv.png)  
-
-
-| ITEM | DESCRIPTION | DEFAULT | 
-| ---- | ----------- | ------- | 
-| `IN` | The video entrance transition when the video initially loads | `slideInDown` | 
-| `OUT` | The video exit transition when the video ends | `slideOutDown` | 
-
-> **NOTE:** Changes this will require you to refresh the cache of the browser source in your broadcast software
-
 ### PlayBack
-[![](https://i.imgur.com/VcsPgRhl.png)](https://i.imgur.com/VcsPgRh.png)  
+[![](https://i.imgur.com/lH7kBw5l.png)](https://i.imgur.com/lH7kBw5.png)  
 
 | ITEM | DESCRIPTION | 
 | ---- | ----------- | 
 | `OPEN OVERLAY IN BROWSER` | Opens the Overlay page in browser for testing | 
 | `PLAY MOST RECENT VIDEO` | Plays the most recent video | 
 | `PLAY RANDOM VIDEO` | Plays a random video | 
+| `STOP CURRENT VIDEO` | Stops the current video | 
+
+### ADVANCED SETTINGS
+
+[![](https://i.imgur.com/r2xsWgKl.png)](https://i.imgur.com/r2xsWgK.png)  
+
+| ITEM | DESCRIPTION | DEFAULT | 
+| ---- | ----------- | ------- | 
+| `Web Port` | The mort used for the http server for the media files | `9191` | 
 
 
 
@@ -159,58 +166,25 @@ Here is an example that uses a background uploaded to imgur.
 
 #video-container .video-box .video-border-box {
 	/* This container sits directly on top of the video and is sized the same as the video */
-
-	/* set the background image url */
-
-	/* Default */
-	/*background-image: url('https://i.imgur.com/Y4MefHd.png');*/
-
-	/* Black */
-	/*background-image: url('https://i.imgur.com/4HoOsZG.png');*/
-	/* Blue */
-	/*background-image: url('https://i.imgur.com/muOdiHv.png');*/
-	/* Cyan */
-	/*background-image: url('https://i.imgur.com/4c7aaLK.png');*/
-	/* Gold */
-	/*background-image: url('https://i.imgur.com/Y4MefHd.png');*/
-	/* Green */
-	/*background-image: url('https://i.imgur.com/PiwlVjd.png');*/
-	/* Green2 */
-	/*background-image: url('https://i.imgur.com/P9ZtCAn.png');*/
-	/* Jade */
-	/*background-image: url('https://i.imgur.com/2i82REJ.png');*/
-	/* LightBlue */
-	/*background-image: url('https://i.imgur.com/9M1EMbk.png');*/
-	/* LightPink */
-	/*background-image: url('https://i.imgur.com/O6bCgau.png');*/
-	/* LightPurple */
-	/*background-image: url('https://i.imgur.com/YuOjaYd.png');*/
-	/* LightRed */
-	/*background-image: url('https://i.imgur.com/PzSm5ja.png');*/
-	/* Lime */
-	/*background-image: url('https://i.imgur.com/xZqA9ve.png');*/
-	/* Orange */
-	/*background-image: url('https://i.imgur.com/ILkW15e.png');*/
-	/* Pink */
-	/*background-image: url('https://i.imgur.com/hcSEair.png');*/
-	/* Purple */
-	/*background-image: url('https://i.imgur.com/YQcy0RK.png');*/
-	/* Red */
-	/*background-image: url('https://i.imgur.com/NCoGlt4.png');*/
-	/* RedPink */
-	/*background-image: url('https://i.imgur.com/NVHo4ch.png');*/
-	/* White */
-	/*background-image: url('https://i.imgur.com/ejtPCBm.png');*/
-
-
-	/* CUSTOM IMAGE (make sure it is 16:9 aspect ratio) */
-	/*background-image: url('http://some-cool-domain/path-to-image.png');*/
-
 }
 
 #video-container .video-box video {
 	/* This is the video container */
 }
+
+progress[value] {
+	/* change the height and position of the progress bar */
+	/* height: 7px; */
+	/* left: 113px; */
+	/* padding: 0 113px 0 0 */
+	/* margin: 0 0 3px 0 */
+}
+
+progress::-webkit-progress-value {
+	/* set the bar color */
+  /*background: #57d12a;*/
+}
+
 ```
 
 [Pre-made borders](https://imgur.com/a/5PTkzhR)  
