@@ -3,7 +3,6 @@ let isClipPlaying = false;
 
 // Start ws connection after document is loaded
 jQuery(document).ready(function () {
-
 	// verify settings...
 	let validatedSettings = validateSettings();
 
@@ -20,6 +19,11 @@ jQuery(document).ready(function () {
 		return;
 	}
 
+	initializeUI();
+	connectWebsocket();
+});
+
+function initializeUI() {
 	let positionHorizontalClass = (settings.PositionHorizontal.toLowerCase() || "right");
 	let positionVerticalClass = (settings.PositionVertical.toLowerCase() || "middle");
 
@@ -94,8 +98,7 @@ jQuery(document).ready(function () {
 		$(":root")
 			.css("--progress-fill", settings.ProgressBarFillColor);
 	}
-	connectWebsocket();
-});
+}
 
 function validateSettings() {
 	let hasApiKey = typeof API_Key !== "undefined";
@@ -128,7 +131,7 @@ function timelapse() {
 function videoLoaded(e) {
 	console.log("video loaded");
 	isClipPlaying = true;
-//	$("#video-container .video-box progress").attr("max", this.duration);
+	//	$("#video-container .video-box progress").attr("max", this.duration);
 	$('#video-container .video-box')
 		.addClass(settings.InTransition + ' animated')
 		.removeClass("hidden")
@@ -175,7 +178,8 @@ function connectWebsocket() {
 			events: [
 				"EVENT_MEDAL_PLAY",
 				"EVENT_MEDAL_STOP",
-				"EVENT_MEDAL_START"
+				"EVENT_MEDAL_START",
+				"EVENT_MEDAL_RELOAD"
 			]
 		};
 
@@ -217,6 +221,9 @@ function connectWebsocket() {
 				$("#video-container video")
 					.get(0)
 					.pause();
+				break;
+			case "EVENT_MEDAL_RELOAD":
+				location.reload();
 				break;
 			default:
 				console.log(eventName);

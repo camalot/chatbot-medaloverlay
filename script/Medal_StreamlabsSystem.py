@@ -81,6 +81,7 @@ class Settings(object):
             self.UsePositionVertical = True
             self.UsePositionHorizontal = True
             self.WebPort = 9191
+            self.OverlayWebPort = 9292
             self.OnlyTriggerOffCommand = False
             self.TriggerCooldown = 60
             self.RequiredTriggerCount = 1
@@ -110,15 +111,22 @@ class Settings(object):
 #---------------------------------------
 # Starts the mohttpd executable to serve the media files
 #---------------------------------------
-def StartHttpd(webdir, port):
+def StartHttpd(app, webdir, port):
     tool = os.path.join(os.path.dirname(__file__), "./Libs/mohttpd.exe")
+    # copytool = os.path.join(os.path.dirname(os.path.abspath(__file__)), "./Libs/" + app + "/mohttpd.exe")
+    # if not os.path.exists(copytool):
+    #     shutil.copyfile(tool, copytool)
     index = os.path.join(webdir, "./index.html")
     if not os.path.exists(index):
         with open(index, 'w'): pass
     Parent.Log(ScriptName, tool + " \"" + webdir + "\" " + str(port) + " 127.0.0.1")
-    os.spawnl(os.P_NOWAITO, tool,tool, webdir, str(port), "127.0.0.1")
+    os.spawnl(os.P_NOWAITO, tool, tool, webdir, str(port), "127.0.0.1")
     return
 
+def ReloadOverlay():
+    Parent.Log(ScriptName, "EVENT_MEDAL_RELOAD: " + json.dumps(None))
+    Parent.BroadcastWsEvent("EVENT_MEDAL_RELOAD", json.dumps(None))
+    return
 def PlayVideoById(videoId):
     # Broadcast WebSocket Event
     payload = {
@@ -252,7 +260,8 @@ def Init():
     ClipWatcher.MonitorStop += OnMonitorStop
     ClipWatcher.MonitorPause += OnMonitorPause
     ClipWatcher.Start()
-    StartHttpd(webDirectory, ScriptSettings.WebPort)
+    StartHttpd("mohttpd", webDirectory, ScriptSettings.WebPort)
+    # StartHttpd("overlayhttpd", os.path.dirname(os.path.abspath(__file__)), ScriptSettings.OverlayWebPort)
     Initialized = True
     return
 
@@ -362,6 +371,7 @@ def ReloadSettings(jsondata):
     # Reload saved settings and validate values
     Unload()
     Init()
+    ReloadOverlay()
     return
 
 #---------------------------

@@ -361,11 +361,19 @@
 
 	"WebPort": {
 		"type": "numberbox",
-		"label": "Web Port",
+		"label": "Video Web Port",
 		"value": 9191,
 		"tooltip": "The port used by tinyweb. Used for the overlay to request the clips.",
 		"group": "Advanced"
 	},
+	// "OverlayWebPort": {
+	// 	"type": "numberbox",
+	// 	"label": "Overlay Web Port",
+	// 	"value": 9292,
+	// 	"tooltip": "The port used by tinyweb for the overlay",
+	// 	"group": "Advanced"
+	// },
+
 
 	"OpenMedalInvite": {
 		"type": "button",
