@@ -1,6 +1,6 @@
 "use strict";
 let isClipPlaying = false;
-
+let refreshAfter = false;
 // Start ws connection after document is loaded
 jQuery(document).ready(function () {
 	// verify settings...
@@ -152,6 +152,10 @@ function videoEnded() {
 			$(this).removeClass().addClass("video-box");
 
 			$("#video-container").addClass("hidden");
+
+			if (refreshAfter) {
+				location.reload();
+			}
 		});
 }
 
@@ -223,7 +227,11 @@ function connectWebsocket() {
 					.pause();
 				break;
 			case "EVENT_MEDAL_RELOAD":
-				location.reload();
+				if(isClipPlaying) {
+					refreshAfter = true;
+				} else {
+					location.reload();
+				}
 				break;
 			default:
 				console.log(eventName);
