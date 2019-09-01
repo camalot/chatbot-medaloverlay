@@ -83,7 +83,7 @@ body.bad-config {
 	max-height: var(--video-height, 180px);
 }
 
-#video-container .video-box video {
+#video-container .video-box video.replay {
 	min-width: var(--video-width, 320px);
 	max-width: var(--video-width, 320px);
 	min-height: var(--video-height, 180px);
@@ -140,6 +140,25 @@ body.bad-config {
 	background-image: url('https://i.imgur.com/Y4MefHd.png');
 	background-size: var(--video-width) var(--video-height);
 }
+
+#video-container .video-box .video-border-box .border {
+	display: none;
+	position: absolute;
+	bottom: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+	min-width: var(--video-width, 320px);
+	max-width: var(--video-width, 320px);
+	min-height: var(--video-height, 180px);
+	max-height: var(--video-height, 180px);
+	border: none;
+}
+
+#video-container .video-box .video-border-box.custom .border {
+	display: block;
+}
+
 #video-container .video-box .video-border-box.none {
 	background-image: none;
 }
@@ -194,10 +213,6 @@ body.bad-config {
 }
 #video-container .video-box .video-border-box.white {
 	background-image: url('https://i.imgur.com/ejtPCBm.png');
-}
-
-#video-container .video-box .video-border-box.custom {
-
 }
 
 progress[value] {
