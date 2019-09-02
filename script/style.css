@@ -159,6 +159,7 @@ body.bad-config {
 	display: block;
 }
 
+#video-container .video-box .video-border-box.custom,
 #video-container .video-box .video-border-box.none {
 	background-image: none;
 }

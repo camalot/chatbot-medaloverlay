@@ -117,7 +117,7 @@ function validateSettings() {
 	};
 }
 
-function timelapse() {
+function timelapse(e) {
 	let video = $("#video-container .video-box video.replay").get(0);
 	let pbar = $("#video-container .video-box progress").get(0);
 	if (video.duration && video.currentTime) {
@@ -141,7 +141,7 @@ function videoLoaded(e) {
 	$("#video-container").removeClass("hidden");
 }
 
-function videoEnded() {
+function videoEnded(e) {
 	console.log("video ended");
 	isClipPlaying = false;
 
