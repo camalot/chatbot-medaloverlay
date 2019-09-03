@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>Alert Overlay</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<link rel="stylesheet" type="text/css" href="custom.css" />
+	<link rel="stylesheet" type="text/css" href="https://daneden.github.io/animate.css/animate.min.css" />
+
+</head>
+
+<body>
+	<div class="config-messages hidden">
+		<header class="group">Medal Overlay</header>
+		<div class="settings group hidden">
+			<div>Settings Not Saved</div>
+			<div>Open the settings for Medal Overlay, Configure, and Save the settings.</div>
+		</div>
+
+		<div class="api-key group hidden">
+			<div>No API Key found or load!</div>
+			<div>Right click on the script in ChatBot and select <code>Insert API Key</code></div>
+		</div>
+
+		<div class="medal-userid group hidden">
+			<div>Medal User Id not set.</div>
+			<div>Please set <code>Medal -> Medal User Id</code> in the script settings.</div>
+		</div>
+	</div>
+
+	<div class="video-container" id="video-container">
+		<div class="video-box full">
+			<progress value="0" max="100" class="hidden"></progress>
+			<video class="replay" autoplay></video>
+		</div>
+	</div>
+
+	<script src="API_Key.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="settings.js"></script>
+	<script src="recents.js"></script>
+	<script type="text/javascript" script-name="bangers" src="http://use.edgefonts.net/bangers.js"></script>
+
+</body>
+
+</html>

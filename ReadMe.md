@@ -8,6 +8,8 @@ This will trigger playback on stream if your community triggers the clip creatio
 
 [![See Medal Overlay In Action](https://img.youtube.com/vi/q2mIDQ8BcW4/0.jpg)](https://www.youtube.com/watch?v=q2mIDQ8BcW4)
 
+There is a second overlay that is available with this script that allows continuous playback of your uploaded Medal clips.
+
 ## REQUIREMENTS
 
 - Install [StreamLabs Chatbot](https://streamlabs.com/chatbot)
@@ -53,7 +55,7 @@ Click on the script in the list to bring up the configuration.
 ### STYLE SETTINGS
 
 
-[![](https://i.imgur.com/WTuUbhUl.png)](https://i.imgur.com/WTuUbhU.png)  
+[![](https://i.imgur.com/llP13eNl.png)](https://i.imgur.com/llP13eN.png)  
 
 | ITEM | DESCRIPTION | DEFAULT | 
 | ---- | ----------- | ------- | 
@@ -70,16 +72,15 @@ Click on the script in the list to bring up the configuration.
 
 ### MEDAL SETTINGS  
 
-[![](https://i.imgur.com/N1MVzWel.png)](https://i.imgur.com/N1MVzWe.png)  
+[![](https://i.imgur.com/z6p6eDx.png)](https://i.imgur.com/z6p6eDx.png)  
 
 
 | ITEM | DESCRIPTION | DEFAULT | 
 | ---- | ----------- | ------- | 
 | `Username` | Your Medal Username | `""` | 
+| `User ID` | Your Medal User ID. This is the end of the url after you go to `https://medal.tv/YOUR_USERNAME`. This is used for the `RECENT CLIPS` overlay.  | `""` | 
 | `HotKey` | Your Medal HotKey in [SendKeys Format](SendKeys.md) | `{F8}` | 
 | `Videos Path` | The path to your Medal Videos | `` | 
-
-> **NOTE:** Changes this will require you to refresh the cache of the browser source in your broadcast software
 
 
 ### POSITION SETTINGS  
@@ -98,9 +99,7 @@ Click on the script in the list to bring up the configuration.
 | `Absolute Bottom` | Absolute Bottom position of the video | `0` | 
 | `Absolute Right` | Absolute Right position of the video | `0` | 
 
-> **NOTE:** Changes this will require you to refresh the cache of the browser source in your broadcast software
-
-### PlayBack
+### PLAYBACK
 [![](https://i.imgur.com/lH7kBw5l.png)](https://i.imgur.com/lH7kBw5.png)  
 
 | ITEM | DESCRIPTION | 
@@ -109,6 +108,28 @@ Click on the script in the list to bring up the configuration.
 | `PLAY MOST RECENT VIDEO` | Plays the most recent video | 
 | `PLAY RANDOM VIDEO` | Plays a random video | 
 | `STOP CURRENT VIDEO` | Stops the current video | 
+
+
+### RECENT CLIPS
+> Settings and controls for the `Recent Clips` Overlay.
+
+[![](https://i.imgur.com/FqUcFwnl.png)](https://i.imgur.com/FqUcFwn.png)
+
+| ITEM | DESCRIPTION | DEFAULT |
+| ---- | ----------- | -------- |
+| `Use Non-Watermarked Videos` | This will enable non-watermarked videos if checked, a private key is supplied, and that private key has been granted `Special Privileges`. | `false` | 
+| `Private API Key` | This key is your personal private key to access the medal api. It allows you to use non-watermarked playback of clips | `""` | 
+| `Generate Private API Key` | Generate a private api key for access to medal api |  | 
+| `Special Privileges Form` | Complete the form to get `Special Privileges` to use non-watermarked videos. |  | 
+| `Video Volume` | The playback volume of the video | `100` | 
+| `Mute Playback Audio` | Mute the playback audio of the video | `false` | 
+| `Show Playback Progress Bar` | Show a playback progress bar at on the video. | `true` | 
+| `Open Recent Clips Overlay In Browser` | Opens the `Recent Clips` overlay file in your browser, to get the path for OBS, or to test out the playback. |  | 
+| `Play` | Start playback, if stopped |  | 
+| `Stop` | Stop playback, if playing |  | 
+| `Mute/Unmute` | Toggle mute state of the video. |  | 
+
+
 
 ### ADVANCED SETTINGS
 
@@ -122,11 +143,13 @@ Click on the script in the list to bring up the configuration.
 
 ### INFORMATION  
 
-[![](https://i.imgur.com/ZLO8YDdl.png)](https://i.imgur.com/ZLO8YDd.png)  
+[![](https://i.imgur.com/R6rH8XLl.png)](https://i.imgur.com/R6rH8XL.png)  
 
 | ITEM | DESCRIPTION | 
 | ---- | ----------- | 
 | `GET MEDAL` | Opens a link to get Medal | 
+| `FOLLOW ME ON MEDAL` | Opens a link to follow me on Medal | 
+| `FOLLOW ME ON TWITCH` | Opens a link to follow me on Twitch | 
 | `OPEN README` | Opens the link to this document | 
 | `OPEN SENDKEYS DOCS` | Opens the link to the [SendKeys](SendKeys.md) documentation | 
 | `CHECK FOR UPDATES` | Will Check if there are updates to the Medal Overlay Script. See below for more info. | 
@@ -143,15 +166,25 @@ The application will open, and if there is an update it will tell you. You click
 
 [![](https://i.imgur.com/YKIGYDul.png)](https://i.imgur.com/YKIGYDu.png)
 
-## OBS / SLOBS  
+## OVERLAY SETUP IN OBS / SLOBS 
 
 - Add a new `Browser Source` in OBS / SLOBS  
 [![](https://i.imgur.com/TAMQkeql.png)](https://i.imgur.com/TAMQkeq.png)
-- Set as a `Local File` and choose the `Overlay.html` in the `Medal Overlay` script directory. You can easily get to the script directory location from right clicking on `Medal Overlay` and choose `Open Script Folder`.
+- Set as a `Local File` and choose the `overlay.html` in the `Medal Overlay` script directory. You can easily get to the script directory location from right clicking on `Medal Overlay` and choose `Open Script Folder`.
 - Set the `width` and `height` to the resolution of your `Base (Canvas) Resolution`. 
 - Add any additional custom CSS that you would like to add.
 - Check both `Shutdown source when not visible` and `Refresh browser when scene becomes active`.  
 [![](https://i.imgur.com/nouqPh0l.png)](https://i.imgur.com/nouqPh0.png)
+
+
+## RECENT CLIPS SETUP IN OBS / SLOBS 
+See Above for sample images on these steps.
+
+- Add a new `Browser Source` in OBS / SLOBS  
+- Set as a `Local File` and choose the `recents.html` in the `Medal Overlay` script directory. You can easily get to the script directory location from right clicking on `Medal Overlay` and choose `Open Script Folder`.
+- Set the `height` and `width` to the size you would like the video to be on your scene. 
+- Add any additional custom CSS that you would like to add.
+- Check both `Shutdown source when not visible` and `Refresh browser when scene becomes active`.  
 
 
 ## CUSTOM CSS
@@ -196,4 +229,4 @@ Here is a sample
 
 ## TECHNICAL INFORMATION
 
-Files are served to the overlay via a lightweight http server called [tinyweb](https://www.ritlabs.com/en/products/tinyweb/install.php). It binds to port `9191` by default, and can be configured in the options. It also binds to the local internal address so the files are only accessible to the overlay.
+Files are served to the overlay via a lightweight http server called [tinyweb](https://www.ritlabs.com/en/products/tinyweb/install.php). It binds to port `9191` by default, and can be configured in the options. It also binds to the local internal address so the files are only accessible to the overlay. If you run chatbot on a different machine than you run OBS/SLOBS there will be an issue and it will not function correctly.
