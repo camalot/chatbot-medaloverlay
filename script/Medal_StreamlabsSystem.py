@@ -95,6 +95,7 @@ class Settings(object):
             self.RecentVolume = 100
             self.RecentShowVideoProgress = True
             self.UseNonWatermarkedVideo = False
+            self.RecentShowTitle = True
             with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
                 fileSettings = json.load(f, encoding="utf-8")
                 self.__dict__.update(fileSettings)

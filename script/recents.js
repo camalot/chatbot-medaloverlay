@@ -94,16 +94,26 @@ let videoEnded = (e) => {
 	}
 };
 
-let queueVideo = (video) => {
-	if (video) {
+let queueVideo = (clipData) => {
+	if (clipData) {
 		$("#video-container .video-box video.replay")
 			.prop("autoplay", true)
 			.prop("preload", true)
 			.prop("loop", false)
 			.prop("volume", settings.RecentVolume / 100)
-			.attr("src", video)
+			.attr("src", clipData.url)
 			.empty()
-			.append(`<source src="${video}" type="video/mp4" />`);
+			.append(`<source src="${clipData.url}" type="video/mp4" />`);
+
+		let title = $("#video-container .video-box .title");
+		title.html(clipData.title);
+		if (settings.RecentShowTitle) {
+			title.removeClass("hidden");
+		} else {
+			title.addClass("hidden");
+		}
+		$("#video-container .video-box .views")
+			.html(clipData.views);
 	}
 };
 
@@ -220,16 +230,33 @@ let getVideoQueue = (p, pp, completeCB, errorCB) => {
 		},
 		success: (data) => {
 			for (let x = data.contentObjects.length - 1; x >= 0; --x) {
+				let clip = null;
 				let obj = data.contentObjects[x];
 				if (obj.unbrandedFileUrl && obj.unbrandedFileUrl !== "" && obj.unbrandedFileUrl !== "not_authorized" && settings.UseNonWatermarkedVideo) {
-					clipQueue.push(obj.unbrandedFileUrl);
+					clip = {
+						url: obj.unbrandedFileUrl,
+						title: obj.contentTitle || "",
+						views: obj.contentViews || 0
+					};
 				} else if (obj.rawFileUrl && obj.rawFileUrl !== "" && obj.rawFileUrl !== "not_authorized") {
-					clipQueue.push(obj.rawFileUrl);
+					clip = {
+						url: obj.rawFileUrl,
+						title: obj.contentTitle || "",
+						views: obj.contentViews || 0
+					};
 				}	else {
 					if (obj.contentId) {
 						let vid = obj.contentId.replace(/^cid/, "");
-						clipQueue.push(`http://files.medal.tv/${settings.UserId}/share-${vid}.mp4`);
+						clip = {
+							url: `http://files.medal.tv/${settings.UserId}/share-${vid}.mp4`,
+							title: obj.contentTitle || "",
+							views: obj.contentViews || 0
+						};
 					}
+				}
+
+				if(clip !== null) {
+					clipQueue.push(clip);
 				}
 			}
 

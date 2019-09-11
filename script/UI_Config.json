@@ -417,6 +417,13 @@
 		"tooltip": "Display the video progress bar",
 		"group": "Recent Clips"
 	},
+	"RecentShowTitle": {
+		"type": "checkbox",
+		"value": true,
+		"label": "Show Clip Title",
+		"tooltip": "Display The Clip Title",
+		"group": "Recent Clips"
+	},
 	"OpenOverlayRecents": {
 		"type": "button",
 		"label": "Open Recent Clips Overlay In Browser",

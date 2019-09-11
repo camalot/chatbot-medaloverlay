@@ -16,8 +16,6 @@ There is a second overlay that is available with this script that allows continu
 - [Enable Scripts in StreamLabs Chatbot](https://github.com/StreamlabsSupport/Streamlabs-Chatbot/wiki/Prepare-&-Import-Scripts)
 - [Microsoft .NET Framework 4.7.2 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net472)
 
-
-
 ## INSTALL
 
 - Download the latest zip file from [Releases](https://github.com/camalot/chatbot-medaloverlay/releases/latest)
