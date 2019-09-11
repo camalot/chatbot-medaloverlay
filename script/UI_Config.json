@@ -64,7 +64,6 @@
 		"tooltip": "Cooldown in seconds after triggered.",
 		"group": "Command"
 	},
-
 	"VideoWidth": {
 		"type": "numberbox",
 		"label": "Video Width (pixels)",
@@ -94,7 +93,6 @@
 			"purple",
 			"red",
 			"redpink",
-			"red",
 			"white",
 			"black"
 		],
@@ -246,6 +244,13 @@
 		"tooltip": "This is your Medal.tv Username",
 		"group": "Medal"
 	},
+	"UserId": {
+		"type": "textbox",
+		"label": "Medal User ID",
+		"value": "",
+		"tooltip": "This is only required if you are using the 'recent clips' overlay. UserId is the number at the end of the url if you go to https://medal.tv/YOUR_USER_NAME",
+		"group": "Medal"
+	},
 	"HotKey": {
 		"type": "textbox",
 		"label": "Medal HotKey",
@@ -358,7 +363,107 @@
 		"wsevent": "EVENT_NONE",
 		"group": "PlayBack"
 	},
-
+	"UseNonWatermarkedVideo": {
+		"type": "checkbox",
+		"value": false,
+		"label": "Use Non-Watermarked Videos",
+		"tooltip": "If you provide a private api key, that was granted special access (see the form below), checking this box will enable non-watermarked videos.",
+		"group": "Recent Clips"
+	},
+	"PrivateApiKey": {
+		"type": "textbox",
+		"label": "Private API Key (Optional)",
+		"value": "",
+		"tooltip": "Allows non-watermarked videos when using the 'Recent Clips' overlay",
+		"group": "Recent Clips"
+	},
+	"GeneratePrivateKey": {
+		"type": "button",
+		"wsevent": "EVENT_NONE",
+		"label": "Generate Private API Key",
+		"tooltip": "Link to generate a private key.",
+		"function": "GeneratePrivateKey",
+		"group": "Recent Clips"
+	},
+	"OpenSpecialPrivileges": {
+		"type": "button",
+		"wsevent": "EVENT_NONE",
+		"label": "Special Privileges Form",
+		"tooltip": "Fill out the form to get special privileges to have 'non-watermarked' clips.",
+		"function": "OpenSpecialPrivileges",
+		"group": "Recent Clips"
+	},
+	"RecentVolume": {
+		"type": "slider",
+		"label": "Video Volume",
+		"value": 100,
+		"min": 0,
+		"max": 100,
+		"ticks": 1,
+		"tooltip": "Sets the volume level for the video",
+		"group": "Recent Clips"
+	},
+	"RecentMuteAudio": {
+		"type": "checkbox",
+		"value": false,
+		"label": "Mute Playback Audio",
+		"tooltip": "Audio will be muted in video playback.",
+		"group": "Recent Clips"
+	},
+	"RecentShowVideoProgress": {
+		"type": "checkbox",
+		"value": true,
+		"label": "Show Playback Progress Bar",
+		"tooltip": "Display the video progress bar",
+		"group": "Recent Clips"
+	},
+	"RecentShowTitle": {
+		"type": "checkbox",
+		"value": true,
+		"label": "Show Clip Title",
+		"tooltip": "Display The Clip Title",
+		"group": "Recent Clips"
+	},
+	"OpenOverlayRecents": {
+		"type": "button",
+		"label": "Open Recent Clips Overlay In Browser",
+		"tooltip": "Open overlay in browser to test",
+		"function": "OpenOverlayRecents",
+		"wsevent": "EVENT_NONE",
+		"group": "Recent Clips"
+	},
+	"RecentPlayBackPlay": {
+		"type": "button",
+		"label": "PLAY",
+		"tooltip": "Play the video in the player.",
+		"function": "RecentPlayBackPlay",
+		"wsevent": "EVENT_NONE",
+		"group": "Recent Clips"
+	},
+	"RecentPlayBackStop": {
+		"type": "button",
+		"label": "STOP",
+		"tooltip": "Stop the video player",
+		"function": "RecentPlayBackStop",
+		"wsevent": "EVENT_NONE",
+		"group": "Recent Clips"
+	},
+	"RecentPlayBackNext": {
+		"type": "button",
+		"label": "SKIP",
+		"tooltip": "Skips the currently playing video",
+		"function": "RecentPlayNext",
+		"wsevent": "EVENT_NONE",
+		"group": "Recent Clips"
+	},
+	"RecentPlayMute": {
+		"type": "button",
+		"label": "MUTE/UNMUTE",
+		"tooltip": "Mute/Unmute the video",
+		"function": "RecentPlayMute",
+		"wsevent": "EVENT_NONE",
+		"group": "Recent Clips"
+	},
 	"WebPort": {
 		"type": "numberbox",
 		"label": "Video Web Port",
@@ -373,27 +478,39 @@
 	// 	"tooltip": "The port used by tinyweb for the overlay",
 	// 	"group": "Advanced"
 	// },
-
-
-	"OpenMedalInvite": {
+	"OpenDownloadMedalLink": {
 		"type": "button",
 		"label": "Get Medal",
 		"tooltip": "Get Medal",
-		"function": "OpenMedalInvite",
+		"function": "OpenDownloadMedalLink",
 		"wsevent": "EVENT_NONE"
 	},
-	"OpenReadMe": {
+	"OpenMedalInviteLink": {
+		"type": "button",
+		"label": "Follow Me On Medal",
+		"tooltip": "Follow Me On Medal",
+		"function": "OpenMedalInviteLink",
+		"wsevent": "EVENT_NONE"
+	},
+	"OpenFollowOnTwitchLink": {
+		"type": "button",
+		"label": "Follow Me On Twitch",
+		"tooltip": "Get Medal",
+		"function": "OpenFollowOnTwitchLink",
+		"wsevent": "EVENT_NONE"
+	},
+	"OpenReadMeLink": {
 		"type": "button",
 		"label": "Open ReadMe",
 		"tooltip": "Open ReadMe file",
-		"function": "OpenReadMe",
+		"function": "OpenReadMeLink",
 		"wsevent": "EVENT_NONE"
 	},
-	"OpenSendKeysDocumentation": {
+	"OpenSendKeysDocumentationLink": {
 		"type": "button",
 		"label": "Open SendKeys Documentation",
 		"tooltip": "Open SendKeys Documentation",
-		"function": "OpenSendKeys",
+		"function": "OpenSendKeysLink",
 		"wsevent": "EVENT_NONE"
 	},
 	"UpdateMedalOverlay": {

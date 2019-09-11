@@ -15,9 +15,6 @@ import threading
 import shutil
 import tempfile
 
-import SimpleHTTPServer
-import SocketServer
-
 clr.AddReference("IronPython.SQLite.dll")
 clr.AddReference("IronPython.Modules.dll")
 
@@ -35,6 +32,7 @@ Description = "Triggers Medal.tv and plays the video back on stream"
 Creator = "DarthMinos"
 Version = "1.0.0-snapshot"
 MedalInviteUrl = "https://medal.tv/invite/"
+MedalPublicApiKey = "pub_YiUDXfg4MRtOrIeeWOV4v26foDP6QTcY"
 # ---------------------------------------
 #	Set Variables
 # ---------------------------------------
@@ -69,6 +67,7 @@ class Settings(object):
             self.Cooldown = 60
             self.HotKey = "{F8}"
             self.Username = ""
+            self.UserId = ""
             self.PositionVertical = "Middle"
             self.PositionHorizontal = "Right"
             self.InTransition = "slideInLeft"
@@ -90,6 +89,13 @@ class Settings(object):
             self.VideoFrameBackground = "default"
             self.ProgressBarFillColor = "#ffb53b"
             self.ProgressBarBackgroundColor = "transparent"
+            self.PublicApiKey = MedalPublicApiKey
+            self.PrivateApiKey = ""
+            self.RecentMuteAudio = False
+            self.RecentVolume = 100
+            self.RecentShowVideoProgress = True
+            self.UseNonWatermarkedVideo = False
+            self.RecentShowTitle = True
             with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
                 fileSettings = json.load(f, encoding="utf-8")
                 self.__dict__.update(fileSettings)
@@ -393,14 +399,23 @@ def Tick():
 # ---------------------------------------
 # Script UI Button Functions
 # ---------------------------------------
-def OpenReadMe():
+def OpenReadMeLink():
     os.startfile(ReadMeFile)
     return
-def OpenSendKeys():
+def OpenSendKeysLink():
     os.startfile("https://github.com/camalot/chatbot-medaloverlay/blob/develop/SendKeys.md")
     return
-def OpenMedalInvite():
+def OpenMedalInviteLink():
     os.startfile("https://medal.tv/invite/DarthMinos")
+    return
+def OpenDownloadMedalLink():
+    os.startfile("https://medal.tv/?ref=DarthMinos_partner")
+    return
+def OpenFollowOnTwitchLink():
+    os.startfile("https://twitch.tv/DarthMinos")
+    return
+def OpenDonateLink():
+    os.startfile("https://twitch.tv/DarthMinos")
     return
 def OpenScriptUpdater():
     currentDir = os.path.realpath(os.path.dirname(__file__))
@@ -434,7 +449,7 @@ def OpenScriptUpdater():
         raise
 
 def OpenOverlayPreview():
-    os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "Overlay.html")))
+    os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "overlay.html")))
 def StopCurrentVideo():
     Parent.BroadcastWsEvent("EVENT_MEDAL_STOP", None)
 def PlayRandomVideo():
@@ -452,3 +467,22 @@ def PlayMostRecent():
 def OpenCustomCSSFile():
     customcss = os.path.join(os.path.dirname(__file__), "./custom.css")
     os.startfile(customcss, "edit")
+
+def OpenSpecialPrivileges():
+    os.startfile("https://docs.google.com/forms/d/e/1FAIpQLSeLxbs1UchRGT6Nb6WYD_0gO7821SbRrAnDYjqVOXNrPBrJ4g/viewform")
+
+def GeneratePrivateKey():
+    os.startfile("https://developers.medal.tv/v1/generate_private_key")
+
+def OpenOverlayRecents():
+    os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "recents.html")))
+
+
+def RecentPlayBackPlay():
+    Parent.BroadcastWsEvent("EVENT_MEDAL_RECENT_PLAY", None)
+def RecentPlayBackStop():
+    Parent.BroadcastWsEvent("EVENT_MEDAL_RECENT_STOP", None)
+def RecentPlayMute():
+    Parent.BroadcastWsEvent("EVENT_MEDAL_RECENT_MUTE", None)
+def RecentPlayNext():
+    Parent.BroadcastWsEvent("EVENT_MEDAL_RECENT_SKIP", None)

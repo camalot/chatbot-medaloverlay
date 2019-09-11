@@ -74,7 +74,7 @@ function initializeUI() {
 		.css("--video-width", `${vwidth}px`)
 		.css("--video-height", `${vheight}px`);
 
-	$("#video-container video")
+	$("#video-container video.replay")
 		.on("error", function (e) { console.error(`Error: ${e}`); })
 		.on("canplay", videoLoaded)
 		.on("ended pause", videoEnded)
@@ -117,8 +117,8 @@ function validateSettings() {
 	};
 }
 
-function timelapse() {
-	let video = $("#video-container .video-box video").get(0);
+function timelapse(e) {
+	let video = $("#video-container .video-box video.replay").get(0);
 	let pbar = $("#video-container .video-box progress").get(0);
 	if (video.duration && video.currentTime) {
 		let percent = (100 / video.duration) * video.currentTime;
@@ -141,7 +141,7 @@ function videoLoaded(e) {
 	$("#video-container").removeClass("hidden");
 }
 
-function videoEnded() {
+function videoEnded(e) {
 	console.log("video ended");
 	isClipPlaying = false;
 
@@ -212,7 +212,7 @@ function connectWebsocket() {
 				console.log(eventData);
 				let webfile = `http://localhost:${eventData.port}/${eventData.video}`;
 
-				$("#video-container video")
+				$("#video-container video.replay")
 					.show()
 					.prop("autoplay", true)
 					.prop("muted", true)
@@ -222,7 +222,7 @@ function connectWebsocket() {
 				break;
 			case "EVENT_MEDAL_STOP":
 				console.log("STOP VIDEO");
-				$("#video-container video")
+				$("#video-container video.replay")
 					.get(0)
 					.pause();
 				break;
