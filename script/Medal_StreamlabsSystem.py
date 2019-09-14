@@ -437,6 +437,7 @@ def OpenScriptUpdater():
             "path": os.path.realpath(os.path.join(currentDir,"../")),
             "version": Version,
             "name": ScriptName,
+            "kill": ["mohttpd"],
             "chatbot": os.path.join(chatbotRoot, "Streamlabs Chatbot.exe"),
             "script": os.path.basename(os.path.dirname(os.path.realpath(__file__))),
             "website": Website,
