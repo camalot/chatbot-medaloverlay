@@ -27,12 +27,13 @@ import MedalRunner
 #   [Required] Script Information
 #---------------------------------------
 ScriptName = "Medal Overlay"
-Website = "darthminos.tv"
+Website = "http://darthminos.tv"
 Description = "Triggers Medal.tv and plays the video back on stream"
 Creator = "DarthMinos"
 Version = "1.0.0-snapshot"
 MedalInviteUrl = "https://medal.tv/invite/"
 MedalPublicApiKey = "pub_YiUDXfg4MRtOrIeeWOV4v26foDP6QTcY"
+Repo = "camalot/chatbot-medaloverlay"
 # ---------------------------------------
 #	Set Variables
 # ---------------------------------------
@@ -40,6 +41,7 @@ MedalPublicApiKey = "pub_YiUDXfg4MRtOrIeeWOV4v26foDP6QTcY"
 
 SettingsFile = os.path.join(os.path.dirname(__file__), "settings.json")
 ReadMeFile = "https://github.com/camalot/chatbot-medaloverlay/blob/develop/ReadMe.md"
+
 ScriptSettings = None
 
 CurrentClipId = None
@@ -414,30 +416,34 @@ def OpenDownloadMedalLink():
 def OpenFollowOnTwitchLink():
     os.startfile("https://twitch.tv/DarthMinos")
     return
-def OpenDonateLink():
-    os.startfile("https://twitch.tv/DarthMinos")
-    return
 def OpenScriptUpdater():
     currentDir = os.path.realpath(os.path.dirname(__file__))
     chatbotRoot = os.path.realpath(os.path.join(currentDir, "../../../"))
-    libsDir = os.path.join(currentDir, "Libs/")
+    libsDir = os.path.join(currentDir, "libs/updater")
     Parent.Log(ScriptName, libsDir)
     try:
         src_files = os.listdir(libsDir)
-
         tempdir = tempfile.mkdtemp()
         Parent.Log(ScriptName, tempdir)
         for file_name in src_files:
             full_file_name = os.path.join(libsDir, file_name)
-            if os.path.isfile(full_file_name) and file_name != "mohttpd.exe" and "_log" not in file_name:
+            if os.path.isfile(full_file_name):
                 Parent.Log(ScriptName, "Copy: " + full_file_name)
                 shutil.copy(full_file_name, tempdir)
-        updater = os.path.join(tempdir, "MedalOverlayUpdater.exe")
+        updater = os.path.join(tempdir, "ChatbotScriptUpdater.exe")
         updaterConfigFile = os.path.join(tempdir, "chatbot.json")
+        repoVals = Repo.split('/')
         updaterConfig = {
             "path": os.path.realpath(os.path.join(currentDir,"../")),
             "version": Version,
-            "chatbot": os.path.join(chatbotRoot, "Streamlabs Chatbot.exe")
+            "name": ScriptName,
+            "chatbot": os.path.join(chatbotRoot, "Streamlabs Chatbot.exe"),
+            "script": os.path.basename(os.path.dirname(os.path.realpath(__file__))),
+            "website": Website,
+            "repository": {
+                "owner": repoVals[0],
+                "name": repoVals[1]
+            }
         }
         Parent.Log(ScriptName, updater)
         configJson = json.dumps(updaterConfig)

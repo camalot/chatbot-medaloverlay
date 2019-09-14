@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedalRunner", "MedalRunner\MedalRunner.csproj", "{75C0A25C-841D-4E75-B4BA-45BD366F23A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedalOverlayUpdater", "MedalOverlayUpdater\MedalOverlayUpdater.csproj", "{717177E3-1D75-4BE3-8162-A580F3F03E6B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{75C0A25C-841D-4E75-B4BA-45BD366F23A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75C0A25C-841D-4E75-B4BA-45BD366F23A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75C0A25C-841D-4E75-B4BA-45BD366F23A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{717177E3-1D75-4BE3-8162-A580F3F03E6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{717177E3-1D75-4BE3-8162-A580F3F03E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{717177E3-1D75-4BE3-8162-A580F3F03E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{717177E3-1D75-4BE3-8162-A580F3F03E6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
