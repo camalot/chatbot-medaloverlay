@@ -478,6 +478,13 @@
 	// 	"tooltip": "The port used by tinyweb for the overlay",
 	// 	"group": "Advanced"
 	// },
+	"OpenDonateLink": {
+		"type": "button",
+		"label": "Donate",
+		"tooltip": "Donate to support development",
+		"function": "OpenDonateLink",
+		"wsevent": "EVENT_NONE"
+	},
 	"OpenDownloadMedalLink": {
 		"type": "button",
 		"label": "Get Medal",

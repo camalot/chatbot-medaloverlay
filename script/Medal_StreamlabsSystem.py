@@ -39,6 +39,7 @@ Repo = "camalot/chatbot-medaloverlay"
 # ---------------------------------------
 
 
+DonateLink = "https://paypal.me/camalotdesigns"
 SettingsFile = os.path.join(os.path.dirname(__file__), "settings.json")
 ReadMeFile = "https://github.com/camalot/chatbot-medaloverlay/blob/develop/ReadMe.md"
 
@@ -431,11 +432,12 @@ def OpenScriptUpdater():
                 Parent.Log(ScriptName, "Copy: " + full_file_name)
                 shutil.copy(full_file_name, tempdir)
         updater = os.path.join(tempdir, "ChatbotScriptUpdater.exe")
-        updaterConfigFile = os.path.join(tempdir, "chatbot.json")
+        updaterConfigFile = os.path.join(tempdir, "update.manifest")
         repoVals = Repo.split('/')
         updaterConfig = {
             "path": os.path.realpath(os.path.join(currentDir,"../")),
             "version": Version,
+            "requiresRestart": True,
             "name": ScriptName,
             "kill": ["mohttpd"],
             "execute": {
@@ -487,6 +489,9 @@ def GeneratePrivateKey():
 
 def OpenOverlayRecents():
     os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "recents.html")))
+def OpenDonateLink():
+    os.startfile(DonateLink)
+    return
 
 
 def RecentPlayBackPlay():
