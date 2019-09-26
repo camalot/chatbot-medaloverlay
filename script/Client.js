@@ -1,6 +1,9 @@
 "use strict";
 let isClipPlaying = false;
 let refreshAfter = false;
+
+settings = { ...DEFAULT_SETTINGS, ...settings };
+
 // Start ws connection after document is loaded
 jQuery(document).ready(function () {
 	// verify settings...
@@ -183,7 +186,8 @@ function connectWebsocket() {
 				"EVENT_MEDAL_PLAY",
 				"EVENT_MEDAL_STOP",
 				"EVENT_MEDAL_START",
-				"EVENT_MEDAL_RELOAD"
+				"EVENT_MEDAL_RELOAD",
+				"EVENT_MEDAL_SETTINGS"
 			]
 		};
 
@@ -201,6 +205,7 @@ function connectWebsocket() {
 		let socketMessage = JSON.parse(message.data);
 		let eventName = socketMessage.event;
 		console.log(socketMessage);
+		let eventData = typeof socketMessage.data === "string" ? JSON.parse(socketMessage.data || "{}") : socketMessage.data;
 
 		switch (eventName) {
 			case "EVENT_MEDAL_PLAY":
@@ -208,7 +213,6 @@ function connectWebsocket() {
 					console.log("Received event to play, but video already playing.");
 					return;
 				}
-				let eventData = JSON.parse(socketMessage.data || "{}");
 				console.log(eventData);
 				let webfile = `http://localhost:${eventData.port}/${eventData.video}`;
 
@@ -231,6 +235,12 @@ function connectWebsocket() {
 					refreshAfter = true;
 				} else {
 					location.reload();
+				}
+				break;
+			case "EVENT_MEDAL_SETTINGS":
+				window.settings = eventData;
+				if (validateSettings()) {
+					initializeUI();
 				}
 				break;
 			default:

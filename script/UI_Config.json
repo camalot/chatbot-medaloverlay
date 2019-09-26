@@ -403,6 +403,13 @@
 		"tooltip": "Sets the volume level for the video",
 		"group": "Recent Clips"
 	},
+	"RecentAutoStartVideo": {
+		"type": "checkbox",
+		"value": true,
+		"label": "Auto Play Clips",
+		"tooltip": "Video will play automatically when the source is visible.",
+		"group": "Recent Clips"
+	},
 	"RecentMuteAudio": {
 		"type": "checkbox",
 		"value": false,

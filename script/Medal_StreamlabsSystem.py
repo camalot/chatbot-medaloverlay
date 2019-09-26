@@ -94,6 +94,7 @@ class Settings(object):
             self.ProgressBarBackgroundColor = "transparent"
             self.PublicApiKey = MedalPublicApiKey
             self.PrivateApiKey = ""
+            self.RecentAutoStartVideo = True
             self.RecentMuteAudio = False
             self.RecentVolume = 100
             self.RecentShowVideoProgress = True
@@ -131,7 +132,9 @@ def StartHttpd(app, webdir, port):
     Parent.Log(ScriptName, tool + " \"" + webdir + "\" " + str(port) + " 127.0.0.1")
     os.spawnl(os.P_NOWAITO, tool, tool, webdir, str(port), "127.0.0.1")
     return
-
+def SendOverlaySettingsUpdate():
+    Parent.Log(ScriptName, "EVENT_MEDAL_SETTINGS: " + json.dumps(ScriptSettings.__dict__))
+    Parent.BroadcastWsEvent("EVENT_MEDAL_SETTINGS", json.dumps(ScriptSettings.__dict__))
 def ReloadOverlay():
     Parent.Log(ScriptName, "EVENT_MEDAL_RELOAD: " + json.dumps(None))
     Parent.BroadcastWsEvent("EVENT_MEDAL_RELOAD", json.dumps(None))
@@ -380,7 +383,7 @@ def ReloadSettings(jsondata):
     # Reload saved settings and validate values
     Unload()
     Init()
-    ReloadOverlay()
+    SendOverlaySettingsUpdate()
     return
 
 #---------------------------

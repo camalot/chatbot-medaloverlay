@@ -7,6 +7,8 @@ let stopPlayback = false;
 let page = 0;
 let perPage = 25;
 let IS_CEF = window.obsstudio !== undefined;
+let USER_PLAY = false;
+settings = { ...DEFAULT_SETTINGS, ...settings };
 
 let getMedalApiKey = () => {
 	if (settings.PrivateApiKey && settings.PrivateApiKey !== "") {
@@ -30,7 +32,10 @@ let validateSettings = () => {
 
 let initializeUI = () => {
 	$("#video-container .video-box video.replay")
-		.on("error", function (e) { console.error(`Error: ${e}`); })
+		.on("error", function (e) {
+			console.error(`Error: ${e}`);
+			videoEnded(e);
+		})
 		.prop("volume", settings.RecentVolume / 100)
 		.prop("muted", IS_CEF ? settings.RecentMuteAudio : true)
 		.on("canplay", videoLoaded)
@@ -97,7 +102,7 @@ let videoEnded = (e) => {
 let queueVideo = (clipData) => {
 	if (clipData) {
 		$("#video-container .video-box video.replay")
-			.prop("autoplay", true)
+			.prop("autoplay", settings.RecentAutoStartVideo || USER_PLAY)
 			.prop("preload", true)
 			.prop("loop", false)
 			.prop("volume", settings.RecentVolume / 100)
@@ -141,7 +146,8 @@ let connectWebsocket = () => {
 				"EVENT_MEDAL_RECENT_STOP",
 				"EVENT_MEDAL_RECENT_PLAY",
 				"EVENT_MEDAL_RECENT_SKIP",
-				"EVENT_MEDAL_RELOAD"
+				"EVENT_MEDAL_RELOAD",
+				"EVENT_MEDAL_SETTINGS"
 			]
 		};
 
@@ -159,6 +165,7 @@ let connectWebsocket = () => {
 		let socketMessage = JSON.parse(message.data);
 		let eventName = socketMessage.event;
 		console.log(socketMessage);
+		let eventData = typeof socketMessage.data === "string" ? JSON.parse(socketMessage.data || "{}") : socketMessage.data;
 		let videoPlayer = $("#video-container video.replay").get(0);
 		switch (eventName) {
 			case "EVENT_MEDAL_RECENT_MUTE":
@@ -171,11 +178,15 @@ let connectWebsocket = () => {
 			case "EVENT_MEDAL_RECENT_PLAY":
 				console.log("PLAY VIDEO");
 				stopPlayback = false;
+				USER_PLAY = true;
+				$(videoPlayer).prop("autoplay", settings.RecentAutoStartVideo || USER_PLAY)
 				videoPlayer.play();
 				break;
 			case "EVENT_MEDAL_RECENT_STOP":
 				console.log("STOP VIDEO");
 				stopPlayback = true;
+				USER_PLAY = false;
+				$(videoPlayer).prop("autoplay", settings.RecentAutoStartVideo || USER_PLAY)
 				videoPlayer.pause();
 				break;
 			case "EVENT_MEDAL_RECENT_SKIP":
@@ -188,6 +199,12 @@ let connectWebsocket = () => {
 					refreshAfter = true;
 				} else {
 					location.reload();
+				}
+				break;
+			case "EVENT_MEDAL_SETTINGS":
+				window.settings = eventData;
+				if (validateSettings()) {
+					initializeUI();
 				}
 				break;
 			default:
