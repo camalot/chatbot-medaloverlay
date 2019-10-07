@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #---------------------------------------
 #   Import Libraries
 #---------------------------------------
@@ -32,6 +33,8 @@ Description = "Triggers Medal.tv and plays the video back on stream"
 Creator = "DarthMinos"
 Version = "1.0.0-snapshot"
 MedalInviteUrl = "https://medal.tv/invite/"
+MedalPartnerUrl = "https://medal.tv/?ref="
+DefaultMedalPartnerRef = "DarthMinos_partner"
 MedalPublicApiKey = "pub_YiUDXfg4MRtOrIeeWOV4v26foDP6QTcY"
 Repo = "camalot/chatbot-medaloverlay"
 # ---------------------------------------
@@ -71,6 +74,7 @@ class Settings(object):
             self.HotKey = "{F8}"
             self.Username = ""
             self.UserId = ""
+            self.MedalPartnerRef = DefaultMedalPartnerRef
             self.PositionVertical = "Middle"
             self.PositionHorizontal = "Right"
             self.InTransition = "slideInLeft"
@@ -292,12 +296,13 @@ def Execute(data):
         if not Parent.IsOnCooldown(ScriptName, commandTrigger):
             if commandTrigger == "!medal":
                 Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
-                Parent.SendTwitchMessage("The Medal desktop client records clips with one button press, posts them on medal.tv, and gives you a shareable link. No lag, no fuss. " +
-                "Get Medal and follow " + Parent.GetChannelName() + ". " + MedalInviteUrl + ScriptSettings.Username + " - Use command " + ScriptSettings.Command +
-                " in the chat to trigger a clip.")
+                message = Parse("$MedalDescription\n👀 Get Medal: $MedalPartnerLink 👀 Follow " + Parent.GetChannelName() +
+                 ": $MedalFollowLink 👀 Create a clip with the $MedalClipCommand command.", data.User, data.UserName, None, None, data.Message)
+                Parent.SendTwitchMessage(message)
             elif commandTrigger == "!medaloverlay":
                 Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
-                Parent.SendTwitchMessage("Medal Overlay is a StreamLabs Chatbot Script developed by DarthMinos: https://twitch.tv/darthminos To Download or find out more visit https://github.com/camalot/chatbot-medaloverlay")
+                message = Parse("$MedalOverlayDescription", data.User, data.UserName, None, None, data.Message)
+                Parent.SendTwitchMessage(message)
             elif commandTrigger == ScriptSettings.Command:
                 if Parent.HasPermission(data.User, ScriptSettings.Permission, ""):
                     if data.User in TriggerList:
@@ -333,10 +338,22 @@ def Execute(data):
 #   [Optional] Parse method (Allows you to create your own custom $parameters)
 #---------------------------
 def Parse(parseString, userid, username, targetid, targetname, message):
-    # if "$myparameter" in parseString:
-    #     return parseString.replace("$myparameter","I am a cat!")
-
-    return parseString
+    result = parseString
+    if "$MedalFollowLink" in result:
+        result = result.replace("$MedalFollowLink", MedalInviteUrl + ScriptSettings.Username)
+    if "$MedalPartnerLink" in result:
+        result = result.replace("$MedalPartnerLink", MedalPartnerUrl + (ScriptSettings.MedalPartnerRef or DefaultMedalPartnerRef))
+    if "$MedalClipCommand" in result:
+        result = result.replace("$MedalClipCommand", ScriptSettings.Command)
+    if "$MedalUserName" in result:
+        result = result.replace("$MedalUserName", ScriptSettings.Username)
+    if "$MedalUserId" in result:
+        result = result.replace("$MedalUserId", ScriptSettings.UserId)
+    if "$MedalDescription" in result:
+        result = result.replace("$MedalDescription", "The Medal desktop client records clips with one button press, posts them on medal.tv, and gives you a shareable link. No lag, no fuss.")
+    if "$MedalOverlayDescription" in result:
+        result = result.replace("$MedalOverlayDescription", "Medal Overlay is a StreamLabs Chatbot Script developed by DarthMinos: https://twitch.tv/darthminos To Download or find out more visit https://github.com/camalot/chatbot-medaloverlay")
+    return result.replace('\\n', '\n').strip()
 
 #---------------------------
 #   [Optional] Unload (Called when a user reloads their scripts or closes the bot / cleanup stuff)

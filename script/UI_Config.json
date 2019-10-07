@@ -265,6 +265,20 @@
 		"tooltip": "The path to your medal video files",
 		"group": "Medal"
 	},
+	// "UseMedalPartnerLink": {
+	// 	"type": "checkbox",
+	// 	"label": "Advertise Partner Link",
+	// 	"value": false,
+	// 	"tooltip": "In !medal command, use your Medal Partner Link",
+	// 	"group": "Medal"
+	// },
+	"MedalPartnerRef": {
+		"type": "textbox",
+		"label": "Partner Reference Name",
+		"value": "",
+		"tooltip": "Your Medal Partner Reference Name. The part after 'ref=' in your partner url.",
+		"group": "Medal"
+	},
 	"UsePositionVertical": {
 		"type": "checkbox",
 		"value": true,
