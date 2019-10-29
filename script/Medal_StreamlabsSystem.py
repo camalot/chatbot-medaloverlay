@@ -339,22 +339,23 @@ def Execute(data):
 #---------------------------
 def Parse(parseString, userid, username, targetid, targetname, message):
     result = parseString
-    if "$MedalFollowLink" in result:
-        result = result.replace("$MedalFollowLink", MedalInviteUrl + ScriptSettings.Username)
-    if "$MedalPartnerLink" in result:
-        result = result.replace("$MedalPartnerLink", MedalPartnerUrl + (ScriptSettings.MedalPartnerRef or DefaultMedalPartnerRef))
-    if "$MedalClipCommand" in result:
-        result = result.replace("$MedalClipCommand", ScriptSettings.Command)
-    if "$MedalUserName" in result:
-        result = result.replace("$MedalUserName", ScriptSettings.Username)
-    if "$MedalUserId" in result:
-        result = result.replace("$MedalUserId", ScriptSettings.UserId)
-    if "$MedalDescription" in result:
-        result = result.replace("$MedalDescription", "The Medal desktop client records clips with one button press, posts them on medal.tv, and gives you a shareable link. No lag, no fuss.")
-    if "$MedalOverlayDescription" in result:
-        result = result.replace("$MedalOverlayDescription", "Medal Overlay is a StreamLabs Chatbot Script developed by DarthMinos: https://twitch.tv/darthminos To Download or find out more visit https://github.com/camalot/chatbot-medaloverlay")
-    return result.replace('\\n', '\n').strip()
-
+    if result:
+        if "$MedalFollowLink" in result:
+            result = result.replace("$MedalFollowLink", MedalInviteUrl + ScriptSettings.Username)
+        if "$MedalPartnerLink" in result:
+            result = result.replace("$MedalPartnerLink", MedalPartnerUrl + (ScriptSettings.MedalPartnerRef or DefaultMedalPartnerRef))
+        if "$MedalClipCommand" in result:
+            result = result.replace("$MedalClipCommand", ScriptSettings.Command)
+        if "$MedalUserName" in result:
+            result = result.replace("$MedalUserName", ScriptSettings.Username)
+        if "$MedalUserId" in result:
+            result = result.replace("$MedalUserId", ScriptSettings.UserId)
+        if "$MedalDescription" in result:
+            result = result.replace("$MedalDescription", "The Medal desktop client records clips with one button press, posts them on medal.tv, and gives you a shareable link. No lag, no fuss.")
+        if "$MedalOverlayDescription" in result:
+            result = result.replace("$MedalOverlayDescription", "Medal Overlay is a StreamLabs Chatbot Script developed by DarthMinos: https://twitch.tv/darthminos To Download or find out more visit https://github.com/camalot/chatbot-medaloverlay")
+        return result.replace('\\n', '\n').strip()
+    return result
 #---------------------------
 #   [Optional] Unload (Called when a user reloads their scripts or closes the bot / cleanup stuff)
 #---------------------------

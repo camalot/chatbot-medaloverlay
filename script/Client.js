@@ -2,7 +2,11 @@
 let isClipPlaying = false;
 let refreshAfter = false;
 
-settings = { ...DEFAULT_SETTINGS, ...settings };
+if (!window.settings) {
+	window.settings = {};
+}
+
+window.settings = { ...DEFAULT_SETTINGS, ...window.settings };
 
 // Start ws connection after document is loaded
 jQuery(document).ready(function () {
