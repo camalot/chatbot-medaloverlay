@@ -77,9 +77,25 @@ function initializeUI() {
 		vwidth = 320;
 	}
 	let vheight = Math.round((vwidth / 16) * 9);
+
+
+	var fontName = settings.FontName;
+	var customFontName = settings.CustomFontName;
+	if (fontName && fontName === "custom" && customFontName && customFontName !== "") {
+		loadFontsScript(customFontName);
+	} else {
+		$(":root").css("--font-name", fontName);
+	}
+
+
 	$(":root")
 		.css("--video-width", `${vwidth}px`)
-		.css("--video-height", `${vheight}px`);
+		.css("--video-height", `${vheight}px`)
+		.css("--replay-font-color", `${settings.TitleFontColor || "rgba(255,255,255,1)"}`)
+		.css("--replay-font-size", `${settings.TitleFontSize || 3.5}em`)
+		.css("--replay-text-align", `${settings.TitleTextAlign || "center"}`)
+		;
+
 
 	$("#video-container video.replay")
 		.on("error", function (e) { console.error(`Error: ${e}`); })
@@ -122,6 +138,17 @@ function validateSettings() {
 		hasUsername: hasUsername,
 		hasVideoPath: hasVideoPath
 	};
+}
+
+function loadFontsScript(font) {
+	let fnt = font.toLowerCase().replace(" ", "-");
+	var script = document.createElement('script');
+	script.onload = function () {
+		$(":root").css("--font-name", `${fnt}, Arial, sans-serif`);
+	};
+	script.src = `http://use.edgefonts.net/${fnt}.js`;
+
+	document.head.appendChild(script);
 }
 
 function timelapse(e) {

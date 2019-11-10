@@ -4,6 +4,12 @@
 
 	--video-width: 320px;
 	--video-height: 180px;
+
+	--font-name: bangers;
+
+	--replay-font-color: #fff;
+	--replay-font-size: 3.5em;
+	--replay-text-align: center;
 }
 
 
@@ -20,6 +26,8 @@ body, html {
   text-overflow: ellipsis;
 	letter-spacing: 3px;
 	overflow: hidden;
+
+	background-color: #000;
 }
 
 body.bad-config {
@@ -37,7 +45,7 @@ body.bad-config {
 	font-size: 4vh;
 	font-weight: bold;
 	text-align: left;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: var(--font-name, bangers);
 	padding: 10px;
 }
 .config-messages header {
@@ -54,12 +62,6 @@ body.bad-config {
 		left: 0;
 		right: 0;
 		bottom: 0;
-    /* width:50vw;
-    height:50vh; */
-		/* margin-top: -25vh; */
-		/*set to a negative number 1/2 of your height*/
-		/* margin-left: -25vw; */
-		/*set to a negative number 1/2 of your width*/
 }
 
 .hidden {
@@ -242,13 +244,20 @@ body.bad-config {
 	position: absolute;
 }
 #video-container .video-box .title {
-	font-size: 3.5em;
-	color: #fff;
+	font-size: var(--replay-font-size, 3.5em);
+	color: var(--replay-font-color, #fff);
 	font-weight: bold;
-	font-family: bangers, sans-serif;
-
+	font-family: var(--font-name, bangers);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	margin: 5px 0 0 5px;
+	position: absolute;
 	top: 0;
+	right: 0;
+	left: 0;
+	display: block;
+	text-align: var(--replay-text-align, center);
 }
 
 #video-container .video-box .views {

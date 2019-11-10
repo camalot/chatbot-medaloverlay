@@ -8,7 +8,10 @@ let page = 0;
 let perPage = 25;
 let IS_CEF = window.obsstudio !== undefined;
 let USER_PLAY = false;
-settings = { ...DEFAULT_SETTINGS, ...settings };
+if (!window.settings) {
+	window.settings = {};
+}
+window.settings = { ...window.DEFAULT_SETTINGS, ...window.settings };
 
 let getMedalApiKey = () => {
 	if (settings.PrivateApiKey && settings.PrivateApiKey !== "") {
@@ -57,7 +60,35 @@ let initializeUI = () => {
 	} else {
 		$("#video-container .video-box progress").addClass("hidden");
 	}
+
+
+	var fontName = settings.FontName;
+	var customFontName = settings.CustomFontName;
+	if (fontName && fontName === "custom" && customFontName && customFontName !== "") {
+		loadFontsScript(customFontName);
+	} else {
+		$(":root").css("--font-name", fontName);
+	}
+
+	$(":root")
+		.css("--replay-font-color", `${settings.TitleFontColor || "rgba(255,255,255,1)"}`)
+		.css("--replay-font-size", `${settings.TitleFontSize || 3.5}em`)
+		.css("--replay-text-align", `${settings.TitleTextAlign || "center"}`)
+		;
+
 };
+
+function loadFontsScript(font) {
+	let fnt = font.toLowerCase().replace(" ", "-");
+	var script = document.createElement('script');
+	script.onload = function () {
+		$(":root").css("--font-name", `${fnt}, Arial, sans-serif`);
+	};
+	script.src = `http://use.edgefonts.net/${fnt}.js`;
+
+	document.head.appendChild(script);
+}
+
 
 
 let timelapse = (e) => {

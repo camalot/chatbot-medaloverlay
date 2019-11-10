@@ -75,6 +75,11 @@ class Settings(object):
             self.Username = ""
             self.UserId = ""
             self.MedalPartnerRef = DefaultMedalPartnerRef
+            self.FontColor = "rgba(255,255,255,1)"
+            self.FontName = "days-one"
+            self.CustomFontName = ""
+            self.TitleFontSize = 3.5
+            self.TitleTextAlign = "center"
             self.PositionVertical = "Middle"
             self.PositionHorizontal = "Right"
             self.InTransition = "slideInLeft"
@@ -278,6 +283,7 @@ def Init():
     ClipWatcher.Start()
     StartHttpd("mohttpd", webDirectory, ScriptSettings.WebPort)
     # StartHttpd("overlayhttpd", os.path.dirname(os.path.abspath(__file__)), ScriptSettings.OverlayWebPort)
+    # Register()
     Initialized = True
     return
 
@@ -420,6 +426,17 @@ def Tick():
             Parent.SendTwitchMessage("Medal.tv clip generation did not get the required triggers of " + str(ScriptSettings.RequiredTriggerCount) + " to generate the clip.")
     return
 
+# def Register():
+#     payload = {
+#         "channel": Parent.GetChannelName(),
+#         "user": ScriptSettings.Username,
+#         "userId": ScriptSettings.UserId,
+#         "command": ScriptSettings.Command,
+#         "platform": Parent.GetStreamingService()
+#     }
+#     Parent.Log(ScriptName, json.dumps(payload))
+#     Parent.PostRequest("http://files.bit13.local:1880/medaloverlay/users", {"Content-Type": "application/json"}, payload, True)
+
 # ---------------------------------------
 # Script UI Button Functions
 # ---------------------------------------
@@ -513,7 +530,8 @@ def OpenOverlayRecents():
 def OpenDonateLink():
     os.startfile(DonateLink)
     return
-
+def OpenEdgeFontsUrl():
+    os.startfile("https://edgewebfonts.adobe.com/fonts")
 
 def RecentPlayBackPlay():
     Parent.BroadcastWsEvent("EVENT_MEDAL_RECENT_PLAY", None)

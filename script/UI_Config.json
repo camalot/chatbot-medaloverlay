@@ -121,6 +121,68 @@
 		"tooltip": "The background color of the Progress Bar",
 		"group": "Style"
 	},
+	"TitleFontColor": {
+		"type": "colorpicker",
+		"label": "Title Font Color",
+		"value": "rgba(255,255,255,1)",
+		"tooltip": "The font foreground color for video title.",
+		"group": "Style"
+	},
+	"TitleFontSize": {
+		"type": "slider",
+		"label": "Title font size",
+		"value": 3.5,
+		"min": 0.1,
+		"max": 5,
+		"ticks": 0.1,
+		"tooltip": "Title font size.",
+		"group": "Style"
+	},
+		"TitleTextAlign": {
+			"type": "dropdown",
+			"label": "Title Text Position",
+			"value": "center",
+			"items": [
+				"left",
+				"center",
+				"right"
+			],
+			"tooltip": "Title text alignment",
+			"group": "Style"
+		},
+	"FontName": {
+		"type": "dropdown",
+		"value": "days-one",
+		"items": [
+			"custom",
+			"amaranth",
+			"allan",
+			"bangers",
+			"bowlby-one",
+			"changa-one",
+			"days-one",
+			"droid-sans",
+			"fugaz-one"
+		],
+		"label": "Font Name",
+		"tooltip": "Font Name From Adobe Edge Fonts",
+		"group": "Style"
+	},
+	"CustomFontName": {
+		"type": "textbox",
+		"label": "Custom Font Name",
+		"value": "",
+		"tooltip": "A custom font from Adobe Edge Fonts",
+		"group": "Style"
+	},
+	"OpenEdgeFontsUrl": {
+		"type": "button",
+		"label": "Open Adobe Edge Fonts",
+		"tooltip": "Opens Adobe Edge Fonts site to select fonts",
+		"function": "OpenEdgeFontsUrl",
+		"wsevent": "EVENT_NONE",
+		"group": "Style"
+	},
 	"InTransition": {
 		"type": "dropdown",
 		"value": "slideInRight",

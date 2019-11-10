@@ -24,7 +24,12 @@ var DEFAULT_SETTINGS = {
   "VideoFrameBackground": "default",
   "VideoFrameCustomBackground": "",
   "ProgressBarFillColor": "rgba(255,151,59,1)",
-  "ProgressBarBackgroundColor": "rgba(0,0,0,0)",
+	"ProgressBarBackgroundColor": "rgba(0,0,0,0)",
+	"CustomFontName": "",
+	"FontName": "days-one",
+	"TitleFontColor": "rgba(255,255,255,1)",
+	"TitleFontSize": 3.5,
+	"TitleTextAlign": "center",
   "OverlayWebPort": 9292,
   "UserId": "",
   "PrivateApiKey": "",
@@ -34,4 +39,4 @@ var DEFAULT_SETTINGS = {
   "RecentVolume": 100.0,
   "RecentShowVideoProgress": true,
   "RecentShowTitle": true
-}
+};
