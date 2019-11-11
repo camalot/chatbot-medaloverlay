@@ -26,8 +26,6 @@ body, html {
   text-overflow: ellipsis;
 	letter-spacing: 3px;
 	overflow: hidden;
-
-	background-color: #000;
 }
 
 body.bad-config {
