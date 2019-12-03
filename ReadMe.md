@@ -111,7 +111,7 @@ Click on the script in the list to bring up the configuration.
 ### RECENT CLIPS
 > Settings and controls for the `Recent Clips` Overlay.
 
-[![](https://i.imgur.com/FqUcFwnl.png)](https://i.imgur.com/FqUcFwn.png)
+[![](https://i.imgur.com/fS1cbG9l.png)](https://i.imgur.com/fS1cbG9.png)
 
 | ITEM | DESCRIPTION | DEFAULT |
 | ---- | ----------- | -------- |
@@ -119,6 +119,7 @@ Click on the script in the list to bring up the configuration.
 | `Private API Key` | This key is your personal private key to access the medal api. It allows you to use non-watermarked playback of clips | `""` | 
 | `Generate Private API Key` | Generate a private api key for access to medal api |  | 
 | `Special Privileges Form` | Complete the form to get `Special Privileges` to use non-watermarked videos. |  | 
+| `Shuffle Videos` | Shuffle the videos on playback | `false` | 
 | `Video Volume` | The playback volume of the video | `100` | 
 | `Mute Playback Audio` | Mute the playback audio of the video | `false` | 
 | `Show Playback Progress Bar` | Show a playback progress bar at on the video. | `true` | 
