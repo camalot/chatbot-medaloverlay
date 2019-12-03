@@ -138,18 +138,18 @@
 		"tooltip": "Title font size.",
 		"group": "Style"
 	},
-		"TitleTextAlign": {
-			"type": "dropdown",
-			"label": "Title Text Position",
-			"value": "center",
-			"items": [
-				"left",
-				"center",
-				"right"
-			],
-			"tooltip": "Title text alignment",
-			"group": "Style"
-		},
+	"TitleTextAlign": {
+		"type": "dropdown",
+		"label": "Title Text Position",
+		"value": "center",
+		"items": [
+			"left",
+			"center",
+			"right"
+		],
+		"tooltip": "Title text alignment",
+		"group": "Style"
+	},
 	"FontName": {
 		"type": "dropdown",
 		"value": "days-one",
@@ -467,6 +467,13 @@
 		"label": "Special Privileges Form",
 		"tooltip": "Fill out the form to get special privileges to have 'non-watermarked' clips.",
 		"function": "OpenSpecialPrivileges",
+		"group": "Recent Clips"
+	},
+	"RecentRandom": {
+		"type": "checkbox",
+		"value": true,
+		"label": "Shuffle Videos",
+		"tooltip": "Shuffle Videos When Playing",
 		"group": "Recent Clips"
 	},
 	"RecentVolume": {

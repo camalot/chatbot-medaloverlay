@@ -105,6 +105,7 @@ class Settings(object):
             self.PrivateApiKey = ""
             self.RecentAutoStartVideo = True
             self.RecentMuteAudio = False
+            self.RecentRandom = False
             self.RecentVolume = 100
             self.RecentShowVideoProgress = True
             self.UseNonWatermarkedVideo = False

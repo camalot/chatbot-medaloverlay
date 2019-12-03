@@ -38,5 +38,6 @@ var DEFAULT_SETTINGS = {
   "UseNonWatermarkedVideo": false,
   "RecentVolume": 100.0,
   "RecentShowVideoProgress": true,
-  "RecentShowTitle": true
+	"RecentShowTitle": true,
+	"RecentRandom": false
 };
