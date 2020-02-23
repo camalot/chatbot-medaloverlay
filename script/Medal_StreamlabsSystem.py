@@ -539,7 +539,7 @@ def PollTwitchClips():
     # https://api.twitch.tv/kraken/clips/top?channel=darthminos&limit=1&trending=false&period=day
     resp = Parent.GetRequest("https://api.twitch.tv/kraken/clips/top?channel=" + Parent.GetChannelName().lower() + "&limit=1&trending=false&period=week", headers={
         "Accept": "application/vnd.twitchtv.v5+json",
-        "Client-ID": "z70figj04uestgfncd83m6qww1zm0l"
+        "Client-ID": ""
     })
     clips = json.loads(json.loads(resp)['response'])['clips']
     if len(clips) > 0:
