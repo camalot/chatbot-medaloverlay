@@ -327,13 +327,7 @@
 		"tooltip": "The path to your medal video files",
 		"group": "Medal"
 	},
-	// "UseMedalPartnerLink": {
-	// 	"type": "checkbox",
-	// 	"label": "Advertise Partner Link",
-	// 	"value": false,
-	// 	"tooltip": "In !medal command, use your Medal Partner Link",
-	// 	"group": "Medal"
-	// },
+
 	"MedalPartnerRef": {
 		"type": "textbox",
 		"label": "Partner Reference Name",
@@ -554,6 +548,48 @@
 		"wsevent": "EVENT_NONE",
 		"group": "Recent Clips"
 	},
+	"EnableTwitchClipAutoImport": {
+		"type": "checkbox",
+		"label": "Enable Twitch Clip Auto Import",
+		"value": false,
+		"tooltip": "Automatically imports a recently created clip from Twitch to Medal",
+		"group": "Twitch Clip Import"
+	},
+	"TwitchClientId": {
+		"type": "textbox",
+		"label": "Twitch App Client ID",
+		"value": "",
+		"tooltip": "Twitch App Client ID used for polling for new clips.",
+		"group": "Twitch Clip Import"
+	},
+	"OpenTwitchLink": {
+		"type": "button",
+		"label": "Get your Twitch Client ID here",
+		"tooltip": "Click here to go to the Twitch and create a App Client ID",
+		"function": "OpenTwitchLink",
+		"wsevent": "",
+		"group": "Twitch Clip Import"
+	},
+
+	"TwitchClipPollRate": {
+		"type": "numberbox",
+		"label": "Poll Rate (minutes)",
+		"value": 1,
+		"tooltip": "The rate to poll for new clips in minutes.",
+		"group": "Twitch Clip Import"
+	},
+	"TwitchClipMedalPrivacy": {
+		"type": "dropdown",
+		"label": "Poll Rate (minutes)",
+		"value": "Public",
+		"items": [
+			"Public",
+			"Private"
+		],
+		"tooltip": "The privacy level of the imported clip.",
+		"group": "Twitch Clip Import"
+	},
+
 	"WebPort": {
 		"type": "numberbox",
 		"label": "Video Web Port",
@@ -561,13 +597,6 @@
 		"tooltip": "The port used by tinyweb. Used for the overlay to request the clips.",
 		"group": "Advanced"
 	},
-	// "OverlayWebPort": {
-	// 	"type": "numberbox",
-	// 	"label": "Overlay Web Port",
-	// 	"value": 9292,
-	// 	"tooltip": "The port used by tinyweb for the overlay",
-	// 	"group": "Advanced"
-	// },
 	"OpenDonateLink": {
 		"type": "button",
 		"label": "Donate",

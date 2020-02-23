@@ -47,6 +47,7 @@ SettingsFile = os.path.join(os.path.dirname(__file__), "settings.json")
 ReadMeFile = "https://github.com/camalot/chatbot-medaloverlay/blob/develop/ReadMe.md"
 
 ScriptSettings = None
+MedalUserSettings = None
 
 CurrentClipId = None
 LastClipTriggerUser = None
@@ -57,10 +58,29 @@ Initialized = False
 TriggerCooldownTime = None
 TriggerCount = 0
 TriggerList = []
+
+PollCooldownTime = None
 # ---------------------------------------
 #	Script Classes
 # ---------------------------------------
 
+class UserSettings(object):
+    """ Holds the values from the medal/user.json """
+    def __init__(self):
+        """ Load the user.json file if available """
+        try:
+            settingsfile = os.path.realpath(os.path.join(os.getenv('APPDATA'), "Medal/store/user.json"))
+            self.key = None
+            self.userId = None
+            self.userName = None
+
+            with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
+                fileSettings = json.load(f, encoding="utf-8")
+                self.__dict__.update(fileSettings)
+        except Exception as e:
+            Parent.Log(ScriptName, str(e))
+    def Reload(self, jsonData):
+        return
 class Settings(object):
     """ Class to hold the script settings, matching UI_Config.json. """
 
@@ -110,6 +130,12 @@ class Settings(object):
             self.RecentShowVideoProgress = True
             self.UseNonWatermarkedVideo = False
             self.RecentShowTitle = True
+
+            self.EnableTwitchClipAutoImport = False
+            self.TwitchClipMedalPrivacy = "Public"
+            self.TwitchClipPollRate = 1
+            self.TwitchClientId = ""
+
             with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
                 fileSettings = json.load(f, encoding="utf-8")
                 self.__dict__.update(fileSettings)
@@ -250,6 +276,8 @@ def Init():
     global ClipWatcher
     global ProcessManager
     global Initialized
+    MedalUserSettings = UserSettings()
+    Parent.Log(ScriptName, json.dumps(MedalUserSettings.__dict__))
 
     if Initialized:
         Parent.Log(ScriptName, "Skip Initialization. Already Initialized.")
@@ -356,7 +384,8 @@ def Parse(parseString, userid, username, targetid, targetname, message):
         if "$MedalUserName" in result:
             result = result.replace("$MedalUserName", ScriptSettings.Username)
         if "$MedalUserId" in result:
-            result = result.replace("$MedalUserId", ScriptSettings.UserId)
+            # result = result.replace("$MedalUserId", ScriptSettings.UserId)
+            result = result.replace("$MedalUserId", MedalUserSettings.userId)
         if "$MedalDescription" in result:
             result = result.replace("$MedalDescription", "The Medal desktop client records clips with one button press, posts them on medal.tv, and gives you a shareable link. No lag, no fuss.")
         if "$MedalOverlayDescription" in result:
@@ -418,6 +447,9 @@ def Tick():
     global TriggerCooldownTime
     global TriggerCount
     global TriggerList
+
+    global PollCooldownTime
+
     if TriggerCooldownTime is not None and datetime.datetime.now() >= TriggerCooldownTime:
         TriggerCooldownTime = None
         TriggerCount = 0
@@ -425,7 +457,97 @@ def Tick():
         Parent.Log(ScriptName, "Reset clip trigger due to cooldown exceeded")
         if ScriptSettings.NotifyChatOfClips:
             Parent.SendTwitchMessage("Medal.tv clip generation did not get the required triggers of " + str(ScriptSettings.RequiredTriggerCount) + " to generate the clip.")
+
+    if PollCooldownTime is None or datetime.datetime.now() >= PollCooldownTime:
+        PollCooldownTime = datetime.datetime.now() + datetime.timedelta(minutes=ScriptSettings.TwitchClipPollRate)
+        # PollTwitchClips()
     return
+
+
+def ProcessTwitchClip(clip):
+    privacyLevel = {
+        "Public": 0,
+        "Private": 1
+    }
+
+    created = datetime.datetime.strptime(clip['created_at'],  "%Y-%m-%dT%H:%M:%SZ")
+    videoId = clip['slug']
+    data = {
+        "contentUrl": clip['url'],
+        "categoryId": 713, # https://developers.medal.tv/v1/categories
+        "risk": 0,
+        "privacy": privacyLevel[ScriptSettings.TwitchClipMedalPrivacy],
+        "contentType": 15,
+        "contentDescription": "Clipped on " + clip["broadcaster"]["channel_url"] + " by " + clip["curator"]["name"] + ". Imported through Medal Overlay Script for Streamlabs Chatbot - https://github.com/" + Repo,
+        "contentTitle": clip["title"] + " - " + clip["game"],
+        "thumbnailUrl": clip["thumbnails"]["medium"]
+    }
+
+    Parent.Log(ScriptName, json.dumps(data))
+
+    # Parent.PostRequest("https://api-v2.medal.tv/users/" + MedalUserSettings.userId + "/content", {
+    #     "Content-Type": "application/json",
+    #     "X-Authentication": MedalUserSettings.userId + "," + MedalUserSettings.key
+    # }, data , True)
+    return
+
+def PollTwitchClips():
+# {
+#     "clips": [
+#         {
+#             "slug": "EnergeticSmoothLegGivePLZ",
+#             "tracking_id": "624546459",
+#             "url": "https://clips.twitch.tv/EnergeticSmoothLegGivePLZ?tt_medium=clips_api&tt_content=url",
+#             "embed_url": "https://clips.twitch.tv/embed?clip=EnergeticSmoothLegGivePLZ&tt_medium=clips_api&tt_content=embed",
+#             "embed_html": "<iframe src='https://clips.twitch.tv/embed?clip=EnergeticSmoothLegGivePLZ&tt_medium=clips_api&tt_content=embed' width='640' height='360' frameborder='0' scrolling='no' allowfullscreen='true'></iframe>",
+#             "broadcaster": {
+#                 "id": "58491861",
+#                 "name": "darthminos",
+#                 "display_name": "DarthMinos",
+#                 "channel_url": "https://www.twitch.tv/darthminos",
+#                 "logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/7658bffb-94ae-4b01-acd1-b812630a7e07-profile_image-150x150.png"
+#             },
+#             "curator": {
+#                 "id": "39040920",
+#                 "name": "carrilla_saavaa",
+#                 "display_name": "Carrilla_Saavaa",
+#                 "channel_url": "https://www.twitch.tv/carrilla_saavaa",
+#                 "logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/d0b2bae5-dc6c-47d4-92ec-46d42cc691ce-profile_image-150x150.png"
+#             },
+#             "vod": {
+#                 "id": "554165376",
+#                 "url": "https://www.twitch.tv/videos/554165376?t=1h44m2s",
+#                 "offset": 6242,
+#                 "preview_image_url": "https://vod-secure.twitch.tv/_404/404_processing_320x240.png"
+#             },
+#             "broadcast_id": "36964459280",
+#             "game": "Tom Clancy's Rainbow Six: Siege",
+#             "language": "en",
+#             "title": "really?",
+#             "views": 5,
+#             "duration": 26.28,
+#             "created_at": "2020-02-19T00:15:20Z",
+#             "thumbnails": {
+#                 "medium": "https://clips-media-assets2.twitch.tv/AT-cm%7C624546459-preview-480x272.jpg",
+#                 "small": "https://clips-media-assets2.twitch.tv/AT-cm%7C624546459-preview-260x147.jpg",
+#                 "tiny": "https://clips-media-assets2.twitch.tv/AT-cm%7C624546459-preview-86x45.jpg"
+#             }
+#         }
+#     ],
+#     "_cursor": "MQ=="
+# }
+    # https://api.twitch.tv/kraken/clips/top?channel=darthminos&limit=1&trending=false&period=day
+    resp = Parent.GetRequest("https://api.twitch.tv/kraken/clips/top?channel=" + Parent.GetChannelName().lower() + "&limit=1&trending=false&period=week", headers={
+        "Accept": "application/vnd.twitchtv.v5+json",
+        "Client-ID": "z70figj04uestgfncd83m6qww1zm0l"
+    })
+    clips = json.loads(json.loads(resp)['response'])['clips']
+    if len(clips) > 0:
+        for clip in clips:
+            ProcessTwitchClip(clip)
+
+    return
+
 
 # def Register():
 #     payload = {
