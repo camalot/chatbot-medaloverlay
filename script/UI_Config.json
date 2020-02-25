@@ -562,11 +562,11 @@
 		"tooltip": "Twitch App Client ID used for polling for new clips.",
 		"group": "Twitch Clip Import"
 	},
-	"OpenTwitchLink": {
+	"OpenTwitchRegisterApplication": {
 		"type": "button",
 		"label": "Get your Twitch Client ID here",
 		"tooltip": "Click here to go to the Twitch and create a App Client ID",
-		"function": "OpenTwitchLink",
+		"function": "OpenTwitchRegisterApplication",
 		"wsevent": "",
 		"group": "Twitch Clip Import"
 	},
