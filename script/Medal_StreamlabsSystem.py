@@ -535,9 +535,9 @@ def ProcessTwitchClip(clip):
         if created >= timeWindow:
             if ClipsCacheData.Find(videoId) is None:
                 categoryId = 713
-                category = MedalCategories.Find(clip['game'])
-                if category is not None:
-                    categoryId = category['categoryId']
+                # category = MedalCategories.Find(clip['game'])
+                # if category is not None:
+                #     categoryId = category['categoryId']
                 # If the clip was not cached, add it
                 data = {
                     "contentUrl": clip['url'],
@@ -552,10 +552,10 @@ def ProcessTwitchClip(clip):
 
                 Parent.Log(ScriptName, json.dumps(data))
 
-                # Parent.PostRequest("https://api-v2.medal.tv/users/" + MedalUserSettings.userId + "/content", {
-                #     "Content-Type": "application/json",
-                #     "X-Authentication": MedalUserSettings.userId + "," + MedalUserSettings.key
-                # }, data , True)
+                Parent.PostRequest("https://api-v2.medal.tv/users/" + MedalUserSettings.userId + "/content", {
+                    "Content-Type": "application/json",
+                    "X-Authentication": MedalUserSettings.userId + "," + MedalUserSettings.key
+                }, data , True)
 
                 ClipsCacheData.Add(clip)
         else:
