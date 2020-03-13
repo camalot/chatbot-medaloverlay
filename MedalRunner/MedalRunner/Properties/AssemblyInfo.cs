@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MedalRunner")]
-[assembly: AssemblyCopyright("Copyright © Ryan Conrad 2019")]
+[assembly: AssemblyCopyright("Copyright © Ryan Conrad 2019 - 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -10,6 +10,7 @@ import os
 import re
 import random
 import datetime
+import time
 import glob
 import time
 import threading
@@ -63,6 +64,13 @@ TriggerCount = 0
 TriggerList = []
 
 PollCooldownTime = None
+
+timestr = time.strftime("%Y%m%d")
+logDir = os.path.join(os.path.dirname(__file__), "logs/")
+if not os.path.exists(logDir):
+    os.makedirs(logDir)
+LogFile = os.path.join(os.path.dirname(__file__), "logs/" + ScriptName + "-" + timestr + ".log")
+Logger = MedalRunner.Logger(LogFile)
 # ---------------------------------------
 #	Script Classes
 # ---------------------------------------
@@ -78,6 +86,7 @@ class MedalCategoriesCache(object):
             responseText = json.loads(resp, encoding="utf-8")['response']
             self.categories = json.loads(responseText, encoding="utf-8")
         except Exception as e:
+            Logger.Error(ScriptName, str(e))
             Parent.Log(ScriptName, str(e))
 
     def Find(self, game):
@@ -98,6 +107,7 @@ class ClipsCache(object):
                 data = json.load(f, encoding="utf-8")
                 self.__dict__.update(data)
         except Exception as e:
+            Logger.Error(ScriptName, str(e))
             Parent.Log(ScriptName, str(e))
 
     def Save(self):
@@ -105,6 +115,7 @@ class ClipsCache(object):
             with codecs.open(CachedClipsFile, encoding="utf-8-sig", mode="w") as outfile:
                 json.dump(self.__dict__, outfile)
         except Exception as e:
+            Logger.Error(ScriptName, str(e))
             Parent.Log(ScriptName, str(e))
 
     def Add(self, clip):
@@ -129,6 +140,7 @@ class UserSettings(object):
                 fileSettings = json.load(f, encoding="utf-8")
                 self.__dict__.update(fileSettings)
         except Exception as e:
+            Logger.Error(ScriptName, str(e))
             Parent.Log(ScriptName, str(e))
 class Settings(object):
     """ Class to hold the script settings, matching UI_Config.json. """
@@ -190,11 +202,13 @@ class Settings(object):
                 self.__dict__.update(fileSettings)
 
         except Exception as e:
+            Logger.Error(ScriptName, str(e))
             Parent.Log(ScriptName, str(e))
 
     def Reload(self, jsonData):
         """ Reload settings from the user interface by given json data. """
         Parent.Log(ScriptName, "Reload Settings")
+        Logger.Debug(ScriptName, str(e))
         fileLoadedSettings = json.loads(jsonData, encoding="utf-8")
         self.__dict__.update(fileLoadedSettings)
 
@@ -215,13 +229,16 @@ def StartHttpd(app, webdir, port):
     if not os.path.exists(index):
         with open(index, 'w'): pass
     Parent.Log(ScriptName, tool + " \"" + webdir + "\" " + str(port) + " 127.0.0.1")
+    Logger.Debug(ScriptName, tool + " \"" + webdir + "\" " + str(port) + " 127.0.0.1")
     os.spawnl(os.P_NOWAITO, tool, tool, webdir, str(port), "127.0.0.1")
     return
 def SendOverlaySettingsUpdate():
     Parent.Log(ScriptName, "EVENT_MEDAL_SETTINGS: " + json.dumps(ScriptSettings.__dict__))
+    Logger.Debug(ScriptName, "EVENT_MEDAL_SETTINGS: " + json.dumps(ScriptSettings.__dict__))
     Parent.BroadcastWsEvent("EVENT_MEDAL_SETTINGS", json.dumps(ScriptSettings.__dict__))
 def ReloadOverlay():
     Parent.Log(ScriptName, "EVENT_MEDAL_RELOAD: " + json.dumps(None))
+    Logger.Debug(ScriptName, "EVENT_MEDAL_RELOAD: " + json.dumps(None))
     Parent.BroadcastWsEvent("EVENT_MEDAL_RELOAD", json.dumps(None))
     return
 def PlayVideoById(videoId):
@@ -231,6 +248,7 @@ def PlayVideoById(videoId):
         "video": str(videoId) + ".mp4"
     }
     Parent.Log(ScriptName, "EVENT_MEDAL_PLAY: " + json.dumps(payload))
+    Logger.Debug(ScriptName, "EVENT_MEDAL_PLAY: " + json.dumps(payload))
     Parent.BroadcastWsEvent("EVENT_MEDAL_PLAY", json.dumps(payload))
 
 #---------------------------------------
@@ -254,6 +272,7 @@ def OnClipReady(sender, eventArgs):
         if ScriptSettings.NotifyChatOfClips:
             Parent.SendTwitchMessage(triggerUser + ", clip processing completed. Video will play shortly.")
         Parent.Log(ScriptName, "Event: ClipReady: " + eventArgs.ClipId)
+        Logger.Debug(ScriptName, "Event: ClipReady: " + eventArgs.ClipId)
 
         PlayVideoById(eventArgs.ClipId)
 
@@ -289,6 +308,7 @@ def OnClipStarted(sender, eventArgs):
     if ScriptSettings.NotifyChatOfClips:
         Parent.SendTwitchMessage(triggerUser + " has triggered a medal.tv clip. Clip is processing...")
     Parent.Log(ScriptName, "Event: ClipStarted: " + eventArgs.ClipId)
+    Logger.Debug(ScriptName, "Event: ClipStarted: " + eventArgs.ClipId)
     return
 
 #---------------------------------------
@@ -296,18 +316,21 @@ def OnClipStarted(sender, eventArgs):
 #---------------------------------------
 def OnMonitorStart(sender, eventArgs):
     Parent.Log(ScriptName, "Event: MonitorStart")
+    Logger.Debug(ScriptName, "Event: MonitorStart")
     return
 #---------------------------------------
 # Event Handler for ClipWatcher.MonitorStop
 #---------------------------------------
 def OnMonitorStop(sender, eventArgs):
     Parent.Log(ScriptName, "Event: MonitorStop")
+    Logger.Debug(ScriptName, "Event: MonitorStop")
     return
 #---------------------------------------
 # Event Handler for ClipWatcher.MonitorPause
 #---------------------------------------
 def OnMonitorPause(sender, eventArgs):
     Parent.Log(ScriptName, "Event: MonitorPause")
+    Logger.Debug(ScriptName, "Event: MonitorPause")
     return
 
 
@@ -335,13 +358,16 @@ def Init():
 
     if Initialized:
         Parent.Log(ScriptName, "Skip Initialization. Already Initialized.")
+        Logger.Debug(ScriptName, "Skip Initialization. Already Initialized.")
         return
 
     Parent.Log(ScriptName, "Initialize")
+    Logger.Debug(ScriptName, "Initialize")
     # Load saved settings and validate values
     ScriptSettings = Settings(SettingsFile)
     if ScriptSettings.VideoPath == "":
         Parent.Log(ScriptName, "Video Path Not Currently Set.")
+        Logger.Debug(ScriptName, "Video Path Not Currently Set.")
         return
 
     webDirectory = os.path.join(os.path.dirname(__file__), ScriptSettings.VideoPath)
@@ -354,6 +380,7 @@ def Init():
 
     if not os.path.exists(webDirectory):
         Parent.Log(ScriptName, "Video Path Does Not Exist: " + webDirectory)
+        Logger.Debug(ScriptName, "Video Path Does Not Exist: " + webDirectory)
         return
 
     ProcessManager = MedalRunner.Process()
@@ -396,6 +423,7 @@ def Execute(data):
                 if Parent.HasPermission(data.User, ScriptSettings.Permission, ""):
                     if data.User in TriggerList:
                         Parent.Log(ScriptName, "User already triggered the command. Skipping.")
+                        Logger.Debug(ScriptName, "User already triggered the command. Skipping.")
                         return
                     TriggerList.append(data.User)
                     TriggerCount += 1
@@ -406,6 +434,7 @@ def Execute(data):
                         LastClipTriggerUser = data.User
                         CurrentClipId = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
                         Parent.Log(ScriptName, "Sending HotKey: " + ScriptSettings.HotKey)
+                        Logger.Debug(ScriptName, "Sending HotKey: " + ScriptSettings.HotKey)
                         MedalRunner.Keys.SendKeys(ScriptSettings.HotKey)
                         TriggerCount = 0
                         TriggerCooldownTime = None
@@ -414,11 +443,13 @@ def Execute(data):
                         triggerDiff = ScriptSettings.RequiredTriggerCount - TriggerCount
                         if TriggerCount == 1:
                             Parent.Log(ScriptName, "init clip trigger.")
+                            Logger.Debug(ScriptName, "init clip trigger.")
                             TriggerCooldownTime = datetime.datetime.now() + datetime.timedelta(seconds=ScriptSettings.TriggerCooldown)
                             if ScriptSettings.NotifyChatOfClips:
                                 Parent.SendTwitchMessage(data.User + " has initialized a medal.tv clip. Need " + str(triggerDiff) + " more to generate the clip.")
                         else:
                             Parent.Log(ScriptName, "Additional trigger of clip generation.")
+                            Logger.Debug(ScriptName, "Additional trigger of clip generation.")
                             if ScriptSettings.NotifyChatOfClips:
                                 Parent.SendTwitchMessage(data.User + " triggered a medal.tv clip. Need " + str(triggerDiff) + " more to generate the clip.")
     return
@@ -453,10 +484,14 @@ def Unload():
     global Initialized
     global ClipWatcher
     Parent.Log(ScriptName, "Unload")
+    Logger.Debug(ScriptName, "Unload")
     Parent.Log(ScriptName, "Kill mohttpd Process")
+    Logger.Debug(ScriptName, "Kill mohttpd Process")
     stop = ProcessManager.Stop("mohttpd")
     Parent.Log(ScriptName, stop)
+    Logger.Debug(ScriptName, stop)
     Parent.Log(ScriptName, "Killed mohttpd Process")
+    Logger.Debug(ScriptName, "Killed mohttpd Process")
 
     if ClipWatcher is not None:
         Parent.Log(ScriptName, "Clear ClipWatcher Events")
@@ -477,6 +512,7 @@ def Unload():
 #---------------------------
 def ScriptToggled(state):
     Parent.Log(ScriptName, "State Changed: " + str(state))
+    Logger.Debug(ScriptName, "State Changed: " + str(state))
     if state:
         Init()
     else:
@@ -509,14 +545,16 @@ def Tick():
         TriggerCount = 0
         TriggerList = []
         Parent.Log(ScriptName, "Reset clip trigger due to cooldown exceeded")
+        Logger.Debug(ScriptName, "Reset clip trigger due to cooldown exceeded")
         if ScriptSettings.NotifyChatOfClips:
             Parent.SendTwitchMessage("Medal.tv clip generation did not get the required triggers of " + str(ScriptSettings.RequiredTriggerCount) + " to generate the clip.")
 
 
     if ScriptSettings.EnableTwitchClipAutoImport:
-        if PollCooldownTime is None or datetime.datetime.now() >= PollCooldownTime:
-            PollCooldownTime = datetime.datetime.now() + datetime.timedelta(minutes=ScriptSettings.TwitchClipPollRate)
-            PollTwitchClips()
+        if Parent.GetStreamingService().lower() == "twitch" :
+            if PollCooldownTime is None or datetime.datetime.now() >= PollCooldownTime:
+                PollCooldownTime = datetime.datetime.now() + datetime.timedelta(minutes=ScriptSettings.TwitchClipPollRate)
+                PollTwitchClips()
     return
 
 
@@ -529,6 +567,7 @@ def ProcessTwitchClip(clip):
 
         timeWindow = datetime.datetime.now() - datetime.timedelta(minutes=30)
         Parent.Log(ScriptName, "Process Twitch Clip")
+        Logger.Debug(ScriptName, "Process Twitch Clip")
         created = datetime.datetime.strptime(clip['created_at'],  "%Y-%m-%dT%H:%M:%SZ")
         videoId = clip['slug']
 
@@ -539,29 +578,33 @@ def ProcessTwitchClip(clip):
                 # if category is not None:
                 #     categoryId = category['categoryId']
                 # If the clip was not cached, add it
-                data = {
-                    "contentUrl": clip['url'],
-                    "categoryId": categoryId, # https://developers.medal.tv/v1/categories
-                    "risk": 0,
-                    "privacy": privacyLevel[ScriptSettings.TwitchClipMedalPrivacy],
-                    "contentType": 15,
-                    "contentDescription": "Clipped on " + clip["broadcaster"]["channel_url"] + " by " + clip["curator"]["name"] + ". Imported through Medal Overlay Script for Streamlabs Chatbot - https://github.com/" + Repo,
-                    "contentTitle": clip["title"] + " - " + clip["game"],
-                    "thumbnailUrl": clip["thumbnails"]["medium"]
-                }
-
-                Parent.Log(ScriptName, json.dumps(data))
-
-                Parent.PostRequest("https://api-v2.medal.tv/users/" + MedalUserSettings.userId + "/content", {
-                    "Content-Type": "application/json",
-                    "X-Authentication": MedalUserSettings.userId + "," + MedalUserSettings.key
-                }, data , True)
-
+                # description = "Clipped on " + clip["broadcaster"]["channel_url"] + " by " + clip["curator"]["name"] + ". Imported through Medal Overlay Script for Streamlabs Chatbot - https://github.com/" + Repo
+                description = "Clipped by " + clip["curator"]["name"]
+                clipImporter = MedalRunner.Importer(MedalUserSettings.userId, MedalUserSettings.key)
+                result = clipImporter.Import(clip['url'], clip["thumbnails"]["medium"], clip["title"] + " - " + clip["game"], description, categoryId, privacyLevel[ScriptSettings.TwitchClipMedalPrivacy])
+                Parent.Log(ScriptName, result)
+                Logger.Debug(ScriptName, result)
+                resultData = json.loads(result, encoding="utf-8")
+                if (resultData['medalContentId']):
+                    clip["medalContentId"] = resultData['contentId']
+                    Parent.Log(ScriptName, json.dumps(clip))
+                    Logger.Debug(ScriptName, json.dumps(clip))
+                    Parent.Log(ScriptName, "Clip has been imported: https://medal.tv/clips/" + str(resultData['contentId']))
+                    Logger.Debug(ScriptName, "Clip has been imported: https://medal.tv/clips/" + str(resultData['contentId']))
+                else:
+                    Parent.Log(ScriptName, json.dumps(resultData))
+                    Logger.Debug(ScriptName, json.dumps(resultData))
+                Parent.Log(ScriptName, "BEFORE CLIP CACHE")
+                Logger.Debug(ScriptName, "BEFORE CLIP CACHE")
                 ClipsCacheData.Add(clip)
+                Parent.Log(ScriptName, "AFTER CLIP CACHE")
+                Logger.Debug(ScriptName, "AFTER CLIP CACHE")
         else:
             Parent.Log(ScriptName, "Clip created outside of the allotted time window")
+            Logger.Debug(ScriptName, "Clip created outside of the allotted time window")
     except Exception as e:
         Parent.Log(ScriptName, str(e))
+        Logger.Error(ScriptName, str(e))
 
 def PollTwitchClips():
 
@@ -659,6 +702,7 @@ def OpenScriptUpdater():
     chatbotRoot = os.path.realpath(os.path.join(currentDir, "../../../"))
     libsDir = os.path.join(currentDir, "libs/updater")
     Parent.Log(ScriptName, libsDir)
+    Logger.Error(ScriptName, libsDir)
     try:
         src_files = os.listdir(libsDir)
         tempdir = tempfile.mkdtemp()
@@ -692,6 +736,7 @@ def OpenScriptUpdater():
         Parent.Log(ScriptName, updater)
         configJson = json.dumps(updaterConfig)
         Parent.Log(ScriptName, configJson)
+        Logger.Error(ScriptName, configJson)
         with open(updaterConfigFile, "w+") as f:
             f.write(configJson)
         os.startfile(updater)
