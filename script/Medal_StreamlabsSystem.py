@@ -25,9 +25,7 @@ clr.AddReferenceToFileAndPath(os.path.join(os.path.dirname(
     os.path.realpath(__file__)), "./Libs/MedalRunner.dll"))
 import MedalRunner
 
-#---------------------------------------
-#   [Required] Script Information
-#---------------------------------------
+
 ScriptName = "Medal Overlay"
 Website = "http://darthminos.tv"
 Description = "Triggers Medal.tv and plays the video back on stream"
@@ -38,15 +36,12 @@ MedalPartnerUrl = "https://medal.tv/?ref="
 DefaultMedalPartnerRef = "DarthMinos_partner"
 MedalPublicApiKey = "pub_YiUDXfg4MRtOrIeeWOV4v26foDP6QTcY"
 Repo = "camalot/chatbot-medaloverlay"
-# ---------------------------------------
-#	Set Variables
-# ---------------------------------------
-
-
 DonateLink = "https://paypal.me/camalotdesigns"
+ReadMeFile = "https://github.com/camalot/chatbot-medaloverlay/blob/develop/ReadMe.md"
+
+
 SettingsFile = os.path.join(os.path.dirname(__file__), "settings.json")
 CachedClipsFile = os.path.join(os.path.dirname(__file__), "clips.json")
-ReadMeFile = "https://github.com/camalot/chatbot-medaloverlay/blob/develop/ReadMe.md"
 
 ScriptSettings = None
 MedalUserSettings = None
@@ -105,7 +100,7 @@ class ClipsCache(object):
             self.clips = []
             with codecs.open(CachedClipsFile, encoding="utf-8-sig", mode="r") as f:
                 data = json.load(f, encoding="utf-8")
-                self.__dict__.update(data)
+                self.__dict__.update(self.cleanup(data))
         except Exception as e:
             Logger.Error(ScriptName, str(e))
             Parent.Log(ScriptName, str(e))
@@ -126,6 +121,16 @@ class ClipsCache(object):
     def Find(self, clipId):
         result = next((x for x in self.clips if x['slug'] == clipId), None)
         return result
+
+    def cleanup(self, ldata):
+        # timeWindow = datetime.datetime.now() - datetime.timedelta(days=7)
+        # for x in ldata:
+        #     created = datetime.datetime.strptime(x['created_at'],  "%Y-%m-%dT%H:%M:%SZ")
+        #     if created < timeWindow:
+        #         Parent.Log(ScriptName, "Remove Clip: " + x['slug'])
+        #         Logger.Debug(ScriptName, "Remove Clip: " + x['slug'])
+        #         ldata.remove(x)
+        return ldata
 class UserSettings(object):
     """ Holds the values from the medal/user.json """
     def __init__(self):
@@ -566,13 +571,13 @@ def ProcessTwitchClip(clip):
         }
 
         timeWindow = datetime.datetime.now() - datetime.timedelta(minutes=30)
-        Parent.Log(ScriptName, "Process Twitch Clip")
-        Logger.Debug(ScriptName, "Process Twitch Clip")
         created = datetime.datetime.strptime(clip['created_at'],  "%Y-%m-%dT%H:%M:%SZ")
         videoId = clip['slug']
 
         if created >= timeWindow:
             if ClipsCacheData.Find(videoId) is None:
+                Parent.Log(ScriptName, "Process Twitch Clip: " + videoId)
+                Logger.Debug(ScriptName, "Process Twitch Clip: " + videoId)
                 categoryId = 713
                 # category = MedalCategories.Find(clip['game'])
                 # if category is not None:
@@ -585,7 +590,7 @@ def ProcessTwitchClip(clip):
                 Parent.Log(ScriptName, result)
                 Logger.Debug(ScriptName, result)
                 resultData = json.loads(result, encoding="utf-8")
-                if (resultData['medalContentId']):
+                if 'contentId' in resultData:
                     clip["medalContentId"] = resultData['contentId']
                     Parent.Log(ScriptName, json.dumps(clip))
                     Logger.Debug(ScriptName, json.dumps(clip))
@@ -656,7 +661,7 @@ def PollTwitchClips():
     # clips = json.loads(testJSON)['clips']
     # https://api.twitch.tv/kraken/clips/top?channel=darthminos&limit=1&trending=false&period=day
 
-    resp = Parent.GetRequest("https://api.twitch.tv/kraken/clips/top?channel=" + Parent.GetChannelName().lower() + "&limit=1&trending=false&period=day", headers={
+    resp = Parent.GetRequest("https://api.twitch.tv/kraken/clips/top?channel=" + Parent.GetChannelName().lower() + "&limit=5&trending=false&period=day", headers={
         "Accept": "application/vnd.twitchtv.v5+json",
         "Client-ID": ScriptSettings.TwitchClientId
     })

@@ -553,14 +553,14 @@
 		"label": "Enable Twitch Clip Auto Import",
 		"value": false,
 		"tooltip": "Automatically imports a recently created clip from Twitch to Medal",
-		"group": "Twitch Clip Import"
+		"group": "Twitch Clip Import (BETA)"
 	},
 	"TwitchClientId": {
 		"type": "textbox",
 		"label": "Twitch App Client ID",
 		"value": "",
 		"tooltip": "Twitch App Client ID used for polling for new clips.",
-		"group": "Twitch Clip Import"
+		"group": "Twitch Clip Import (BETA)"
 	},
 	"OpenTwitchRegisterApplication": {
 		"type": "button",
@@ -568,7 +568,7 @@
 		"tooltip": "Click here to go to the Twitch and create a App Client ID",
 		"function": "OpenTwitchRegisterApplication",
 		"wsevent": "",
-		"group": "Twitch Clip Import"
+		"group": "Twitch Clip Import (BETA)"
 	},
 
 	"TwitchClipPollRate": {
@@ -576,18 +576,18 @@
 		"label": "Poll Rate (minutes)",
 		"value": 1,
 		"tooltip": "The rate to poll for new clips in minutes.",
-		"group": "Twitch Clip Import"
+		"group": "Twitch Clip Import (BETA)"
 	},
 	"TwitchClipMedalPrivacy": {
 		"type": "dropdown",
-		"label": "Poll Rate (minutes)",
+		"label": "Video Privacy",
 		"value": "Public",
 		"items": [
 			"Public",
 			"Private"
 		],
 		"tooltip": "The privacy level of the imported clip.",
-		"group": "Twitch Clip Import"
+		"group": "Twitch Clip Import (BETA)"
 	},
 
 	"WebPort": {

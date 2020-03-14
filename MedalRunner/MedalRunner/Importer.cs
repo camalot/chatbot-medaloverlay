@@ -17,7 +17,7 @@ namespace MedalRunner {
 
 		public int UserId { get; private set; }
 		public string AuthKey { get; private set; }
-		public string Import(string clipUrl, string thumbUrl, string title, string description, int categoryId = 713, int privacy = 0) {
+		public string Import ( string clipUrl, string thumbUrl, string title, string description, int categoryId = 713, int privacy = 0 ) {
 			try {
 				var postUrl = $"https://api-v2.medal.tv/users/{UserId.ToString ( )}/content";
 				var contentType = "application/json";
@@ -54,24 +54,24 @@ namespace MedalRunner {
 					}
 				}
 			} catch ( Exception e ) {
-				return $"{{ \"error\": \"{e.Message}\", \"stack\": \"{e.StackTrace}\" }}";
+				return $"{{ \"error\": \"{e.Message.Replace ( "\r", "" ).Replace ( "\n", "\\n" )}\", \"stack\": \"{e.StackTrace.Replace ( "\r", "" ).Replace ( "\n", "\\n" )}\" }}";
 			}
 		}
 
 		public class ImportData {
-			[JsonProperty("contentUrl")]
+			[JsonProperty ( "contentUrl" )]
 			public string ContentUrl { get; set; }
-			[JsonProperty("categoryId")]
+			[JsonProperty ( "categoryId" )]
 			public int CategoryId { get; set; } = 713;
-			[JsonProperty("risk")]
+			[JsonProperty ( "risk" )]
 			public int Risk { get; set; } = 0;
-			[JsonProperty("privacy")]
+			[JsonProperty ( "privacy" )]
 			public int Privacy { get; set; } = 0;
-			[JsonProperty("contentType")]
+			[JsonProperty ( "contentType" )]
 			public int ContentType { get; set; } = 15;
-			[JsonProperty("contentDescription")]
+			[JsonProperty ( "contentDescription" )]
 			public string ContentDescription { get; set; }
-			[JsonProperty("contentTitle")]
+			[JsonProperty ( "contentTitle" )]
 			public string ContentTitle { get; set; }
 			[JsonProperty ( "thumbnailUrl" )]
 			public string ThumbnailUrl { get; set; } = "empty";
