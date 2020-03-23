@@ -129,6 +129,18 @@ Click on the script in the list to bring up the configuration.
 | `Mute/Unmute` | Toggle mute state of the video. |  | 
 
 
+### TWITCH CLIP IMPORT (BETA)
+
+Automatically import twitch clips to your Medal account. At most, it will find the 5 most recent clips, and import those. 
+
+[![](https://i.imgur.com/3mOYNfKl.png)](https://i.imgur.com/3mOYNfK.png)
+
+| ITEM | DESCRIPTION | DEFAULT | 
+| ---- | ----------- | ------- | 
+| `Enable Twitch Clip Auto Import` | Should the auto import of twitch clips to medal be enabled | `false` | 
+| `Twitch App Client ID` | The Twitch Client ID. Click the button `Get Your Twitch Client Id Here` and complete the form to retrieve the client id | `""` |
+| `Poll Rate (minutes)` | The number of minutes between polling for new created clips | `1` | 
+| `Video Privacy` | The privacy level of the video. | `Public` |
 
 ### ADVANCED SETTINGS
 

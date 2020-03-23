@@ -1,4 +1,6 @@
-var DEFAULT_SETTINGS = {
+"use strict";
+
+let DEFAULT_SETTINGS = {
   "Command": "!clip",
   "OnlyTriggerOffCommand": false,
   "RequiredTriggerCount": 1.0,
@@ -39,5 +41,9 @@ var DEFAULT_SETTINGS = {
   "RecentVolume": 100.0,
   "RecentShowVideoProgress": true,
 	"RecentShowTitle": true,
-	"RecentRandom": false
+	"RecentRandom": false,
+	"EnableTwitchClipAutoImport": false,
+	"TwitchClipMedalPrivacy": "Public",
+	"TwitchClipPollRate": 1,
+	"TwitchClientId": ""
 };

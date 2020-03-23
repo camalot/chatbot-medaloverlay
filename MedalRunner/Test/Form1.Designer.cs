@@ -28,6 +28,7 @@ namespace Test {
 			this.pause = new System.Windows.Forms.Button();
 			this.stop = new System.Windows.Forms.Button();
 			this.killmohttpd = new System.Windows.Forms.Button();
+			this.importTest = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// trigger
@@ -80,11 +81,22 @@ namespace Test {
 			this.killmohttpd.UseVisualStyleBackColor = true;
 			this.killmohttpd.Click += new System.EventHandler(this.Killmohttpd_Click);
 			// 
+			// importTest
+			// 
+			this.importTest.Location = new System.Drawing.Point(12, 251);
+			this.importTest.Name = "importTest";
+			this.importTest.Size = new System.Drawing.Size(96, 23);
+			this.importTest.TabIndex = 6;
+			this.importTest.Text = "Import";
+			this.importTest.UseVisualStyleBackColor = true;
+			this.importTest.Click += new System.EventHandler(this.ImportTest_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(120, 311);
+			this.Controls.Add(this.importTest);
 			this.Controls.Add(this.killmohttpd);
 			this.Controls.Add(this.stop);
 			this.Controls.Add(this.pause);
@@ -106,6 +118,7 @@ namespace Test {
 		private System.Windows.Forms.Button pause;
 		private System.Windows.Forms.Button stop;
 		private System.Windows.Forms.Button killmohttpd;
+		private System.Windows.Forms.Button importTest;
 	}
 }
 

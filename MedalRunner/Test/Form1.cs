@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MedalRunner;
+using Newtonsoft.Json;
 
 namespace Test {
 	public partial class Form1 : Form {
@@ -64,5 +67,29 @@ namespace Test {
 		private void Killmohttpd_Click ( object sender, EventArgs e ) {
 			new MedalRunner.Process ( ).Stop ( "mohttpd" );
 		}
+
+		private void ImportTest_Click ( object sender, EventArgs e ) {
+
+			var appData = Environment.GetFolderPath ( Environment.SpecialFolder.ApplicationData );
+			var path = Path.Combine ( appData, "Medal/store/user.json" );
+			MedalUserSettings settings = null;
+			if ( System.IO.File.Exists ( path ) ) {
+				using ( var sr = File.OpenText ( path ) ) {
+					settings = JsonConvert.DeserializeObject<MedalUserSettings> ( sr.ReadToEnd ( ) );
+				}
+				var importer = new Importer ( settings.UserId, settings.Key );
+				var result = importer.Import ( "https://www.twitch.tv/darthminos/clip/ObeseSparklingAxeArsonNoSexy", "empty", "Long? Tom Clancy's Rainbow Six: Siege", "Test Clip Import");
+				Console.WriteLine ( result );
+			} else {
+				Console.WriteLine ( "User Settings File Not Found." );
+			}
+		}
+	}
+
+	public class MedalUserSettings {
+		[JsonProperty ( "userId" )]
+		public int UserId { get; set; }
+		[JsonProperty ( "key" )]
+		public string Key { get; set; }
 	}
 }
