@@ -729,9 +729,9 @@ def OpenScriptUpdater():
             "execute": {
                 "before": [{
                     "command": "cmd",
-                    "arguments": [ "/c", "del /q /f /s ChatbostScriptUpdater.exe" ],
+                    "arguments": [ "/c", "del /q /f /s ApplicationUpdater.exe" ],
                     "workingDirectory": "${PATH}\\${FOLDERNAME}\\Libs\\updater\\",
-                    "ignoreExitCode": true,
+                    "ignoreExitCode": True,
                     "validExitCodes": [ 0 ]
                 }],
                 "after": []
