@@ -727,7 +727,13 @@ def OpenScriptUpdater():
             "name": ScriptName,
             "kill": ["mohttpd"],
             "execute": {
-                "before": [],
+                "before": [{
+                    "command": "cmd",
+                    "arguments": [ "/c", "del /q /f /s ChatbostScriptUpdater.exe" ],
+                    "workingDirectory": "${PATH}\\${FOLDERNAME}\\Libs\\updater\\",
+                    "ignoreExitCode": true,
+                    "validExitCodes": [ 0 ]
+                }],
                 "after": []
             },
             "application": os.path.join(chatbotRoot, "Streamlabs Chatbot.exe"),
