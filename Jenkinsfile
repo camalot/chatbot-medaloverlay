@@ -61,8 +61,8 @@ node ("linux") {
 						Pipeline.upload_artifact(this, "dist/${env.CI_PROJECT_NAME}-${env.CI_BUILD_VERSION}.zip", "generic-local/${env.CI_PROJECT_NAME}/latest/${env.CI_PROJECT_NAME}-latest.zip", "")
 						Pipeline.publish_buildInfo(this)
 
-						// Pipeline.publish_github(this, Accounts.GIT_ORGANIZATION, env.CI_PROJECT_NAME, env.CI_BUILD_VERSION,
-						// "${WORKSPACE}/dist/${env.CI_PROJECT_NAME}-${env.CI_BUILD_VERSION}.zip", false, false)
+						Pipeline.publish_github(this, Accounts.GIT_ORGANIZATION, env.CI_PROJECT_NAME, env.CI_BUILD_VERSION,
+						"${WORKSPACE}/dist/${env.CI_PROJECT_NAME}-${env.CI_BUILD_VERSION}.zip", false, false)
 					}
 			} catch(err) {
 				currentBuild.result = "FAILURE"
