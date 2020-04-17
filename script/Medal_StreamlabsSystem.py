@@ -729,7 +729,7 @@ def OpenScriptUpdater():
             "execute": {
                 "before": [{
                     "command": "cmd",
-                    "arguments": [ "/c", "del /q /f /s ApplicationUpdater.exe" ],
+                    "arguments": [ "/c", "del /q /f /s *" ],
                     "workingDirectory": "${PATH}\\${FOLDERNAME}\\Libs\\updater\\",
                     "ignoreExitCode": True,
                     "validExitCodes": [ 0 ]
