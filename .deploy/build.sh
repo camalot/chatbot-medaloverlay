@@ -41,13 +41,14 @@ sed -i "s/Version = \"1.0.0-snapshot\"/Version = \"${BUILD_VERSION}\"/g" "${WORK
 
 # Download the latest version of the updater
 curl -sSL $(curl -s https://api.github.com/repos/camalot/chatbotscriptupdater/releases/latest \
-| jq -r '.assets[0] .browser_download_url') > ${WORKSPACE}/temp/script/chatbotscriptupdater.zip;
+| jq -r '.assets[] | select(.name|test("ApplicationUpater.Administrator")) | .browser_download_url') > ${WORKSPACE}/temp/script/applicationupdater.zip;
+
 sleep 2;
-cat ${WORKSPACE}/temp/script/chatbotscriptupdater.zip
+cat ${WORKSPACE}/temp/script/applicationupdater.zip
 mkdir -p ${WORKSPACE}/temp/script/libs/updater/
-unzip -d ${WORKSPACE}/temp/script/libs/updater/ ${WORKSPACE}/temp/script/chatbotscriptupdater.zip;
+unzip -d ${WORKSPACE}/temp/script/libs/updater/ ${WORKSPACE}/temp/script/applicationupdater.zip;
 sleep 2;
-rm "${WORKSPACE}/temp/script/chatbotscriptupdater.zip";
+rm "${WORKSPACE}/temp/script/applicationupdater.zip";
 
 mv "${WORKSPACE}/temp/script" "${WORKSPACE}/temp/${FOLDER_NAME}";
 pushd . || exit 9;
