@@ -707,7 +707,7 @@ def OpenScriptUpdater():
     chatbotRoot = os.path.realpath(os.path.join(currentDir, "../../../"))
     libsDir = os.path.join(currentDir, "libs/updater")
     Parent.Log(ScriptName, libsDir)
-    Logger.Error(ScriptName, libsDir)
+    Logger.Debug(ScriptName, libsDir)
     try:
         src_files = os.listdir(libsDir)
         tempdir = tempfile.mkdtemp()
@@ -748,11 +748,13 @@ def OpenScriptUpdater():
         Parent.Log(ScriptName, updater)
         configJson = json.dumps(updaterConfig)
         Parent.Log(ScriptName, configJson)
-        Logger.Error(ScriptName, configJson)
+        Logger.Debug(ScriptName, configJson)
         with open(updaterConfigFile, "w+") as f:
             f.write(configJson)
         os.startfile(updater)
     except OSError as exc: # python >2.5
+        Parent.Log(ScriptName, str(exc))
+        Logger.Error(str(exc))
         raise
 
 def OpenOverlayPreview():
