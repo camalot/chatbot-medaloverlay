@@ -181,18 +181,18 @@ The application will open, and if there is an update it will tell you. You click
 
 - Add a new `Browser Source` in OBS / SLOBS  
 [![](https://i.imgur.com/TAMQkeql.png)](https://i.imgur.com/TAMQkeq.png)
-- Set as a `Local File` and choose the `overlay.html` in the `Medal Overlay` script directory. You can easily get to the script directory location from right clicking on `Medal Overlay` and choose `Open Script Folder`.
+- **DO NOT** check `Local File`. To get the URL of the overlay, you can click on the `OPEN OVERLAY IN BROWSER` and copy the URL from your browser address bar.
 - Set the `width` and `height` to the resolution of your `Base (Canvas) Resolution`. 
 - Add any additional custom CSS that you would like to add.
 - Check both `Shutdown source when not visible` and `Refresh browser when scene becomes active`.  
-[![](https://i.imgur.com/nouqPh0l.png)](https://i.imgur.com/nouqPh0.png)
+[![](https://i.imgur.com/RRjVAFGl.png)](https://i.imgur.com/RRjVAFG.png)
 
 
 ## RECENT CLIPS SETUP IN OBS / SLOBS 
 See Above for sample images on these steps.
 
 - Add a new `Browser Source` in OBS / SLOBS  
-- Set as a `Local File` and choose the `recents.html` in the `Medal Overlay` script directory. You can easily get to the script directory location from right clicking on `Medal Overlay` and choose `Open Script Folder`.
+- **DO NOT** check `Local File`. To get the URL of the overlay, you can click on the `OPEN RECENT CLIPS OVERLAY IN BROWSER` and copy the URL from your browser address bar.
 - Set the `height` and `width` to the size you would like the video to be on your scene. 
 - Add any additional custom CSS that you would like to add.
 - Check both `Shutdown source when not visible` and `Refresh browser when scene becomes active`.  
