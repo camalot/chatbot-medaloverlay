@@ -36,7 +36,6 @@ MedalPartnerUrl = "https://medal.tv/?ref="
 DefaultMedalPartnerRef = "DarthMinos_partner"
 MedalPublicApiKey = "pub_YiUDXfg4MRtOrIeeWOV4v26foDP6QTcY"
 Repo = "camalot/chatbot-medaloverlay"
-DonateLink = "https://paypal.me/camalotdesigns"
 ReadMeFile = "https://github.com/camalot/chatbot-medaloverlay/blob/develop/ReadMe.md"
 
 
@@ -785,10 +784,16 @@ def GeneratePrivateKey():
 
 def OpenOverlayRecents():
     os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "recents.html")))
-def OpenDonateLink():
-    os.startfile(DonateLink)
+
+def OpenPaypalDonateLink():
+    os.startfile("https://paypal.me/camalotdesigns/10")
     return
-def OpenEdgeFontsUrl():
+def OpenGithubDonateLink():
+    os.startfile("https://github.com/sponsors/camalot")
+    return
+def OpenTwitchDonateLink():
+    os.startfile("http://twitch.tv/darthminos/subscribe")
+    returndef OpenEdgeFontsUrl():
     os.startfile("https://edgewebfonts.adobe.com/fonts")
 
 def OpenTwitchRegisterApplication():
