@@ -11,13 +11,16 @@ Website = "http://darthminos.tv"
 def main():
     currentDir = os.path.realpath(os.path.dirname(__file__))
     chatbotRoot = os.path.realpath(os.path.join(currentDir, "../../../"))
-    libsDir = os.path.join(currentDir, "libs/updater")
+    libsDir = os.path.join(currentDir, "Libs/updater")
     try:
         src_files = os.listdir(libsDir)
+        print(src_files)
         tempdir = tempfile.mkdtemp()
+        print(tempdir)
         for file_name in src_files:
             full_file_name = os.path.join(libsDir, file_name)
             if os.path.isfile(full_file_name):
+                print(full_file_name)
                 shutil.copy(full_file_name, tempdir)
         updater = os.path.join(tempdir, "ApplicationUpdater.exe")
         updaterConfigFile = os.path.join(tempdir, "update.manifest")
