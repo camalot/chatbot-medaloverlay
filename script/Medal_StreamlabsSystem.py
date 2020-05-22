@@ -793,7 +793,8 @@ def OpenGithubDonateLink():
     return
 def OpenTwitchDonateLink():
     os.startfile("http://twitch.tv/darthminos/subscribe")
-    returndef OpenEdgeFontsUrl():
+    return
+def OpenEdgeFontsUrl():
     os.startfile("https://edgewebfonts.adobe.com/fonts")
 
 def OpenTwitchRegisterApplication():
