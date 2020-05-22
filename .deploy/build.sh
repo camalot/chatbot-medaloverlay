@@ -37,7 +37,10 @@ mkdir -p "${WORKSPACE}/dist/";
 cp -r "${WORKSPACE}/script" "${WORKSPACE}/temp/";
 cp "${WORKSPACE}/ReadMe.md" "${WORKSPACE}/temp/script/";
 cp "${WORKSPACE}/SendKeys.md" "${WORKSPACE}/temp/script/";
+
+
 sed -i "s/Version = \"1.0.0-snapshot\"/Version = \"${BUILD_VERSION}\"/g" "${WORKSPACE}/temp/script/Medal_StreamlabsSystem.py";
+sed -i "s/Version = \"1.0.0-snapshot\"/Version = \"${BUILD_VERSION}\"/g" "${WORKSPACE}/temp/script/update.py";
 
 # Download the latest version of the updater
 curl -sSL $(curl -s https://api.github.com/repos/camalot/chatbotscriptupdater/releases/latest \
