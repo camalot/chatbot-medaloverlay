@@ -753,7 +753,7 @@ def OpenScriptUpdater():
         os.startfile(updater)
     except OSError as exc: # python >2.5
         Parent.Log(ScriptName, str(exc))
-        Logger.Error(str(exc))
+        Logger.Error(ScriptName, str(exc))
         raise
 
 def OpenOverlayPreview():
