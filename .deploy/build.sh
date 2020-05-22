@@ -43,8 +43,8 @@ sed -i "s/Version = \"1.0.0-snapshot\"/Version = \"${BUILD_VERSION}\"/g" "${WORK
 sed -i "s/Version = \"1.0.0-snapshot\"/Version = \"${BUILD_VERSION}\"/g" "${WORKSPACE}/temp/script/update.py";
 
 # Download the latest version of the updater
-curl -sSL $(curl -s https://api.github.com/repos/camalot/chatbotscriptupdater/releases/latest \
-| jq -r '.assets[] | select(.name|test("ApplicationUpater.Administrator")) | .browser_download_url') > ${WORKSPACE}/temp/script/applicationupdater.zip;
+curl -sSL $(curl -s "https://api.github.com/repos/camalot/chatbotscriptupdater/releases/latest" \
+	| jq -r '.assets[] | select(.name|test("ApplicationUpdater.Administrator")) | .browser_download_url') > ${WORKSPACE}/temp/script/applicationupdater.zip;
 
 sleep 2;
 cat ${WORKSPACE}/temp/script/applicationupdater.zip
