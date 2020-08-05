@@ -29,8 +29,8 @@ namespace MedalRunner {
 
 		public void Start() {
 			if ( ThumbnailWatcher == null) {
-				ThumbnailWatcher = new FileSystemWatcher ( System.IO.Path.Combine(Path, "Thumbnails" ), "*-thumbnail.jpg" );
-				ThumbnailWatcher.IncludeSubdirectories = false;
+				ThumbnailWatcher = new FileSystemWatcher ( Path, "*-thumbnail.jpg" );
+				ThumbnailWatcher.IncludeSubdirectories = true;
 				ThumbnailWatcher.Created += ThumbnailWatcher_Created;
 			}
 
