@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,7 +29,7 @@ namespace MedalRunner {
 
 		public void Start() {
 			if ( ThumbnailWatcher == null) {
-				ThumbnailWatcher = new FileSystemWatcher ( Path, "*-thumbnail.jpg" );
+				ThumbnailWatcher = new FileSystemWatcher ( System.IO.Path.Combine(Path, "Thumbnails" ), "*-thumbnail.jpg" );
 				ThumbnailWatcher.IncludeSubdirectories = false;
 				ThumbnailWatcher.Created += ThumbnailWatcher_Created;
 			}

@@ -97,12 +97,14 @@ class ClipsCache(object):
     def __init__(self):
         try:
             self.clips = []
-            with codecs.open(CachedClipsFile, encoding="utf-8-sig", mode="r") as f:
-                data = json.load(f, encoding="utf-8")
-                self.__dict__.update(self.cleanup(data))
+            if os.path.exists(CachedClipsFile):
+                with codecs.open(CachedClipsFile, encoding="utf-8-sig", mode="r") as f:
+                    data = json.load(f, encoding="utf-8")
+                    self.__dict__.update(self.cleanup(data))
         except Exception as e:
             Logger.Error(ScriptName, str(e))
             Parent.Log(ScriptName, str(e))
+            self.Save()
 
     def Save(self):
         try:
