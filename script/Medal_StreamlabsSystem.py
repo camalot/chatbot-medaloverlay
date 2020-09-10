@@ -606,9 +606,7 @@ def ProcessTwitchClip(clip):
                 Parent.Log(ScriptName, "AFTER CLIP CACHE")
                 Logger.Debug(ScriptName, "AFTER CLIP CACHE")
         else:
-            Parent.Log(ScriptName, "Clip created outside of the allotted time window")
-            Logger.Debug(ScriptName, "Clip created outside of the allotted time window")
-            ClipsCacheData.Add(clip)
+            pass
     except Exception as e:
         Parent.Log(ScriptName, str(e))
         Logger.Error(ScriptName, str(e))
