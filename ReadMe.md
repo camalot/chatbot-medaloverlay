@@ -1,8 +1,8 @@
 ## MEDAL OVERLAY
 
-[![](https://i.imgur.com/bby6d49.png)](https://medal.tv/invite/DarthMinos)
+[![](https://i.imgur.com/bby6d49.png)](https://medal.tv/?ref=DarthMinos_partner)
 
-This is a [StreamLabs Chatbot](https://streamlabs.com/chatbot) Script that allows chat to trigger a [Medal](https://medal.tv/) clip creation, and then play the clip back on stream.  
+This is a [StreamLabs Chatbot](https://streamlabs.com/chatbot) Script that allows chat to trigger a [Medal](https://medal.tv/?ref=DarthMinos_partner) clip creation, and then play the clip back on stream.  
 
 This will trigger playback on stream if your community triggers the clip creation, or if you press the hotkey to trigger a clip.
 
