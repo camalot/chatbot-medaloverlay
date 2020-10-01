@@ -802,6 +802,10 @@ def OpenTwitchRegisterApplication():
     os.startfile("https://dev.twitch.tv/console/apps/create")
     return
 
+def OpenDiscordLink():
+    os.startfile("https://discord.com/invite/vzdpjYk")
+    return
+
 def RecentPlayBackPlay():
     Parent.BroadcastWsEvent("EVENT_MEDAL_RECENT_PLAY", None)
 def RecentPlayBackStop():

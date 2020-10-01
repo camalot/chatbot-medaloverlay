@@ -618,7 +618,7 @@
 		"function": "OpenTwitchDonateLink",
 		"wsevent": "EVENT_NONE"
 	},
-	
+
 	"OpenDownloadMedalLink": {
 		"type": "button",
 		"label": "Get Medal",
@@ -638,6 +638,13 @@
 		"label": "Follow Me On Twitch",
 		"tooltip": "Get Medal",
 		"function": "OpenFollowOnTwitchLink",
+		"wsevent": "EVENT_NONE"
+	},
+	"OpenDiscordLink": {
+		"type": "button",
+		"label": "JOIN DISCORD",
+		"tooltip": "Join Discord for updates and support",
+		"function": "OpenDiscordLink",
 		"wsevent": "EVENT_NONE"
 	},
 	"OpenReadMeLink": {
