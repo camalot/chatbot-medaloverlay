@@ -38,7 +38,7 @@ Click on the script in the list to bring up the configuration.
 
 ### COMMAND SETTINGS  
 
-[![](https://i.imgur.com/zIEYb0jl.png)](https://i.imgur.com/zIEYb0j.png)  
+[![](https://i.imgur.com/p3UN0DOl.png)](https://i.imgur.com/p3UN0DO.png)  
 
 | ITEM | DESCRIPTION | DEFAULT | 
 | ---- | ----------- | ------- | 
@@ -49,41 +49,49 @@ Click on the script in the list to bring up the configuration.
 | `Required Commands to Trigger` | The number of people required to say the command in chat to trigger the clip. | `1` |
 | `Trigger Cooldown` | The amount of time, in seconds, that chat has to reach the required trigger count. | `60` |
 | `Cooldown` | The amount of seconds between each allowed clip creation | `60` |
+| `Cooldown Notify` | Put a message in chat when the command is on cooldown | `false` |
+| `Cooldown Message` | The cooldown message to display in chat | `The command '$COMMAND' is currently on cooldown. Try again in $COOLDOWN seconds.` |
+
 
 ### STYLE SETTINGS
 
 
-[![](https://i.imgur.com/llP13eNl.png)](https://i.imgur.com/llP13eN.png)  
+[![](https://i.imgur.com/sA89Cysl.png)](https://i.imgur.com/sA89Cys.png)  
 
 | ITEM | DESCRIPTION | DEFAULT | 
 | ---- | ----------- | ------- | 
-| `Video Width` | The width of the video. Height will scale automatically | `320` | 
+| `Video Width` | The width of the video. Height will scale automatically | `640` | 
 | `Clip Frame Border` | The frame border to use. Select `custom` to use your own iamge | `default` | 
 | `Clip Frame Border Custom Url` | The url to the custom image. | `''` | 
 | `Progress Bar Fill Color` | The color of the progress bar fill color | `#ffb53b` |  
 | `Progress Bar Background Color` | The color of the progress bar background | `transparent` |  
-| `In Transition` | The video entrance transition when the video initially loads | `slideInDown` | 
-| `Out Transition` | The video exit transition when the video ends | `slideOutDown` | 
+| `Title Font Color` | The color of the Title | `white` |  
+| `Title Font Size` | The `em` size of the title | `3.5` |  
+| `Title Text Position` | The positioning of the title | `center` |  
+| `Font Name` | The font name of the title | `days-one` |  
+| `Custom Font Name` | If custom is selected above, type in the custom adobe edge font name | `''` |  
+| `Open Adobe Edge Fonts` | Find adobe edge font name to use |  |  
+| `In Transition` | The video entrance transition when the video initially loads | `slideInRight` | 
+| `Out Transition` | The video exit transition when the video ends | `slideOutLeft` | 
 | `EDIT ADVANCED CSS` | Opens the `custom.css` file for editing. | |
 
 
 
 ### MEDAL SETTINGS  
 
-[![](https://i.imgur.com/z6p6eDx.png)](https://i.imgur.com/z6p6eDx.png)  
+[![](https://i.imgur.com/X8ch2WSl.png)](https://i.imgur.com/X8ch2WS.png)  
 
 
 | ITEM | DESCRIPTION | DEFAULT | 
 | ---- | ----------- | ------- | 
-| `Username` | Your Medal Username | `""` | 
-| `User ID` | Your Medal User ID. This is the end of the url after you go to `https://medal.tv/YOUR_USERNAME`. This is used for the `RECENT CLIPS` overlay.  | `""` | 
 | `HotKey` | Your Medal HotKey in [SendKeys Format](SendKeys.md) | `{F8}` | 
-| `Videos Path` | The path to your Medal Videos | `` | 
+| `OPEN SENDKEYS DOCS` | Opens the link to the [SendKeys](SendKeys.md) documentation |  |
+| `Partner Reference Name` | If you are a medal partner, this is your reference name they gave you. | `''` | 
 
 
 ### POSITION SETTINGS  
 
-[![](https://i.imgur.com/BjsAqpjl.png)](https://i.imgur.com/BjsAqpj.png)  
+[![](https://i.imgur.com/cnyjUEMl.png)](https://i.imgur.com/cnyjUEM.png)  
 
 
 | ITEM | DESCRIPTION | DEFAULT | 
@@ -129,7 +137,7 @@ Click on the script in the list to bring up the configuration.
 | `Mute/Unmute` | Toggle mute state of the video. |  | 
 
 
-### TWITCH CLIP IMPORT (BETA)
+### TWITCH CLIP IMPORT
 
 Automatically import twitch clips to your Medal account. At most, it will find the 5 most recent clips, and import those. 
 
@@ -154,17 +162,20 @@ Automatically import twitch clips to your Medal account. At most, it will find t
 
 ### INFORMATION  
 
-[![](https://i.imgur.com/R6rH8XLl.png)](https://i.imgur.com/R6rH8XL.png)  
+[![](https://i.imgur.com/U0lJPjWl.png)](https://i.imgur.com/U0lJPjW.png)  
 
 | ITEM | DESCRIPTION | 
 | ---- | ----------- | 
-| `GET MEDAL` | Opens a link to get Medal | 
-| `FOLLOW ME ON MEDAL` | Opens a link to follow me on Medal | 
-| `FOLLOW ME ON TWITCH` | Opens a link to follow me on Twitch | 
-| `OPEN README` | Opens the link to this document | 
-| `OPEN SENDKEYS DOCS` | Opens the link to the [SendKeys](SendKeys.md) documentation | 
-| `CHECK FOR UPDATES` | Will Check if there are updates to the Medal Overlay Script. See below for more info. | 
-| `SAVE SETTINGS` | Save any changes to the Medal Overlay settings | 
+| `🖤 SUPPORT ON GITHUB` | Opens a link to get Medal | | 
+| `💙 SUPPORT ON PAYPAL` | Opens a link to get Medal | | 
+| `💜 SUPPORT ON TWITCH` | Opens a link to get Medal | | 
+| `GET MEDAL` | Opens a link to get Medal | | 
+| `FOLLOW ME ON MEDAL` | Opens a link to follow me on Medal | | 
+| `FOLLOW ME ON TWITCH` | Opens a link to follow me on Twitch | | 
+| `JOIN DISCORD` | Join the discord for help, info, and updates |  
+| `OPEN README` | Opens the link to this document | | 
+| `CHECK FOR UPDATES` | Will Check if there are updates to the Medal Overlay Script. See below for more info. | | 
+| `SAVE SETTINGS` | Save any changes to the Medal Overlay settings | | 
 
 
 ## MEDAL OVERLAY UPDATER

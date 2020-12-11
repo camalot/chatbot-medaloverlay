@@ -83,7 +83,7 @@
 	"VideoWidth": {
 		"type": "numberbox",
 		"label": "Video Width (pixels)",
-		"value": 320,
+		"value": 640,
 		"tooltip": "Video Width (pixels) Scaled automatically.",
 		"group": "STYLE"
 	},
