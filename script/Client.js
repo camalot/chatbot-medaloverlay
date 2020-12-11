@@ -127,7 +127,7 @@ function validateSettings() {
 	let hasApiKey = typeof API_Key !== "undefined";
 	let hasSettings = typeof settings !== "undefined";
 	let hasVideoPath = hasSettings && settings.VideoPath !== "";
-	let hasUsername = hasSettings && settings.Username !== "";
+	let hasUsername = hasSettings && settings.userName !== "";
 	let hasHotkey = hasSettings && settings.HotKey !== "";
 
 	return {

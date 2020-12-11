@@ -24,7 +24,7 @@ let getMedalApiKey = () => {
 let validateSettings = () => {
 	let hasApiKey = typeof API_Key !== "undefined";
 	let hasSettings = typeof settings !== "undefined";
-	let hasUserId = hasSettings && settings.UserId !== "";
+	let hasUserId = hasSettings && settings.userId !== "";
 	return {
 		isValid: hasApiKey && hasSettings && hasUserId,
 		hasSettings: hasSettings,

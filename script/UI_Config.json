@@ -5,7 +5,7 @@
 		"value": "!clip",
 		"label": "Clip Command",
 		"tooltip": "The command used to create the clip",
-		"group": "Command"
+		"group": "COMMAND"
 	},
 	"Permission": {
 		"type": "dropdown",
@@ -18,21 +18,21 @@
 		],
 		"label": "Permission level",
 		"tooltip": "Set the permission level for the command",
-		"group": "Command"
+		"group": "COMMAND"
 	},
 	"OnlyTriggerOffCommand": {
 		"type": "checkbox",
 		"label": "Only Trigger off the Command",
 		"value": false,
 		"tooltip": "If enabled, videos triggered from pressing the hotkey will not playback on stream.",
-		"group": "Command"
+		"group": "COMMAND"
 	},
 	"NotifyChatOfClips": {
 		"type": "checkbox",
 		"label": "Notify Chat About Clip Status",
 		"value": true,
 		"tooltip": "Put a message in chat about new clip being created and when completed",
-		"group": "Command"
+		"group": "COMMAND"
 	},
 	"RequiredTriggerCount": {
 		"type": "slider",
@@ -42,7 +42,7 @@
 		"max": 100,
 		"ticks": 1,
 		"tooltip": "Number of commands required to trigger the clip",
-		"group": "Command"
+		"group": "COMMAND"
 	},
 	"TriggerCooldown": {
 		"type": "slider",
@@ -52,7 +52,7 @@
 		"max": 120,
 		"ticks": 1,
 		"tooltip": "The time frame in which commands count to trigger a clip",
-		"group": "Command"
+		"group": "COMMAND"
 	},
 	"Cooldown": {
 		"type": "slider",
@@ -62,14 +62,30 @@
 		"max": 600,
 		"ticks": 1,
 		"tooltip": "Cooldown in seconds after triggered.",
-		"group": "Command"
+		"group": "COMMAND"
 	},
+	"CooldownMessageEnabled": {
+		"type": "checkbox",
+		"label": "Cooldown Notify",
+		"value": false,
+		"tooltip": "Put a message in chat about command being on cooldown if activated during cooldown.",
+		"group": "COMMAND"
+	},
+	"CooldownMessage": {
+		"type": "textbox",
+		"value": "The command '$COMMAND' is currently on cooldown. Try again in $COOLDOWN seconds.",
+		"label": "Cooldown Message",
+		"tooltip": "Message format to display when the command is on cooldown.",
+		"group": "COMMAND"
+	},
+
+
 	"VideoWidth": {
 		"type": "numberbox",
 		"label": "Video Width (pixels)",
 		"value": 320,
 		"tooltip": "Video Width (pixels) Scaled automatically.",
-		"group": "Style"
+		"group": "STYLE"
 	},
 	"VideoFrameBackground": {
 		"type": "dropdown",
@@ -98,35 +114,35 @@
 		],
 		"label": "Clip Frame Border",
 		"tooltip": "The clip frame border.",
-		"group": "Style"
+		"group": "STYLE"
 	},
 	"VideoFrameCustomBackground": {
 		"type": "textbox",
 		"label": "Clip Frame Border Custom Url",
 		"value": "",
 		"tooltip": "If you choose 'custom' this will be used for the image url.",
-		"group": "Style"
+		"group": "STYLE"
 	},
 	"ProgressBarFillColor": {
 		"type": "colorpicker",
 		"label": "Progress Bar Fill Color",
 		"value": "#ffb53b",
 		"tooltip": "The Fill Color of the Progress Bar",
-		"group": "Style"
+		"group": "STYLE"
 	},
 	"ProgressBarBackgroundColor": {
 		"type": "colorpicker",
 		"label": "Progress Bar Background Color",
 		"value": "transparent",
 		"tooltip": "The background color of the Progress Bar",
-		"group": "Style"
+		"group": "STYLE"
 	},
 	"TitleFontColor": {
 		"type": "colorpicker",
 		"label": "Title Font Color",
 		"value": "rgba(255,255,255,1)",
 		"tooltip": "The font foreground color for video title.",
-		"group": "Style"
+		"group": "STYLE"
 	},
 	"TitleFontSize": {
 		"type": "slider",
@@ -136,7 +152,7 @@
 		"max": 5,
 		"ticks": 0.1,
 		"tooltip": "Title font size.",
-		"group": "Style"
+		"group": "STYLE"
 	},
 	"TitleTextAlign": {
 		"type": "dropdown",
@@ -148,7 +164,7 @@
 			"right"
 		],
 		"tooltip": "Title text alignment",
-		"group": "Style"
+		"group": "STYLE"
 	},
 	"FontName": {
 		"type": "dropdown",
@@ -166,14 +182,14 @@
 		],
 		"label": "Font Name",
 		"tooltip": "Font Name From Adobe Edge Fonts",
-		"group": "Style"
+		"group": "STYLE"
 	},
 	"CustomFontName": {
 		"type": "textbox",
 		"label": "Custom Font Name",
 		"value": "",
 		"tooltip": "A custom font from Adobe Edge Fonts",
-		"group": "Style"
+		"group": "STYLE"
 	},
 	"OpenEdgeFontsUrl": {
 		"type": "button",
@@ -181,7 +197,7 @@
 		"tooltip": "Opens Adobe Edge Fonts site to select fonts",
 		"function": "OpenEdgeFontsUrl",
 		"wsevent": "EVENT_NONE",
-		"group": "Style"
+		"group": "STYLE"
 	},
 	"InTransition": {
 		"type": "dropdown",
@@ -235,7 +251,7 @@
 		],
 		"label": "In Transition",
 		"tooltip": "Set how the alert transitions in",
-		"group": "Style"
+		"group": "STYLE"
 	},
 	"OutTransition": {
 		"type": "dropdown",
@@ -289,7 +305,7 @@
 		],
 		"label": "Out Transition",
 		"tooltip": "Set how the alert transitions out",
-		"group": "Style"
+		"group": "STYLE"
 	},
 	"OpenCustomCSSFile": {
 		"type": "button",
@@ -297,50 +313,36 @@
 		"tooltip": "Opens custom.css file for advanced CSS editing",
 		"function": "OpenCustomCSSFile",
 		"wsevent": "EVENT_NONE",
-		"group": "Style"
-	},
-	"Username": {
-		"type": "textbox",
-		"label": "Medal Username",
-		"value": "",
-		"tooltip": "This is your Medal.tv Username",
-		"group": "Medal"
-	},
-	"UserId": {
-		"type": "textbox",
-		"label": "Medal User ID",
-		"value": "",
-		"tooltip": "This is only required if you are using the 'recent clips' overlay. UserId is the number at the end of the url if you go to https://medal.tv/YOUR_USER_NAME",
-		"group": "Medal"
+		"group": "STYLE"
 	},
 	"HotKey": {
 		"type": "textbox",
 		"label": "Medal HotKey",
 		"value": "{F8}",
 		"tooltip": "This is the 'SendKeys' formatted hotkey for Medal",
-		"group": "Medal"
+		"group": "MEDAL"
 	},
-	"VideoPath": {
-		"type": "textbox",
-		"label": "Medal Video Path",
-		"value": "",
-		"tooltip": "The path to your medal video files",
-		"group": "Medal"
+	"OpenSendKeysDocumentationLink": {
+		"type": "button",
+		"label": "Open SendKeys Documentation",
+		"tooltip": "Open SendKeys Documentation",
+		"function": "OpenSendKeysLink",
+		"wsevent": "EVENT_NONE",
+		"group": "MEDAL"
 	},
-
 	"MedalPartnerRef": {
 		"type": "textbox",
 		"label": "Partner Reference Name",
 		"value": "",
 		"tooltip": "Your Medal Partner Reference Name. The part after 'ref=' in your partner url.",
-		"group": "Medal"
+		"group": "MEDAL"
 	},
 	"UsePositionVertical": {
 		"type": "checkbox",
 		"value": true,
 		"label": "Use Preset Vertical Position",
 		"tooltip": "If unchecked, the absolute positions will be used.",
-		"group": "Position"
+		"group": "POSITION"
 	},
 	"PositionVertical": {
 		"type": "dropdown",
@@ -352,14 +354,14 @@
 		],
 		"label": "Video Vertical Position (Preset)",
 		"tooltip": "The video vertical position.  If absolute is not -1, this is ignored.",
-		"group": "Position"
+		"group": "POSITION"
 	},
 	"UsePositionHorizontal": {
 		"type": "checkbox",
 		"value": true,
 		"label": "Use Preset Horizontal Position",
 		"tooltip": "If unchecked, the absolute positions will be used.",
-		"group": "Position"
+		"group": "POSITION"
 	},
 	"PositionHorizontal": {
 		"type": "dropdown",
@@ -371,35 +373,35 @@
 		],
 		"label": "Video Horizontal Position (Preset)",
 		"tooltip": "The video horizontal position.",
-		"group": "Position"
+		"group": "POSITION"
 	},
 	"AbsolutePositionTop": {
 		"type": "numberbox",
 		"value": 0,
 		"label": "Video Top Absolute Position (pixels)",
 		"tooltip": "The video top absolute position.",
-		"group": "Position"
+		"group": "POSITION"
 	},
 	"AbsolutePositionLeft": {
 		"type": "numberbox",
 		"value": 0,
 		"label": "Video Left Absolute Position (pixels)",
 		"tooltip": "The video left absolute position.",
-		"group": "Position"
+		"group": "POSITION"
 	},
 	"AbsolutePositionBottom": {
 		"type": "numberbox",
 		"value": 0,
 		"label": "Video Bottom Absolute Position (pixels)",
 		"tooltip": "The video bottom absolute position.",
-		"group": "Position"
+		"group": "POSITION"
 	},
 	"AbsolutePositionRight": {
 		"type": "numberbox",
 		"value": 0,
 		"label": "Video Right Absolute Position (pixels)",
 		"tooltip": "The video right absolute position.",
-		"group": "Position"
+		"group": "POSITION"
 	},
 	"OpenOverlayPreview": {
 		"type": "button",
@@ -407,7 +409,7 @@
 		"tooltip": "Open overlay in browser to test",
 		"function": "OpenOverlayPreview",
 		"wsevent": "EVENT_NONE",
-		"group": "PlayBack"
+		"group": "PLAYBACK"
 	},
 	"PlayMostRecent": {
 		"type": "button",
@@ -415,7 +417,7 @@
 		"tooltip": "Play most recent video clip.",
 		"function": "PlayMostRecent",
 		"wsevent": "EVENT_NONE",
-		"group": "PlayBack"
+		"group": "PLAYBACK"
 	},
 	"PlayRandomVideo": {
 		"type": "button",
@@ -423,7 +425,7 @@
 		"tooltip": "Play an existing clip (randomly). You must have at least 1 clip",
 		"function": "PlayRandomVideo",
 		"wsevent": "EVENT_NONE",
-		"group": "PlayBack"
+		"group": "PLAYBACK"
 	},
 	"StopCurrentVideo": {
 		"type": "button",
@@ -431,21 +433,21 @@
 		"tooltip": "Stops the currently playing video",
 		"function": "StopCurrentVideo",
 		"wsevent": "EVENT_NONE",
-		"group": "PlayBack"
+		"group": "PLAYBACK"
 	},
 	"UseNonWatermarkedVideo": {
 		"type": "checkbox",
 		"value": false,
 		"label": "Use Non-Watermarked Videos",
 		"tooltip": "If you provide a private api key, that was granted special access (see the form below), checking this box will enable non-watermarked videos.",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"PrivateApiKey": {
 		"type": "textbox",
 		"label": "Private API Key (Optional)",
 		"value": "",
 		"tooltip": "Allows non-watermarked videos when using the 'Recent Clips' overlay",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"GeneratePrivateKey": {
 		"type": "button",
@@ -453,7 +455,7 @@
 		"label": "Generate Private API Key",
 		"tooltip": "Link to generate a private key.",
 		"function": "GeneratePrivateKey",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"OpenSpecialPrivileges": {
 		"type": "button",
@@ -461,14 +463,14 @@
 		"label": "Special Privileges Form",
 		"tooltip": "Fill out the form to get special privileges to have 'non-watermarked' clips.",
 		"function": "OpenSpecialPrivileges",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"RecentRandom": {
 		"type": "checkbox",
 		"value": false,
 		"label": "Shuffle Videos",
 		"tooltip": "Shuffle Videos When Playing",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"RecentVolume": {
 		"type": "slider",
@@ -478,35 +480,35 @@
 		"max": 100,
 		"ticks": 1,
 		"tooltip": "Sets the volume level for the video",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"RecentAutoStartVideo": {
 		"type": "checkbox",
 		"value": true,
 		"label": "Auto Play Clips",
 		"tooltip": "Video will play automatically when the source is visible.",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"RecentMuteAudio": {
 		"type": "checkbox",
 		"value": false,
 		"label": "Mute Playback Audio",
 		"tooltip": "Audio will be muted in video playback.",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"RecentShowVideoProgress": {
 		"type": "checkbox",
 		"value": true,
 		"label": "Show Playback Progress Bar",
 		"tooltip": "Display the video progress bar",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"RecentShowTitle": {
 		"type": "checkbox",
 		"value": true,
 		"label": "Show Clip Title",
 		"tooltip": "Display The Clip Title",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"OpenOverlayRecents": {
 		"type": "button",
@@ -514,7 +516,7 @@
 		"tooltip": "Open overlay in browser to test",
 		"function": "OpenOverlayRecents",
 		"wsevent": "EVENT_NONE",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"RecentPlayBackPlay": {
 		"type": "button",
@@ -522,7 +524,7 @@
 		"tooltip": "Play the video in the player.",
 		"function": "RecentPlayBackPlay",
 		"wsevent": "EVENT_NONE",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"RecentPlayBackStop": {
 		"type": "button",
@@ -530,7 +532,7 @@
 		"tooltip": "Stop the video player",
 		"function": "RecentPlayBackStop",
 		"wsevent": "EVENT_NONE",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"RecentPlayBackNext": {
 		"type": "button",
@@ -538,7 +540,7 @@
 		"tooltip": "Skips the currently playing video",
 		"function": "RecentPlayNext",
 		"wsevent": "EVENT_NONE",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"RecentPlayMute": {
 		"type": "button",
@@ -546,21 +548,21 @@
 		"tooltip": "Mute/Unmute the video",
 		"function": "RecentPlayMute",
 		"wsevent": "EVENT_NONE",
-		"group": "Recent Clips"
+		"group": "RECENTS"
 	},
 	"EnableTwitchClipAutoImport": {
 		"type": "checkbox",
 		"label": "Enable Twitch Clip Auto Import",
 		"value": false,
 		"tooltip": "Automatically imports a recently created clip from Twitch to Medal",
-		"group": "Twitch Clip Import (BETA)"
+		"group": "TWITCH CLIP IMPORT"
 	},
 	"TwitchClientId": {
 		"type": "textbox",
 		"label": "Twitch App Client ID",
 		"value": "",
 		"tooltip": "Twitch App Client ID used for polling for new clips.",
-		"group": "Twitch Clip Import (BETA)"
+		"group": "TWITCH CLIP IMPORT"
 	},
 	"OpenTwitchRegisterApplication": {
 		"type": "button",
@@ -568,7 +570,7 @@
 		"tooltip": "Click here to go to the Twitch and create a App Client ID",
 		"function": "OpenTwitchRegisterApplication",
 		"wsevent": "",
-		"group": "Twitch Clip Import (BETA)"
+		"group": "TWITCH CLIP IMPORT"
 	},
 
 	"TwitchClipPollRate": {
@@ -576,7 +578,7 @@
 		"label": "Poll Rate (minutes)",
 		"value": 1,
 		"tooltip": "The rate to poll for new clips in minutes.",
-		"group": "Twitch Clip Import (BETA)"
+		"group": "TWITCH CLIP IMPORT"
 	},
 	"TwitchClipMedalPrivacy": {
 		"type": "dropdown",
@@ -587,7 +589,7 @@
 			"Private"
 		],
 		"tooltip": "The privacy level of the imported clip.",
-		"group": "Twitch Clip Import (BETA)"
+		"group": "TWITCH CLIP IMPORT"
 	},
 
 	"WebPort": {
@@ -595,7 +597,7 @@
 		"label": "Video Web Port",
 		"value": 9191,
 		"tooltip": "The port used by tinyweb. Used for the overlay to request the clips.",
-		"group": "Advanced"
+		"group": "ADVANCED"
 	},
 	"OpenGithubDonateLink": {
 		"type": "button",
@@ -654,13 +656,7 @@
 		"function": "OpenReadMeLink",
 		"wsevent": "EVENT_NONE"
 	},
-	"OpenSendKeysDocumentationLink": {
-		"type": "button",
-		"label": "Open SendKeys Documentation",
-		"tooltip": "Open SendKeys Documentation",
-		"function": "OpenSendKeysLink",
-		"wsevent": "EVENT_NONE"
-	},
+
 	"UpdateMedalOverlay": {
 		"type": "button",
 		"label": "Check For Updates",

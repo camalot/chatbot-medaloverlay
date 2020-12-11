@@ -39,11 +39,13 @@ Repo = "camalot/chatbot-medaloverlay"
 ReadMeFile = "https://github.com/camalot/chatbot-medaloverlay/blob/develop/ReadMe.md"
 
 
+UIConfigFile = os.path.join(os.path.dirname(__file__), "UI_Config.json")
 SettingsFile = os.path.join(os.path.dirname(__file__), "settings.json")
 CachedClipsFile = os.path.join(os.path.dirname(__file__), "clips.json")
 
 ScriptSettings = None
 MedalUserSettings = None
+MedalConfigSettings = None
 ClipsCacheData = None
 MedalCategories = None
 
@@ -148,75 +150,66 @@ class UserSettings(object):
         except Exception as e:
             Logger.Error(ScriptName, str(e))
             Parent.Log(ScriptName, str(e))
+
+class MedalSettings(object):
+    """ Class to hold the script settings, matching UI_Config.json. """
+
+    def __init__(self):
+        """ Load in saved settings file if available else set default values. """
+        settingsfile = os.path.realpath(os.path.join(os.getenv('APPDATA'), "Medal/store/settings.json"))
+        self.clipFolder = None
+        self.triggerKey = None
+        try:
+            with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
+                settings = json.load(f, encoding="utf-8")
+            self.__dict__.update(settings['recorder'])
+        except Exception as ex:
+            if Logger:
+                Logger.error(str(ex))
+            else:
+                Parent.Log(ScriptName, str(ex))
+            self.__dict__ = {}
+
+
 class Settings(object):
     """ Class to hold the script settings, matching UI_Config.json. """
 
     def __init__(self, settingsfile=None):
         """ Load in saved settings file if available else set default values. """
+        defaults = self.DefaultSettings(UIConfigFile)
         try:
-            self.Command = "!clip"
-            self.Permission = "Everyone"
-            self.VideoPath = ""
-            self.Cooldown = 60
-            self.HotKey = "{F8}"
-            self.Username = ""
-            self.UserId = ""
-            self.MedalPartnerRef = DefaultMedalPartnerRef
-            self.FontColor = "rgba(255,255,255,1)"
-            self.FontName = "days-one"
-            self.CustomFontName = ""
-            self.TitleFontSize = 3.5
-            self.TitleTextAlign = "center"
-            self.PositionVertical = "Middle"
-            self.PositionHorizontal = "Right"
-            self.InTransition = "slideInLeft"
-            self.OutTransition = "slideOutRight"
-            self.AbsolutePositionTop = 0
-            self.AbsolutePositionLeft = 0
-            self.AbsolutePositionBottom = 0
-            self.AbsolutePositionRight = 0
-            self.VideoWidth = 320
-            self.UsePositionVertical = True
-            self.UsePositionHorizontal = True
-            self.WebPort = 9191
-            # self.OverlayWebPort = 9292
-            self.OnlyTriggerOffCommand = False
-            self.TriggerCooldown = 60
-            self.RequiredTriggerCount = 1
-            self.NotifyChatOfClips = True
-            self.VideoFrameCustomBackground = None
-            self.VideoFrameBackground = "default"
-            self.ProgressBarFillColor = "#ffb53b"
-            self.ProgressBarBackgroundColor = "transparent"
-            self.PublicApiKey = MedalPublicApiKey
-            self.PrivateApiKey = ""
-            self.RecentAutoStartVideo = True
-            self.RecentMuteAudio = False
-            self.RecentRandom = False
-            self.RecentVolume = 100
-            self.RecentShowVideoProgress = True
-            self.UseNonWatermarkedVideo = False
-            self.RecentShowTitle = True
-
-            self.EnableTwitchClipAutoImport = False
-            self.TwitchClipMedalPrivacy = "Public"
-            self.TwitchClipPollRate = 1
-            self.TwitchClientId = ""
-
             with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
-                fileSettings = json.load(f, encoding="utf-8")
-                self.__dict__.update(fileSettings)
+                settings = json.load(f, encoding="utf-8")
+            self.__dict__ = Merge(defaults, settings)
+        except Exception as ex:
+            if Logger:
+                Logger.error(str(ex))
+            else:
+                Parent.Log(ScriptName, str(ex))
+            self.__dict__ = defaults
 
-        except Exception as e:
-            Logger.Error(ScriptName, str(e))
-            Parent.Log(ScriptName, str(e))
-
+    def DefaultSettings(self, settingsfile=None):
+        defaults = dict()
+        with codecs.open(settingsfile, encoding="utf-8-sig", mode="r") as f:
+            ui = json.load(f, encoding="utf-8")
+        for key in ui:
+            if 'value' in ui[key]:
+                try:
+                    defaults[key] = ui[key]['value']
+                except:
+                    if key != "output_file":
+                        if Logger:
+                            Logger.warn("DefaultSettings(): Could not find key {0} in settings".format(key))
+                        else:
+                            Parent.Log(ScriptName, "DefaultSettings(): Could not find key {0} in settings".format(key))
+        return defaults
     def Reload(self, jsonData):
         """ Reload settings from the user interface by given json data. """
-        Parent.Log(ScriptName, "Reload Settings")
-        Logger.Debug(ScriptName, str(e))
-        fileLoadedSettings = json.loads(jsonData, encoding="utf-8")
-        self.__dict__.update(fileLoadedSettings)
+        if Logger:
+            Logger.debug("Reload Settings")
+        else:
+            Parent.Log(ScriptName, "Reload Settings")
+        self.__dict__ = Merge(self.DefaultSettings(UIConfigFile), json.loads(jsonData, encoding="utf-8"))
 
 #---------------------------------------
 #   Functions
@@ -239,9 +232,10 @@ def StartHttpd(app, webdir, port):
     os.spawnl(os.P_NOWAITO, tool, tool, webdir, str(port), "127.0.0.1")
     return
 def SendOverlaySettingsUpdate():
-    Parent.Log(ScriptName, "EVENT_MEDAL_SETTINGS: " + json.dumps(ScriptSettings.__dict__))
-    Logger.Debug(ScriptName, "EVENT_MEDAL_SETTINGS: " + json.dumps(ScriptSettings.__dict__))
-    Parent.BroadcastWsEvent("EVENT_MEDAL_SETTINGS", json.dumps(ScriptSettings.__dict__))
+    MergedSettings = Merge(MedalUserSettings.__dict__, Merge({ "clipFolder": MedalConfigSettings.clipFolder }, ScriptSettings.__dict__))
+    Parent.Log(ScriptName, "EVENT_MEDAL_SETTINGS: " + json.dumps(MergedSettings))
+    Logger.Debug(ScriptName, "EVENT_MEDAL_SETTINGS: " + json.dumps(MergedSettings))
+    Parent.BroadcastWsEvent("EVENT_MEDAL_SETTINGS", json.dumps(MergedSettings))
 def ReloadOverlay():
     Parent.Log(ScriptName, "EVENT_MEDAL_RELOAD: " + json.dumps(None))
     Logger.Debug(ScriptName, "EVENT_MEDAL_RELOAD: " + json.dumps(None))
@@ -357,7 +351,9 @@ def Init():
     global ClipsCacheData
     global MedalUserSettings
     global MedalCategories
+    global MedalConfigSettings
 
+    MedalConfigSettings = MedalSettings()
     MedalUserSettings = UserSettings()
     ClipsCacheData = ClipsCache()
     MedalCategories = MedalCategoriesCache()
@@ -371,13 +367,13 @@ def Init():
     Logger.Debug(ScriptName, "Initialize")
     # Load saved settings and validate values
     ScriptSettings = Settings(SettingsFile)
-    if ScriptSettings.VideoPath == "":
+
+    if MedalConfigSettings.clipFolder == "":
         Parent.Log(ScriptName, "Video Path Not Currently Set.")
-        Logger.Debug(ScriptName, "Video Path Not Currently Set.")
+        Logger.Error(ScriptName, "Video Path Not Currently Set.")
         return
 
-    webDirectory = os.path.join(os.path.dirname(__file__), ScriptSettings.VideoPath)
-
+    webDirectory = os.path.join(os.path.dirname(__file__), MedalConfigSettings.clipFolder)
 
     customcss = os.path.join(os.path.dirname(__file__), "./custom.css")
     csstemplate = os.path.join(os.path.dirname(__file__), "./custom-sample.css")
@@ -458,6 +454,10 @@ def Execute(data):
                             Logger.Debug(ScriptName, "Additional trigger of clip generation.")
                             if ScriptSettings.NotifyChatOfClips:
                                 Parent.SendTwitchMessage(data.User + " triggered a medal.tv clip. Need " + str(triggerDiff) + " more to generate the clip.")
+        else:
+            if ScriptSettings.CooldownMessageEnabled:
+                cooldownMessage = ScriptSettings.CooldownMessage.replace("$COMMAND", commandTrigger).replace("$COOLDOWN", Parent.GetCooldownDuration(ScriptName, commandTrigger))
+                Parent.SendTwitchMessage(cooldownMessage)
     return
 
 #---------------------------
@@ -467,13 +467,13 @@ def Parse(parseString, userid, username, targetid, targetname, message):
     result = parseString
     if result:
         if "$MedalFollowLink" in result:
-            result = result.replace("$MedalFollowLink", MedalInviteUrl + ScriptSettings.Username)
+            result = result.replace("$MedalFollowLink", MedalInviteUrl + MedalUserSettings.userName)
         if "$MedalPartnerLink" in result:
             result = result.replace("$MedalPartnerLink", MedalPartnerUrl + (ScriptSettings.MedalPartnerRef or DefaultMedalPartnerRef))
         if "$MedalClipCommand" in result:
             result = result.replace("$MedalClipCommand", ScriptSettings.Command)
         if "$MedalUserName" in result:
-            result = result.replace("$MedalUserName", ScriptSettings.Username)
+            result = result.replace("$MedalUserName", MedalUserSettings.userName)
         if "$MedalUserId" in result:
             # result = result.replace("$MedalUserId", ScriptSettings.UserId)
             result = result.replace("$MedalUserId", MedalUserSettings.userId)
@@ -672,6 +672,27 @@ def PollTwitchClips():
     ClipsCacheData.Save()
     return
 
+def Merge(source, destination):
+    """
+    >>> a = { 'first' : { 'all_rows' : { 'pass' : 'dog', 'number' : '1' } } }
+    >>> b = { 'first' : { 'all_rows' : { 'fail' : 'cat', 'number' : '5' } } }
+    >>> merge(b, a) == { 'first' : { 'all_rows' : { 'pass' : 'dog', 'fail' : 'cat', 'number' : '5' } } }
+    True
+    """
+    for key, value in source.items():
+        if isinstance(value, dict):
+            # get node or create one
+            node = destination.setdefault(key, {})
+            Merge(value, node)
+        elif isinstance(value, list):
+            destination.setdefault(key, value)
+        else:
+            if key in destination:
+                pass
+            else:
+                destination.setdefault(key, value)
+
+    return destination
 
 # def Register():
 #     payload = {
@@ -762,14 +783,17 @@ def OpenOverlayPreview():
 def StopCurrentVideo():
     Parent.BroadcastWsEvent("EVENT_MEDAL_STOP", None)
 def PlayRandomVideo():
-    randomVideo = random.choice(glob.glob(ScriptSettings.VideoPath + "/*.mp4"))
+    # Improve the performance of this!!!
+    randomVideo = random.choice(glob.glob(MedalConfigSettings.clipFolder + "/*.mp4"))
     if randomVideo is not None:
         videoId = os.path.splitext(os.path.basename(randomVideo))[0]
         PlayVideoById(videoId)
 def PlayMostRecent():
-    fileList = glob.glob(ScriptSettings.VideoPath + "/*.mp4")
-    if fileList is not None and fileList is not []:
-        mostRecent = max(fileList, key=os.path.getctime)
+    # Improve the performance of this!!!
+    # fileList = glob.iglob(MedalConfigSettings.clipFolder + "/*.mp4")
+    # if fileList is not None and fileList is not []:
+    mostRecent = max(glob.iglob(MedalConfigSettings.clipFolder + "/*.mp4"), key=os.path.getctime)
+    if mostRecent:
         videoId = os.path.splitext(os.path.basename(mostRecent))[0]
         PlayVideoById(videoId)
 
