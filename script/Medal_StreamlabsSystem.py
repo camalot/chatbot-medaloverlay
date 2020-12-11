@@ -152,8 +152,7 @@ class UserSettings(object):
             Parent.Log(ScriptName, str(e))
 
 class MedalSettings(object):
-    """ Class to hold the script settings, matching UI_Config.json. """
-
+    """ Holds the values from medal/settings.json. """
     def __init__(self):
         """ Load in saved settings file if available else set default values. """
         settingsfile = os.path.realpath(os.path.join(os.getenv('APPDATA'), "Medal/store/settings.json"))
@@ -467,7 +466,7 @@ def Parse(parseString, userid, username, targetid, targetname, message):
     result = parseString
     if result:
         if "$MedalFollowLink" in result:
-            result = result.replace("$MedalFollowLink", MedalInviteUrl + MedalUserSettings.userName)
+            result = result.replace("$MedalFollowLink", MedalInviteUrl + MedalUserSettings.userName + "?ref=" +  (ScriptSettings.MedalPartnerRef or DefaultMedalPartnerRef))
         if "$MedalPartnerLink" in result:
             result = result.replace("$MedalPartnerLink", MedalPartnerUrl + (ScriptSettings.MedalPartnerRef or DefaultMedalPartnerRef))
         if "$MedalClipCommand" in result:
