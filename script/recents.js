@@ -12,6 +12,7 @@ if (!window.settings) {
 	window.settings = {};
 }
 window.settings = { ...window.DEFAULT_SETTINGS, ...window.settings };
+window.medal = { ...{}, ...window.MEDAL_USER_SETTINGS};
 
 let getMedalApiKey = () => {
 	if (settings.PrivateApiKey && settings.PrivateApiKey !== "") {
@@ -24,7 +25,7 @@ let getMedalApiKey = () => {
 let validateSettings = () => {
 	let hasApiKey = typeof API_Key !== "undefined";
 	let hasSettings = typeof settings !== "undefined";
-	let hasUserId = hasSettings && settings.userId !== "";
+	let hasUserId = hasSettings && medal.userId !== "";
 	return {
 		isValid: hasApiKey && hasSettings && hasUserId,
 		hasSettings: hasSettings,
@@ -267,12 +268,12 @@ let connectWebsocket = () => {
 let getVideoQueue = (p, pp, completeCB, errorCB) => {
 	let medalApiKey = getMedalApiKey();
 
-	if (settings.UserId == null || settings.UserId === "") {
+	if (medal.userId == null || medal.userId === "") {
 		return errorCB("Settings UserId is unset");
 	}
 
 	$.ajax({
-		url: `https://developers.medal.tv/v1/latest?userId=${settings.UserId}&limit=${pp}&offset=${p * pp}`,
+		url: `https://developers.medal.tv/v1/latest?userId=${medal.userId}&limit=${pp}&offset=${p * pp}`,
 		headers: {
 			"Authorization": `Basic ${btoa(medalApiKey)}`
 		},
@@ -300,7 +301,7 @@ let getVideoQueue = (p, pp, completeCB, errorCB) => {
 					if (obj.contentId) {
 						let vid = obj.contentId.replace(/^cid/, "");
 						clip = {
-							url: `http://files.medal.tv/${settings.UserId}/share-${vid}.mp4`,
+							url: `http://files.medal.tv/${medal.userId}/share-${vid}.mp4`,
 							title: obj.contentTitle || "",
 							views: obj.contentViews || 0
 						};

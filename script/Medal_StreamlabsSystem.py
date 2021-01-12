@@ -214,6 +214,16 @@ class Settings(object):
 #   Functions
 #---------------------------------------
 
+def WriteJavascriptUserSettings():
+    inputFile = os.path.realpath(os.path.join(os.getenv('APPDATA'), "Medal/store/user.json"))
+    outputFile = os.path.join(os.path.dirname(__file__), "medal-user.js")
+    data = None
+    with codecs.open(inputFile, encoding="utf-8-sig", mode="r") as f:
+        data = json.load(f, encoding="utf-8")
+    with open(outputFile, "w") as f:
+        f.write("var MEDAL_USER_SETTINGS = ")
+        f.write(json.dumps(data))
+        f.write(";")
 
 #---------------------------------------
 # Starts the mohttpd executable to serve the media files
@@ -357,10 +367,15 @@ def Init():
     ClipsCacheData = ClipsCache()
     MedalCategories = MedalCategoriesCache()
 
+
+
     if Initialized:
         Parent.Log(ScriptName, "Skip Initialization. Already Initialized.")
         Logger.Debug(ScriptName, "Skip Initialization. Already Initialized.")
         return
+
+    # WRITE SETTINGS FOR USER INFO
+    WriteJavascriptUserSettings()
 
     Parent.Log(ScriptName, "Initialize")
     Logger.Debug(ScriptName, "Initialize")
