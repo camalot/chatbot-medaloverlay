@@ -106,10 +106,11 @@ Click on the script in the list to bring up the configuration.
 | `Absolute Right` | Absolute Right position of the video | `0` | 
 
 ### PLAYBACK
-[![](https://i.imgur.com/lH7kBw5l.png)](https://i.imgur.com/lH7kBw5.png)  
+[![](https://i.imgur.com/cT1l03Nl.png)](https://i.imgur.com/cT1l03N.png)  
 
 | ITEM | DESCRIPTION | 
 | ---- | ----------- | 
+| `Playback Speed` | The playback speed of the video | `1.0` | 
 | `OPEN OVERLAY IN BROWSER` | Opens the Overlay page in browser for testing | 
 | `PLAY MOST RECENT VIDEO` | Plays the most recent video | 
 | `PLAY RANDOM VIDEO` | Plays a random video | 
@@ -119,7 +120,7 @@ Click on the script in the list to bring up the configuration.
 ### RECENT CLIPS
 > Settings and controls for the `Recent Clips` Overlay.
 
-[![](https://i.imgur.com/fS1cbG9l.png)](https://i.imgur.com/fS1cbG9.png)
+[![](https://i.imgur.com/lVQcA2il.png)](https://i.imgur.com/lVQcA2i.png)
 
 | ITEM | DESCRIPTION | DEFAULT |
 | ---- | ----------- | -------- |
@@ -128,14 +129,37 @@ Click on the script in the list to bring up the configuration.
 | `Generate Private API Key` | Generate a private api key for access to medal api |  | 
 | `Special Privileges Form` | Complete the form to get `Special Privileges` to use non-watermarked videos. |  | 
 | `Shuffle Videos` | Shuffle the videos on playback | `false` | 
+| `Playback Speed` | The playback speed of the video | `1.0` | 
 | `Video Volume` | The playback volume of the video | `100` | 
 | `Mute Playback Audio` | Mute the playback audio of the video | `false` | 
 | `Show Playback Progress Bar` | Show a playback progress bar at on the video. | `true` | 
 | `Open Recent Clips Overlay In Browser` | Opens the `Recent Clips` overlay file in your browser, to get the path for OBS, or to test out the playback. |  | 
 | `Play` | Start playback, if stopped |  | 
 | `Stop` | Stop playback, if playing |  | 
+| `Skip` | Skips the current playing clip |  | 
 | `Mute/Unmute` | Toggle mute state of the video. |  | 
 
+### MEDAL HIGHLIGHT
+> An overlay to show a highlight reel of a users recent clips.
+
+[![](https://i.imgur.com/t9yArA5l.png)](https://i.imgur.com/t9yArA5.png)
+
+| ITEM | DESCRIPTION | DEFAULT |
+| ---- | ----------- | -------- |
+| `Enable Medal Highlight Command` | Enable the highlight command | `false` | 
+| `Highlight Command` | The command to trigger the highlight. Usage: !mh DarthMinos [3] - The number is optional. It is the number of clips to play | `!mh` | 
+| `Permission Level` | Who can trigger the command | `Moderator` | 
+| `Highlight Message` | The message displayed when starting a highlight | `Starting a Medal highlight for $user: Follow them on Medal: $MedalUrl/$user` | 
+| `Cooldown (seconds)` | The cooldown time for the command | `60` | 
+| `Default Clip Count` | If no clip count is provided, this is the number of clips to play | `5` | 
+| `Shuffle Videos` | Shuffle the videos on playback | `false` | 
+| `Playback Speed` | The playback speed of the video | `1.0` | 
+| `Video Volume` | The playback volume of the video | `100` | 
+| `Mute Playback Audio` | Mute the playback audio of the video | `false` | 
+| `Show Playback Progress Bar` | Show a playback progress bar at on the video. | `true` | 
+| `Open Highlight Overlay In Browser` | Opens the `Highlight` overlay file in your browser, to get the path for OBS, or to test out the playback. |  | 
+| `Stop` | Stop playback, if playing |  | 
+| `Skip` | Skips the current playing clip |  | 
 
 ### TWITCH CLIP IMPORT
 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>Highlight Overlay</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<link rel="stylesheet" type="text/css" href="custom.css" />
+	<link rel="stylesheet" type="text/css"
+		href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css" />
+
+</head>
+
+<body>
+	<div class="config-messages hidden">
+		<header class="group">Medal Overlay</header>
+		<div class="settings group hidden">
+			<div>Settings Not Saved</div>
+			<div>Open the settings for Medal Overlay, Configure, and Save the settings.</div>
+		</div>
+
+		<div class="api-key group hidden">
+			<div>No API Key found or load!</div>
+			<div>Right click on the script in ChatBot and select <code>Insert API Key</code></div>
+		</div>
+
+		<div class="medal-userid group hidden">
+			<div>Medal User Id not set.</div>
+			<div>Please set <code>Medal -> Medal User Id</code> in the script settings.</div>
+		</div>
+	</div>
+
+	<div class="video-container" id="video-container">
+		<div class="video-box full">
+			<label class="title hidden"></label>
+			<label class="views hidden"></label>
+			<progress value="0" max="100" class="hidden"></progress>
+			<video class="replay" autoplay></video>
+		</div>
+	</div>
+
+	<script type="text/javascript" script-name="edgefonts"
+		src="http://use.edgefonts.net/bangers;amaranth;allan;bowlby-one;changa-one;days-one;droid-sans;fugaz-one.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<script src="API_Key.js"></script>
+	<script src="defaults.js"></script>
+	<script src="settings.js"></script>
+	<script src="medal-user.js"></script>
+	<script src="highlight.js"></script>
+</body>
+
+</html>

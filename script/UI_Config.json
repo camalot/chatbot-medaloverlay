@@ -14,7 +14,10 @@
 			"Everyone",
 			"Regular",
 			"Subscriber",
-			"Moderator"
+			"VIP",
+			"Moderator",
+			"Editor",
+			"Broadcaster"
 		],
 		"label": "Permission level",
 		"tooltip": "Set the permission level for the command",
@@ -403,6 +406,16 @@
 		"tooltip": "The video right absolute position.",
 		"group": "POSITION"
 	},
+	"PlaybackSpeed": {
+		"type": "slider",
+		"label": "Playback Speed",
+		"value": 1,
+		"min": 0.5,
+		"max": 3,
+		"ticks": 0.1,
+		"tooltip": "Set the playback speed of the clips",
+		"group": "PLAYBACK"
+	},
 	"OpenOverlayPreview": {
 		"type": "button",
 		"label": "Open Overlay In Browser",
@@ -470,6 +483,16 @@
 		"value": false,
 		"label": "Shuffle Videos",
 		"tooltip": "Shuffle Videos When Playing",
+		"group": "RECENTS"
+	},
+	"RecentPlaybackSpeed": {
+		"type": "slider",
+		"label": "Playback Speed",
+		"value": 1,
+		"min": 0.5,
+		"max": 3,
+		"ticks": 0.1,
+		"tooltip": "Set the playback speed of the clips",
 		"group": "RECENTS"
 	},
 	"RecentVolume": {
@@ -550,6 +573,145 @@
 		"wsevent": "EVENT_NONE",
 		"group": "RECENTS"
 	},
+
+	"HighlightEnabled": {
+		"type": "checkbox",
+		"value": false,
+		"label": "Enable Medal Highlight Command",
+		"tooltip": "If enabled, users with permission can trigger the medal highlight",
+		"group": "HIGHLIGHTS"
+	},
+	"HighlightCommand": {
+		"type": "textbox",
+		"value": "!mh",
+		"label": "Highlight Command",
+		"tooltip": "Starts the highlight: !mh medal_username [clip_count (default: 5)]",
+		"group": "HIGHLIGHTS"
+	},
+	"HighlightCommandPermission": {
+		"type": "dropdown",
+		"value": "Moderator",
+		"items": [
+			"Everyone",
+			"Regular",
+			"Subscriber",
+			"VIP",
+			"Moderator",
+			"Editor",
+			"Broadcaster"
+		],
+		"label": "Permission level",
+		"tooltip": "Set the permission level for the command",
+		"group": "HIGHLIGHTS"
+	},
+	"HighlightMessage": {
+		"type": "textbox",
+		"value": "Starting a Medal highlight for $user: Follow them on Medal: $MedalUrl/$user",
+		"label": "Highlight Message",
+		"tooltip": "Empty for no message. variables: $user - $MedalPartnerLink - $MedalUrl",
+		"group": "HIGHLIGHTS"
+	},
+	"HighlightCooldown": {
+		"type": "slider",
+		"label": "Cooldown (seconds)",
+		"value": 60,
+		"min": 1,
+		"max": 600,
+		"ticks": 1,
+		"tooltip": "Cooldown in seconds after triggered.",
+		"group": "HIGHLIGHTS"
+	},
+	"HighlightClipCount": {
+		"type": "slider",
+		"label": "Default Clip Count",
+		"value": 5,
+		"min": 1,
+		"max": 10,
+		"ticks": 1,
+		"tooltip": "If no clip count is provided, this is the number of clips to play",
+		"group": "HIGHLIGHTS"
+	},
+	"HighlightRandom": {
+		"type": "checkbox",
+		"value": false,
+		"label": "Shuffle Videos",
+		"tooltip": "Shuffle Videos When Playing",
+		"group": "HIGHLIGHTS"
+	},
+	"HighlightPlaybackSpeed": {
+		"type": "slider",
+		"label": "Playback Speed",
+		"value": 1,
+		"min": 0.5,
+		"max": 3,
+		"ticks": 0.1,
+		"tooltip": "Set the playback speed of the clips",
+		"group": "HIGHLIGHTS"
+	},
+	"HighlightVolume": {
+		"type": "slider",
+		"label": "Video Volume",
+		"value": 100,
+		"min": 0,
+		"max": 100,
+		"ticks": 1,
+		"tooltip": "Sets the volume level for the video",
+		"group": "HIGHLIGHTS"
+	},
+	"HighlightAutoStartVideo": {
+		"type": "checkbox",
+		"value": true,
+		"label": "Auto Play Clips",
+		"tooltip": "Video will play automatically when the source is visible.",
+		"group": "HIGHLIGHTS"
+	},
+	"HighlightMuteAudio": {
+		"type": "checkbox",
+		"value": false,
+		"label": "Mute Playback Audio",
+		"tooltip": "Audio will be muted in video playback.",
+		"group": "HIGHLIGHTS"
+	},
+	"HighlightShowVideoProgress": {
+		"type": "checkbox",
+		"value": true,
+		"label": "Show Playback Progress Bar",
+		"tooltip": "Display the video progress bar",
+		"group": "HIGHLIGHTS"
+	},
+	"HighlightShowTitle": {
+		"type": "checkbox",
+		"value": true,
+		"label": "Show Clip Title",
+		"tooltip": "Display The Clip Title",
+		"group": "HIGHLIGHTS"
+	},
+	"OpenOverlayHighlight": {
+		"type": "button",
+		"label": "Open Highlights Overlay In Browser",
+		"tooltip": "Open overlay in browser to test",
+		"function": "OpenOverlayHighlight",
+		"wsevent": "EVENT_NONE",
+		"group": "HIGHLIGHTS"
+	},
+
+	"HighlightPlayBackStop": {
+		"type": "button",
+		"label": "STOP",
+		"tooltip": "Stop the video player",
+		"function": "HighlightPlayBackStop",
+		"wsevent": "EVENT_NONE",
+		"group": "HIGHLIGHTS"
+	},
+	"HighlightPlayBackNext": {
+		"type": "button",
+		"label": "SKIP",
+		"tooltip": "Skips the currently playing video",
+		"function": "HighlightPlayBackNext",
+		"wsevent": "EVENT_NONE",
+		"group": "HIGHLIGHTS"
+	},
+
 	"EnableTwitchClipAutoImport": {
 		"type": "checkbox",
 		"label": "Enable Twitch Clip Auto Import",

@@ -245,6 +245,9 @@ def SendOverlaySettingsUpdate():
     Parent.Log(ScriptName, "EVENT_MEDAL_SETTINGS: " + json.dumps(MergedSettings))
     Logger.Debug(ScriptName, "EVENT_MEDAL_SETTINGS: " + json.dumps(MergedSettings))
     Parent.BroadcastWsEvent("EVENT_MEDAL_SETTINGS", json.dumps(MergedSettings))
+def SendHighlightStart(user, clipCount = 5):
+    Logger.Debug(ScriptName, "EVENT_MEDAL_HIGHLIGHT_PLAY: " + json.dumps({ "user": user, "max": clipCount }))
+    Parent.BroadcastWsEvent("EVENT_MEDAL_HIGHLIGHT_PLAY", json.dumps({ "user": user, "max": clipCount }))
 def ReloadOverlay():
     Parent.Log(ScriptName, "EVENT_MEDAL_RELOAD: " + json.dumps(None))
     Logger.Debug(ScriptName, "EVENT_MEDAL_RELOAD: " + json.dumps(None))
@@ -426,8 +429,29 @@ def Execute(data):
     if data.IsChatMessage():
         commandTrigger = data.GetParam(0).lower()
         if not Parent.IsOnCooldown(ScriptName, commandTrigger):
-            if commandTrigger == "!medal":
+            if commandTrigger == ScriptSettings.HighlightCommand:
+                Logger.Debug(ScriptName, "Command: " + ScriptSettings.HighlightCommand)
+                if ScriptSettings.HighlightEnabled:
+                    Logger.Debug(ScriptName, "Highlight Enabled")
+                    if Parent.HasPermission(data.User, ScriptSettings.HighlightCommandPermission, ""):
+                        Logger.Debug(ScriptName, "Init medal highlight")
+                        Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.HighlightCooldown)
+                        user = MedalUserSettings.userName
+                        clipCount = 5
+                        if data.GetParamCount() >= 2:
+                            user = data.GetParam(1).lower()
+                        if data.GetParamCount() >= 3 and data.GetParam(2).isdigit():
+                            clipCount = int(data.GetParam(2))
+
+                        if clipCount > 10:
+                            clipCount = 10
+                        SendHighlightStart(user, clipCount)
+                        message = Parse(ScriptSettings.HighlightMessage, data.User, data.UserName, None, None, data.Message)
+                        if message:
+                            Parent.SendTwitchMessage(message)
+            elif commandTrigger == "!medal":
                 Parent.AddCooldown(ScriptName, commandTrigger, ScriptSettings.Cooldown)
+                # TODO: message for this.
                 message = Parse("$MedalDescription\n👀 Get Medal: $MedalPartnerLink 👀 Follow " + Parent.GetChannelName() +
                  ": $MedalFollowLink 👀 Create a clip with the $MedalClipCommand command.", data.User, data.UserName, None, None, data.Message)
                 Parent.SendTwitchMessage(message)
@@ -480,6 +504,10 @@ def Execute(data):
 def Parse(parseString, userid, username, targetid, targetname, message):
     result = parseString
     if result:
+        if "$user" in result:
+            result = result.replace("$user", username)
+        if "$MedalUrl" in result:
+            result = result.replace("$MedalUrl", "https://medal.tv")
         if "$MedalFollowLink" in result:
             result = result.replace("$MedalFollowLink", MedalInviteUrl + MedalUserSettings.userName + "?ref=" +  (ScriptSettings.MedalPartnerRef or DefaultMedalPartnerRef))
         if "$MedalPartnerLink" in result:
@@ -823,6 +851,9 @@ def GeneratePrivateKey():
 
 def OpenOverlayRecents():
     os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "recents.html")))
+
+def OpenOverlayHighlight():
+    os.startfile(os.path.realpath(os.path.join(os.path.dirname(__file__), "highlight.html")))
 
 def OpenPaypalDonateLink():
     os.startfile("https://paypal.me/camalotdesigns/10")

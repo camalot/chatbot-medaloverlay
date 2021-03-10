@@ -37,11 +37,11 @@ let validateSettings = () => {
 let initializeUI = () => {
 	$("#video-container .video-box video.replay")
 		.on("error", function (e) {
-			console.error(`Error: ${e}`);
+			console.error(e);
 			videoEnded(e);
 		})
-		.prop("volume", settings.RecentVolume / 100)
-		.prop("muted", IS_CEF ? settings.RecentMuteAudio : true)
+		.prop("volume", settings.HighlightVolume / 100)
+		.prop("muted", IS_CEF ? settings.HighlightMuteAudio : true)
 		.on("canplay", videoLoaded)
 		.on("ended pause", videoEnded)
 		.on("timeupdate", timelapse);
@@ -56,7 +56,7 @@ let initializeUI = () => {
 			.css("--progress-fill", settings.ProgressBarFillColor);
 	}
 
-	if (settings.RecentShowVideoProgress) {
+	if (settings.HighlightShowVideoProgress) {
 		$("#video-container .video-box progress").removeClass("hidden");
 	} else {
 		$("#video-container .video-box progress").addClass("hidden");
@@ -123,37 +123,41 @@ let videoEnded = (e) => {
 	if (clipQueue.length > 0) {
 		return queueVideo(clipQueue.pop());
 	} else {
-		// set next page
-		page += 1;
-		return getVideoQueue(page, perPage, () => {
-			return queueVideo(clipQueue.pop());
-		});
+		return queueVideo(null);
 	}
 };
 
 let queueVideo = (clipData) => {
 	if (clipData) {
 		$("#video-container .video-box video.replay")
-			.prop("autoplay", settings.RecentAutoStartVideo || USER_PLAY)
+			.prop("autoplay", settings.HighlightAutoStartVideo || USER_PLAY)
 			.prop("preload", true)
 			.prop("loop", false)
-			.prop("volume", settings.RecentVolume / 100)
+			.prop("volume", settings.HighlightVolume / 100)
 			.attr("src", clipData.url)
 			.empty()
 			.append(`<source src="${clipData.url}" type="video/mp4" />`);
+
 		let videoPlayer = $("#video-container .video-box video.replay").get(0);
-		videoPlayer.playbackRate = settings.RecentPlaybackSpeed || 1.0;
-		console.log(`playback speed: ${settings.RecentPlaybackSpeed || 1.0}`);
+		videoPlayer.playbackRate = settings.HighlightPlaybackSpeed || 1.0;
+		console.log(`playback speed: ${settings.HighlightPlaybackSpeed || 1.0}`);
 
 		let title = $("#video-container .video-box .title");
 		title.html(clipData.title);
-		if (settings.RecentShowTitle) {
+		if (settings.HighlightShowTitle) {
 			title.removeClass("hidden");
 		} else {
 			title.addClass("hidden");
 		}
 		$("#video-container .video-box .views")
 			.html(clipData.views);
+	} else {
+		console.log("no more clips");
+		$("#video-container .video-box video.replay")
+			.attr("src", "")
+			.empty();
+		$("#video-container .video-box .title").empty().addClass("hidden");
+		stopPlayback = true;
 	}
 };
 
@@ -177,10 +181,9 @@ let connectWebsocket = () => {
 			website: "darthminos.tv",
 			api_key: API_Key,
 			events: [
-				"EVENT_MEDAL_RECENT_MUTE",
-				"EVENT_MEDAL_RECENT_STOP",
-				"EVENT_MEDAL_RECENT_PLAY",
-				"EVENT_MEDAL_RECENT_SKIP",
+				"EVENT_MEDAL_HIGHLIGHT_STOP",
+				"EVENT_MEDAL_HIGHLIGHT_PLAY",
+				"EVENT_MEDAL_HIGHLIGHT_SKIP",
 				"EVENT_MEDAL_RELOAD",
 				"EVENT_MEDAL_SETTINGS"
 			]
@@ -203,28 +206,28 @@ let connectWebsocket = () => {
 		let eventData = typeof socketMessage.data === "string" ? JSON.parse(socketMessage.data || "{}") : socketMessage.data;
 		let videoPlayer = $("#video-container video.replay").get(0);
 		switch (eventName) {
-			case "EVENT_MEDAL_RECENT_MUTE":
-				let $vp = $(videoPlayer);
-				$vp.trigger("click");
-				let muted = $vp.prop("muted");
-				console.log(`Set Muted: ${!muted}`);
-				$vp.prop("muted", !muted);
-				break;
-			case "EVENT_MEDAL_RECENT_PLAY":
+			case "EVENT_MEDAL_HIGHLIGHT_PLAY":
 				console.log("PLAY VIDEO");
 				stopPlayback = false;
 				USER_PLAY = true;
-				$(videoPlayer).prop("autoplay", settings.RecentAutoStartVideo || USER_PLAY)
-				videoPlayer.play();
+				let userName = eventData.user;
+				startVideoQueue(userName, eventData.max || 5, () => {
+					$(videoPlayer).prop("autoplay", settings.HighlightAutoStartVideo || USER_PLAY);
+					queueVideo(clipQueue.pop());
+					videoPlayer.play();
+				}, (err) => {
+					console.log("in error callback");
+					console.error(err);
+				});
 				break;
-			case "EVENT_MEDAL_RECENT_STOP":
+			case "EVENT_MEDAL_HIGHLIGHT_STOP":
 				console.log("STOP VIDEO");
 				stopPlayback = true;
 				USER_PLAY = false;
-				$(videoPlayer).prop("autoplay", settings.RecentAutoStartVideo || USER_PLAY)
+				$(videoPlayer).prop("autoplay", settings.HighlightAutoStartVideo || USER_PLAY)
 				videoPlayer.pause();
 				break;
-			case "EVENT_MEDAL_RECENT_SKIP":
+			case "EVENT_MEDAL_HIGHLIGHT_SKIP":
 				console.log("SKIP VIDEO");
 				stopPlayback = false;
 				videoPlayer.pause();
@@ -268,21 +271,42 @@ let connectWebsocket = () => {
 
 };
 
-let getVideoQueue = (p, pp, completeCB, errorCB) => {
+let startVideoQueue = (user, limit, completeCB, errorCB) => {
 	let medalApiKey = getMedalApiKey();
 
-	if (medal.userId == null || medal.userId === "") {
+	if (user == null || user === "") {
+		return errorCB("Settings user is unset");
+	}
+	$.ajax({
+		url: `http://perks.darthminos.tv/api/v1/medal/${user}`,
+		// url: `http://localhost:3000/api/v1/medal/${user}`,
+		error: function(err) {
+			console.error(err);
+		},
+		success: function(data) {
+			console.log(data);
+			getVideoQueue(data.userId, limit || 5, completeCB, errorCB);
+		},
+		complete: function(jxhr, status) {
+		}
+	});
+}
+
+let getVideoQueue = (userId, limit, completeCB, errorCB) => {
+	let medalApiKey = getMedalApiKey();
+
+	if (userId == null || userId === "") {
 		return errorCB("Settings UserId is unset");
 	}
 
 	$.ajax({
-		url: `https://developers.medal.tv/v1/latest?userId=${medal.userId}&limit=${pp}&offset=${p * pp}`,
+		url: `https://developers.medal.tv/v1/latest?userId=${userId}&limit=${limit || 5}`,
 		headers: {
 			"Authorization": `Basic ${btoa(medalApiKey)}`
 		},
 		success: (data) => {
 			let clips = data.contentObjects;
-			if (settings.RecentRandom) {
+			if (settings.HighlightRandom) {
 				clips = shuffle(clips);
 			}
 			for (let x = clips.length - 1; x >= 0; --x) {
@@ -304,7 +328,7 @@ let getVideoQueue = (p, pp, completeCB, errorCB) => {
 					if (obj.contentId) {
 						let vid = obj.contentId.replace(/^cid/, "");
 						clip = {
-							url: `http://files.medal.tv/${medal.userId}/share-${vid}.mp4`,
+							url: `http://files.medal.tv/${userId}/share-${vid}.mp4`,
 							title: obj.contentTitle || "",
 							views: obj.contentViews || 0
 						};
@@ -316,17 +340,18 @@ let getVideoQueue = (p, pp, completeCB, errorCB) => {
 				}
 			}
 
-			// if we are at the end of the data, start at the begining
-			if(clipQueue.length === 0 && p > 0) {
-				page = 0;
-				return getVideoQueue(page, pp, completeCB, errorCB);
-			} else if (clipQueue.length === 0 && page === 0) {
-				// there are no clips
-				return errorCB("No clip data was present.");
-			} else {
-				return completeCB();
-			}
-
+			// // if we are at the end of the data, start at the begining
+			// if(clipQueue.length === 0 && p > 0) {
+			// 	page = 0;
+			// 	return getVideoQueue(userId, page, pp, completeCB, errorCB);
+			// } else if (clipQueue.length === 0 && page === 0) {
+			// 	// there are no clips
+			// 	return errorCB("No clip data was present.");
+			// } else {
+			// 	return completeCB();
+			// }
+			// return completeCB();
+			return completeCB();
 		},
 		complete: (xhr, status) => {
 		},
@@ -368,12 +393,12 @@ $(() => {
 		return;
 	}
 
-	getVideoQueue(page, perPage, () => {
+	// getVideoQueue(page, perPage, () => {
 		initializeUI();
 		$("video.replay").trigger("click");
 		connectWebsocket();
-		queueVideo(clipQueue.pop());
-	}, (err) => {
-		console.error(err);
-	});
+		// queueVideo(clipQueue.pop());
+	// }, (err) => {
+	// 	console.error(err);
+	// });
 });

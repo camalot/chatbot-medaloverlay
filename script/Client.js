@@ -254,6 +254,10 @@ function connectWebsocket() {
 					.attr("src", webfile)
 					.empty()
 					.append(`<source src="${webfile}" type="video/mp4" />`);
+				let videoPlayer = $("#video-container video.replay").get(0);
+				videoPlayer.playbackRate = settings.PlaybackSpeed || 1.0;
+				console.log(`playback speed: ${settings.PlaybackSpeed || 1.0}`);
+
 				break;
 			case "EVENT_MEDAL_STOP":
 				console.log("STOP VIDEO");
