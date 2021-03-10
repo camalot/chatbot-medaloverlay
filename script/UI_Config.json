@@ -658,13 +658,6 @@
 		"tooltip": "Sets the volume level for the video",
 		"group": "HIGHLIGHTS"
 	},
-	"HighlightAutoStartVideo": {
-		"type": "checkbox",
-		"value": true,
-		"label": "Auto Play Clips",
-		"tooltip": "Video will play automatically when the source is visible.",
-		"group": "HIGHLIGHTS"
-	},
 	"HighlightMuteAudio": {
 		"type": "checkbox",
 		"value": false,

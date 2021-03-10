@@ -49,7 +49,6 @@ var DEFAULT_SETTINGS = {
   "HighlightRandom": false,
   "HighlightPlaybackSpeed": 1,
   "HighlightVolume": 100,
-  "HighlightAutoStartVideo": true,
   "HighlightMuteAudio": false,
   "HighlightShowVideoProgress": true,
   "HighlightShowTitle": true,

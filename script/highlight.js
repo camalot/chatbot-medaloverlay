@@ -130,7 +130,7 @@ let videoEnded = (e) => {
 let queueVideo = (clipData) => {
 	if (clipData) {
 		$("#video-container .video-box video.replay")
-			.prop("autoplay", settings.HighlightAutoStartVideo || USER_PLAY)
+			.prop("autoplay", true)
 			.prop("preload", true)
 			.prop("loop", false)
 			.prop("volume", settings.HighlightVolume / 100)
@@ -212,7 +212,7 @@ let connectWebsocket = () => {
 				USER_PLAY = true;
 				let userName = eventData.user;
 				startVideoQueue(userName, eventData.max || 5, () => {
-					$(videoPlayer).prop("autoplay", settings.HighlightAutoStartVideo || USER_PLAY);
+					$(videoPlayer).prop("autoplay", true);
 					queueVideo(clipQueue.pop());
 					videoPlayer.play();
 				}, (err) => {
@@ -224,7 +224,7 @@ let connectWebsocket = () => {
 				console.log("STOP VIDEO");
 				stopPlayback = true;
 				USER_PLAY = false;
-				$(videoPlayer).prop("autoplay", settings.HighlightAutoStartVideo || USER_PLAY)
+				$(videoPlayer).prop("autoplay", true)
 				videoPlayer.pause();
 				break;
 			case "EVENT_MEDAL_HIGHLIGHT_SKIP":

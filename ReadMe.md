@@ -131,8 +131,10 @@ Click on the script in the list to bring up the configuration.
 | `Shuffle Videos` | Shuffle the videos on playback | `false` | 
 | `Playback Speed` | The playback speed of the video | `1.0` | 
 | `Video Volume` | The playback volume of the video | `100` | 
+| `Auto Play Clips` | Clips will start automatically if true; otherwise, the play button in chatbot needs to be clicked | `true` | 
 | `Mute Playback Audio` | Mute the playback audio of the video | `false` | 
 | `Show Playback Progress Bar` | Show a playback progress bar at on the video. | `true` | 
+| `Show Clip Title` | Show the title on top of the clip. | `true` | 
 | `Open Recent Clips Overlay In Browser` | Opens the `Recent Clips` overlay file in your browser, to get the path for OBS, or to test out the playback. |  | 
 | `Play` | Start playback, if stopped |  | 
 | `Stop` | Stop playback, if playing |  | 
@@ -157,6 +159,7 @@ Click on the script in the list to bring up the configuration.
 | `Video Volume` | The playback volume of the video | `100` | 
 | `Mute Playback Audio` | Mute the playback audio of the video | `false` | 
 | `Show Playback Progress Bar` | Show a playback progress bar at on the video. | `true` | 
+| `Show Clip Title` | Show the title on top of the clip. | `true` | 
 | `Open Highlight Overlay In Browser` | Opens the `Highlight` overlay file in your browser, to get the path for OBS, or to test out the playback. |  | 
 | `Stop` | Stop playback, if playing |  | 
 | `Skip` | Skips the current playing clip |  | 
