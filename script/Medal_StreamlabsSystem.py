@@ -432,6 +432,9 @@ def Execute(data):
             if commandTrigger == ScriptSettings.HighlightCommand:
                 Logger.Debug(ScriptName, "Command: " + ScriptSettings.HighlightCommand)
                 if ScriptSettings.HighlightEnabled:
+
+                    
+
                     Logger.Debug(ScriptName, "Highlight Enabled")
                     if Parent.HasPermission(data.User, ScriptSettings.HighlightCommandPermission, ""):
                         Logger.Debug(ScriptName, "Init medal highlight")

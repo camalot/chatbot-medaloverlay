@@ -284,8 +284,12 @@ let startVideoQueue = (user, limit, completeCB, errorCB) => {
 			console.error(err);
 		},
 		success: function(data) {
-			console.log(data);
-			getVideoQueue(data.userId, limit || 5, completeCB, errorCB);
+			if(data) {
+				console.log(data);
+				getVideoQueue(data.userId, limit || 5, completeCB, errorCB);
+			} else {
+				console.log(`Unable to find user: ${user}`);
+			}
 		},
 		complete: function(jxhr, status) {
 		}
