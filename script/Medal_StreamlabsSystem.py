@@ -446,7 +446,7 @@ def Execute(data):
                         if clipCount > 10:
                             clipCount = 10
                         SendHighlightStart(user, clipCount)
-                        message = Parse(ScriptSettings.HighlightMessage, data.User, data.UserName, None, None, data.Message)
+                        message = Parse(ScriptSettings.HighlightMessage, data.User, user, None, None, data.Message)
                         if message:
                             Parent.SendTwitchMessage(message)
             elif commandTrigger == "!medal":
