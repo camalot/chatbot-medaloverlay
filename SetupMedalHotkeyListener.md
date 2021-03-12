@@ -1,5 +1,12 @@
 # HOW TO SETUP FOR MULTI-PC
 
+There are 2 Major things that need to be done:
+
+1. [DATA ACCESS](#data-access)
+2. [TRIGGERING CLIP](#triggering-clip)
+
+Follow these steps to set that up.
+
 ## DATA ACCESS
 
 The medaloverlay chatbot script needs access to multiple files and folders that are used by Medal. We can gain access to them via network shares. The script only needs read access.
