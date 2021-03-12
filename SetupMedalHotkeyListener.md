@@ -1,11 +1,14 @@
 # HOW TO SETUP FOR MULTI-PC
 
-There are 2 Major things that need to be done:
-
 1. [DATA ACCESS](#data-access)
 2. [TRIGGERING CLIP](#triggering-clip)
 
 Follow these steps to set that up.
+
+## TERMS
+
+- `Game PC`: This is the PC that you game on. This is the PC that is running Medal.
+- `Chatbot PC`: This is the PC that runs chatbot. If you run this on the same system as your games, you do not need this setup.
 
 ## DATA ACCESS
 
@@ -49,7 +52,7 @@ For the `%APPDATA%\Medal\Store` folder Do the exact same thing.
 
 To handle the trigging of the clip from the Chatbot PC to the Game PC we will use the MedalHotkeyListener.
 
-This tool is a zip package that can be downloaded in the assets section of each release. It is meant to run on a second system different from your Chatbot PC. Like your Game PC vs your Stream PC.
+This tool is a zip package that can be downloaded in the assets section of each release. It is meant to run on Game PC.
 
 It will receive a command from the MedalOverlay Script telling that PC to trigger a Medal clip.
 
