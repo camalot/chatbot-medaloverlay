@@ -1,10 +1,8 @@
-# HOW TO SETUP MEDALHOTKEYLISTENER
+# HOW TO SETUP FOR MULTI-PC
 
-This tool is a zip package that can be downloaded in the assets section of each release. It is meant to run on a second system different from your Chatbot PC. Like your Game PC vs your Stream PC.
+## DATA ACCESS
 
-It will receive a command from the MedalOverlay Script telling that PC to trigger a Medal clip.
-
-Unfortunately, it is not just a simple setup for this, as Chatbot will need access to a couple folder paths that will reside on your Game PC.
+The medaloverlay chatbot script needs access to multiple files and folders that are used by Medal. We can gain access to them via network shares. The script only needs read access.
 
 - `%APPDATA%\Medal\Store` - This path is used to get some settings information like your Medal UserName, UserId, and Path to where you store your clips.
   The easiest way to set this up is to install Medal on both your Game PC and your Stream PC. Alternatively, you can follow the SHARE method below to accomplish this as well.
@@ -39,3 +37,15 @@ For the `%APPDATA%\Medal\Store` folder Do the exact same thing.
 - *Pick Link Source* for `\\COMPUTER_NAME\Medal\Store`
 - Navigate to `%APPDATA%\Medal` on Chatbot PC
 - Right Click in that folder and `Drop As > Symbolic Link`
+
+## TRIGGERING CLIP
+
+To handle the trigging of the clip from the Chatbot PC to the Game PC we will use the MedalHotkeyListener.
+
+This tool is a zip package that can be downloaded in the assets section of each release. It is meant to run on a second system different from your Chatbot PC. Like your Game PC vs your Stream PC.
+
+It will receive a command from the MedalOverlay Script telling that PC to trigger a Medal clip.
+
+```
+TODO: DOCUMENT THIS
+```
