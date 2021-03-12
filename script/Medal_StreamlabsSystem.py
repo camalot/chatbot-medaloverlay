@@ -432,9 +432,6 @@ def Execute(data):
             if commandTrigger == ScriptSettings.HighlightCommand:
                 Logger.Debug(ScriptName, "Command: " + ScriptSettings.HighlightCommand)
                 if ScriptSettings.HighlightEnabled:
-
-                    
-
                     Logger.Debug(ScriptName, "Highlight Enabled")
                     if Parent.HasPermission(data.User, ScriptSettings.HighlightCommandPermission, ""):
                         Logger.Debug(ScriptName, "Init medal highlight")
@@ -478,7 +475,25 @@ def Execute(data):
                         CurrentClipId = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
                         Parent.Log(ScriptName, "Sending HotKey: " + ScriptSettings.HotKey)
                         Logger.Debug(ScriptName, "Sending HotKey: " + ScriptSettings.HotKey)
-                        MedalRunner.Keys.SendKeys(ScriptSettings.HotKey)
+                        if ScriptSettings.EnableSendToRemoteListener and ScriptSettings.RemoteHotkeyListenerAddress:
+                            try:
+                                # Send to remote machine instead
+                                address = "http://" + ScriptSettings.RemoteHotkeyListenerAddress + ":19191/"
+                                headers = {'Content-Type': 'application/json'}
+                                content = {
+                                    'hotkey': ScriptSettings.HotKey,
+                                    'user': data.User,
+                                    'timestamp': datetime.datetime.now().isoformat()
+                                }
+                                Parent.Log(ScriptName, "Sending remote hotkey to " + address + "\n with payload: " + json.dumps(content))
+                                Logger.Debug(ScriptName, "Sending remote hotkey to " + address + "\n with payload: " + json.dumps(content))
+                                Parent.PostRequest(address, headers, content, True)
+                            except Exception as e:
+                                Logger.Error(ScriptName, "Error Sending Remote Hotkey")
+                                Logger.Error(ScriptName, str(e))
+                                Parent.Log(ScriptName, str(e))
+                        else:
+                            MedalRunner.Keys.SendKeys(ScriptSettings.HotKey)
                         TriggerCount = 0
                         TriggerCooldownTime = None
                         TriggerList = []
