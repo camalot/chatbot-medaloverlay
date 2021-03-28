@@ -164,7 +164,7 @@ class MedalSettings(object):
             self.__dict__.update(settings['recorder'])
         except Exception as ex:
             if Logger:
-                Logger.error(str(ex))
+                Logger.Error(str(ex))
             else:
                 Parent.Log(ScriptName, str(ex))
             self.__dict__ = {}
@@ -433,7 +433,7 @@ def Execute(data):
                 Logger.Debug(ScriptName, "Command: " + ScriptSettings.HighlightCommand)
                 if ScriptSettings.HighlightEnabled:
 
-                    
+
 
                     Logger.Debug(ScriptName, "Highlight Enabled")
                     if Parent.HasPermission(data.User, ScriptSettings.HighlightCommandPermission, ""):
