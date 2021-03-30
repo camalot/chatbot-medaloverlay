@@ -25,6 +25,21 @@ namespace Test {
 			watcher.MonitorPause += Watcher_MonitorPause;
 
 			watcher.Start ( );
+
+			var tfsw = new FileSystemWatcher ( @"d:\users\rconr\Videos\medal\.Thumbnails", "*.jpg" );
+			tfsw.IncludeSubdirectories = true;
+			tfsw.Created += (sender, e) => {
+				Console.WriteLine ( $"CREATED: {e.FullPath}" );
+			};
+			tfsw.EnableRaisingEvents = true;
+		}
+
+		private void Tfsw_Changed ( object sender, FileSystemEventArgs e ) {
+			throw new NotImplementedException ( );
+		}
+
+		private void Tfsw_Created ( object sender, FileSystemEventArgs e ) {
+			throw new NotImplementedException ( );
 		}
 
 		private void Watcher_MonitorPause ( object sender, EventArgs e ) {

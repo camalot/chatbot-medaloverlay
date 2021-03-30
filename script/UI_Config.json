@@ -754,6 +754,29 @@
 		"tooltip": "The port used by tinyweb. Used for the overlay to request the clips.",
 		"group": "ADVANCED"
 	},
+	"EnableSendToRemoteListener": {
+		"type": "checkbox",
+		"label": "Enable Sending Medal Hotkey To Remote Machine",
+		"value": false,
+		"tooltip": "Sends the Medal Hotkey to remote machine running the MedalHotkeyListener",
+		"group": "ADVANCED"
+	},
+	"RemoteHotkeyListenerAddress": {
+		"type": "textbox",
+		"label": "Remote PC IP Address",
+		"value": "",
+		"tooltip": "The IP Address of the machine running the MedalHotkeyListener",
+		"group": "ADVANCED"
+	},
+	"OpenSetupMedalHotkeyListenerLink": {
+		"type": "button",
+		"label": "Setup MedalHotkeyListener",
+		"tooltip": "Document on setting up the MedalHotkeyListener",
+		"function": "OpenSetupMedalHotkeyListenerLink",
+		"wsevent": "EVENT_NONE",
+		"group": "ADVANCED"
+	},
+
 	"OpenGithubDonateLink": {
 		"type": "button",
 		"label": "💚 Support on Github",

@@ -56,5 +56,7 @@ var DEFAULT_SETTINGS = {
   "TwitchClientId": "",
   "TwitchClipPollRate": 1,
   "TwitchClipMedalPrivacy": "Public",
-  "WebPort": 9191
+  "WebPort": 9191,
+  "EnableSendToRemoteListener": false,
+  "RemoteHotkeyListenerAddress": ""
 };

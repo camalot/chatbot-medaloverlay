@@ -17,6 +17,10 @@ namespace MedalRunner {
 
 		public Logger ( string logFile ) {
 			LogFile = logFile;
+			var parent = Path.GetDirectoryName ( LogFile );
+			if(!Directory.Exists(parent)) {
+				Directory.CreateDirectory ( parent );
+			}
 		}
 
 		public string LogFile { get; set; }
