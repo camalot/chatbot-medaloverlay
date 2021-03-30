@@ -345,11 +345,6 @@ def OnMonitorPause(sender, eventArgs):
     Logger.Debug(ScriptName, "Event: MonitorPause")
     return
 
-def OnMonitorLog(sender, eventArgs):
-    Parent.Log(ScriptName, eventArgs.Message)
-    Logger.Debug(ScriptName, eventArgs.Message)
-    return
-
 #---------------------------
 #   Chatbot Functions
 #---------------------------
