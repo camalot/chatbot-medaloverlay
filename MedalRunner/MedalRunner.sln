@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedalRunner", "MedalRunner\MedalRunner.csproj", "{75C0A25C-841D-4E75-B4BA-45BD366F23A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedalHotkeyListener", "..\MedalHotkeyListener\MedalHotkeyListener\MedalHotkeyListener.csproj", "{40FD525B-7CA4-452E-B2B2-D3BD181C0ED4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{75C0A25C-841D-4E75-B4BA-45BD366F23A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75C0A25C-841D-4E75-B4BA-45BD366F23A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75C0A25C-841D-4E75-B4BA-45BD366F23A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40FD525B-7CA4-452E-B2B2-D3BD181C0ED4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40FD525B-7CA4-452E-B2B2-D3BD181C0ED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40FD525B-7CA4-452E-B2B2-D3BD181C0ED4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40FD525B-7CA4-452E-B2B2-D3BD181C0ED4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
