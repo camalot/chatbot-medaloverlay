@@ -43,5 +43,5 @@ jobs:
       uses: ncipollo/release-action@v1.8.6
       with:
         artifacts: dist/*.zip
-        name: ${{ steps.semvers.outputs.tag }}
+        name: ${{ steps.semvers.outputs.v_patch }}
         token: "${{ github.token }}"
