@@ -38,3 +38,4 @@ jobs:
       with:
         artifacts: dist/*.zip
         name: ${{ steps.semvers.outputs.tag }}
+        token: "${{ github.token }}"
