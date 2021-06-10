@@ -32,7 +32,7 @@ jobs:
       id: packageRelease
       uses: camalot/chatbot-github-package-action@develop
       with:
-        folderName: MedalOverlay
+        folder: MedalOverlay
         repoName: chatbot-medaloverlay
         token: ${{ github.token }}
         version: ${{ steps.semvers.outputs.patch }}
