@@ -33,7 +33,6 @@ jobs:
       uses: camalot/chatbot-github-package-action@develop
       with:
         folder: MedalOverlay
-        repoName: chatbot-medaloverlay
         token: ${{ github.token }}
         version: ${{ steps.semvers.outputs.patch }}
     - run: 'echo "releaseZip: ${{ steps.packageRelease.outputs.releaseZip }}"'
