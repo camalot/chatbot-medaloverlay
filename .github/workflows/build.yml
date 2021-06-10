@@ -43,6 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Download Latest Updater
+      id: downloadUpdaterAsset
       uses: camalot/github-download-release-asset-action@develop
       with:
         owner: camalot
@@ -52,3 +53,4 @@ jobs:
         file: applicationupdater.zip
         path: ./
         token: "${{ github.token }}"
+    - run: "echo 'path: ${{ steps.downloadUpdaterAsset.outputs.downloadedAsset }}'"
