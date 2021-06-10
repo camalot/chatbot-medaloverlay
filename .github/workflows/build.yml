@@ -53,4 +53,10 @@ jobs:
         file: applicationupdater.zip
         path: ./
         token: "${{ github.token }}"
-    - run: "echo '::debug::path: ${{ steps.downloadUpdaterAsset.outputs.downloadedAsset }}'"
+    - run: "echo 'path: ${{ steps.downloadUpdaterAsset.outputs.downloadedAsset }}'"
+    - run: "mkdir -p script/libs/updater/"
+    - name: Extract Updater
+      uses: montudor/action-zip@v1
+      with:
+        args: unzip ${{ steps.downloadUpdaterAsset.outputs.downloadedAsset }} -d script/libs/updater/
+    - run: "ls script/libs/updater"
