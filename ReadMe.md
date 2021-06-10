@@ -1,5 +1,7 @@
 ## MEDAL OVERLAY
 
+[![Medal Overlay For Streamlabs Chatbot](https://github.com/camalot/chatbot-medaloverlay/actions/workflows/build.yml/badge.svg)](https://github.com/camalot/chatbot-medaloverlay/actions/workflows/build.yml)
+
 [![](https://i.imgur.com/bby6d49.png)](https://medal.tv/?ref=DarthMinos_partner)
 
 This is a [StreamLabs Chatbot](https://streamlabs.com/chatbot) Script that allows chat to trigger a [Medal](https://medal.tv/?ref=DarthMinos_partner) clip creation, and then play the clip back on stream.  
