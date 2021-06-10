@@ -4,7 +4,7 @@ on:
     branches:
       - develop
 jobs:
-  version:
+  createRelease:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: "${{ github.token }}"
@@ -33,6 +33,12 @@ jobs:
         token: ${{ github.token }}
         version: ${{ steps.semvers.outputs.patch }}
     - run: 'echo "::debug::releaseZip: ${{ steps.packageRelease.outputs.releaseZip }}"'
+    - name: Create Tag
+      uses: negz/create-tag@v1
+      with:
+        version: ${{ steps.semvers.outputs.v_patch }}
+        message: ''
+        token: ${{ github.token }}
     - name: Create Release
       uses: ncipollo/release-action@v1.8.6
       with:
