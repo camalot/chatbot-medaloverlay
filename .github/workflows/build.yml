@@ -4,11 +4,8 @@ on:
     branches:
       - develop
 jobs:
-  buildPackage:
+  version:
     runs-on: ubuntu-latest
-    outputs:
-      app_version: ${{ steps.semvers.outputs.patch }} # set the app_version to be the PATCH updated version
-      tag: ${{ steps.semvers.outputs.v_patch }} # set the tag to be the PATCH updated version.
     env:
       GITHUB_TOKEN: "${{ github.token }}"
     steps:
@@ -27,7 +24,7 @@ jobs:
       uses: "WyriHaximus/github-action-next-semvers@v1"
       with:
         version: ${{ steps.previoustag.outputs.tag }}
-    - run: echo "app_version ${{ steps.semvers.outputs.patch }}"
+    - run: echo "::debug::app_version ${{ steps.semvers.outputs.patch }}"
     - name: Package Release
       id: packageRelease
       uses: camalot/chatbot-github-package-action@develop
@@ -35,4 +32,9 @@ jobs:
         folder: MedalOverlay
         token: ${{ github.token }}
         version: ${{ steps.semvers.outputs.patch }}
-    - run: 'echo "releaseZip: ${{ steps.packageRelease.outputs.releaseZip }}"'
+    - run: 'echo "::debug::releaseZip: ${{ steps.packageRelease.outputs.releaseZip }}"'
+    - name: Create Release
+      uses: ncipollo/release-action@v1.8.6
+      with:
+        artifacts: dist/*.zip
+        name: ${{ steps.semvers.outputs.tag }}
