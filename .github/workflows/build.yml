@@ -1,0 +1,54 @@
+name: Medal Overlay For Streamlabs Chatbot
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      app_version: ${{ steps.semvers.outputs.patch }} # set the app_version to be the PATCH updated version
+      tag: ${{ steps.semvers.outputs.v_patch }} # set the tag to be the PATCH updated version.
+    env:
+      GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+    steps:
+    - uses: actions/checkout@v2.2.0
+      with:
+        fetch-depth: 0
+    # Get the current tag
+    - name: 'Get Previous tag'
+      id: previoustag
+      uses: "WyriHaximus/github-action-get-previous-tag@v1"
+      with:
+        fallback: 1.1.0 # Optional fallback tag to use when no tag can be found
+    # calculate the next version
+    - name: 'Get next minor version'
+      id: semvers
+      uses: "WyriHaximus/github-action-next-semvers@v1"
+      with:
+        version: ${{ steps.previoustag.outputs.tag }}
+    - run: echo "app_version ${{ steps.semvers.outputs.patch }}"
+  # zipRelease:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2.2.0
+  #     with:
+  #       fetch-depth: 0
+  #   - name: Archive Release
+  #     uses: thedoctor0/zip-release@master
+  #     with:
+  #       filename: 'release.zip'
+  #       exclusions: '*.git* /*node_modules/* .editorconfig'
+  downloadUpdater:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Latest Updater
+      uses: camalot/github-download-release-asset-action@develop
+      with:
+        owner: camalot
+        repository: chatbotscriptupdater
+        tag: latest
+        assetName: ApplicationUpdater.Administrator
+        file: applicationupdater.zip
+        path: ./
+        token: "${{ github.token }}"
