@@ -4,7 +4,7 @@ on:
     branches:
       - develop
 jobs:
-  version:
+  buildPackage:
     runs-on: ubuntu-latest
     outputs:
       app_version: ${{ steps.semvers.outputs.patch }} # set the app_version to be the PATCH updated version
@@ -29,10 +29,11 @@ jobs:
         version: ${{ steps.previoustag.outputs.tag }}
     - run: echo "app_version ${{ steps.semvers.outputs.patch }}"
     - name: Package Release
+      id: packageRelease
       uses: camalot/chatbot-github-package-action@develop
       with:
         folderName: MedalOverlay
         repoName: chatbot-medaloverlay
         token: ${{ github.token }}
         version: ${{ steps.semvers.outputs.patch }}
-
+    - run: 'echo "releaseZip: ${{ steps.packageRelease.outputs.releaseZip }}"'
