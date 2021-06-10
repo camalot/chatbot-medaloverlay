@@ -10,7 +10,7 @@ jobs:
       app_version: ${{ steps.semvers.outputs.patch }} # set the app_version to be the PATCH updated version
       tag: ${{ steps.semvers.outputs.v_patch }} # set the tag to be the PATCH updated version.
     env:
-      GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      GITHUB_TOKEN: "${{ github.token }}"
     steps:
     - uses: actions/checkout@v2.2.0
       with:
@@ -28,35 +28,11 @@ jobs:
       with:
         version: ${{ steps.previoustag.outputs.tag }}
     - run: echo "app_version ${{ steps.semvers.outputs.patch }}"
-  # zipRelease:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2.2.0
-  #     with:
-  #       fetch-depth: 0
-  #   - name: Archive Release
-  #     uses: thedoctor0/zip-release@master
-  #     with:
-  #       filename: 'release.zip'
-  #       exclusions: '*.git* /*node_modules/* .editorconfig'
-  downloadUpdater:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Download Latest Updater
-      id: downloadUpdaterAsset
-      uses: camalot/github-download-release-asset-action@develop
+    - name: Package Release
+      uses: camalot/chatbot-github-package-action@develop
       with:
-        owner: camalot
-        repository: chatbotscriptupdater
-        tag: latest
-        assetName: ApplicationUpdater.Administrator
-        file: applicationupdater.zip
-        path: ./
-        token: "${{ github.token }}"
-    - run: "echo 'path: ${{ steps.downloadUpdaterAsset.outputs.downloadedAsset }}'"
-    - run: "mkdir -p script/libs/updater/"
-    - name: Extract Updater
-      uses: montudor/action-zip@v1
-      with:
-        args: unzip ${{ steps.downloadUpdaterAsset.outputs.downloadedAsset }} -d script/libs/updater/
-    - run: "ls script/libs/updater"
+        folderName: MedalOverlay
+        repoName: chatbot-medaloverlay
+        token: ${{ github.token }}
+        version: ${{ steps.semvers.outputs.patch }}
+
