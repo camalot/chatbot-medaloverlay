@@ -53,4 +53,4 @@ jobs:
         file: applicationupdater.zip
         path: ./
         token: "${{ github.token }}"
-    - run: "echo 'path: ${{ steps.downloadUpdaterAsset.outputs.downloadedAsset }}'"
+    - run: "echo '::debug::path: ${{ steps.downloadUpdaterAsset.outputs.downloadedAsset }}'"
