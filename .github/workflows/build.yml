@@ -44,4 +44,13 @@ jobs:
       with:
         artifacts: dist/*.zip
         name: ${{ steps.semvers.outputs.v_patch }}
+        tag: ${{ steps.semvers.outputs.v_patch }}
         token: "${{ github.token }}"
+    - uses: actions/checkout@master
+    - name: Merge develop -> master
+      uses: devmasx/merge-branch@v1.3.1
+      with:
+        type: now
+        from_branch: develop
+        target_branch: master
+        github_token: ${{ github.token }}
