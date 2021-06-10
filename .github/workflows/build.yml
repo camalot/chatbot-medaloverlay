@@ -46,6 +46,11 @@ jobs:
         name: ${{ steps.semvers.outputs.v_patch }}
         tag: ${{ steps.semvers.outputs.v_patch }}
         token: "${{ github.token }}"
+  mergeToMaster:
+    runs-on: ubuntu-latest
+    needs:
+    - createRelease
+    steps:
     - uses: actions/checkout@master
     - name: Merge develop -> master
       uses: devmasx/merge-branch@v1.3.1
