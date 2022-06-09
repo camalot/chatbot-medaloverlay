@@ -36,7 +36,7 @@ jobs:
     - name: Create Tag
       uses: negz/create-tag@v1
       with:
-        version: ${{ steps.semvers.outputs.v_patch }}
+        version: ${{ steps.semvers.outputs.patch }}
         message: ''
         token: ${{ github.token }}
     - name: Create Release
@@ -44,7 +44,7 @@ jobs:
       with:
         artifacts: dist/*.zip
         name: ${{ steps.semvers.outputs.v_patch }}
-        tag: ${{ steps.semvers.outputs.v_patch }}
+        tag: ${{ steps.semvers.outputs.patch }}
         token: "${{ github.token }}"
   mergeToMaster:
     runs-on: ubuntu-latest
