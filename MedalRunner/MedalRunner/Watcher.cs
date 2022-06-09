@@ -32,6 +32,7 @@ namespace MedalRunner
 			var loggerPath = System.IO.Path.Combine(asmDirectory, "../logs");
 			var dt = DateTime.Now.ToString("yyyyMMdd");
 			var logFile = System.IO.Path.Combine(loggerPath, $"{asm.GetName().Name}-{dt}.log");
+			FilePathCache = new Dictionary<string, string>();
 			Logger = new Logger(logFile);
 		}
 
@@ -39,6 +40,7 @@ namespace MedalRunner
 		private FileSystemWatcher ThumbnailWatcher { get; set; }
 		private FileSystemWatcher DotThumbnailWatcher { get; set; }
 		private FileSystemWatcher MP4Watcher { get; set; }
+		private Dictionary<string, string> FilePathCache { get; set; }
 		public string Path { get; private set; }
 
 		public void Start()
@@ -107,22 +109,34 @@ namespace MedalRunner
 
 		private void MP4Watcher_Created(object sender, FileSystemEventArgs e)
 		{
-			Logger.Debug("Watcher", $"Waiting for: {e.Name}");
-			var relativePath = System.IO.Path.GetFileNameWithoutExtension(e.FullPath.Replace(MP4Watcher.Path, ""));
-			ClipStarted?.Invoke(sender, new MedalClipWatcherEventData
+			// add file to the cache:
+			var fileId = System.IO.Path.GetFileNameWithoutExtension(e.Name);
+			if (!FilePathCache.ContainsKey(fileId))
 			{
-				ClipId = relativePath
-			});
+				var cachePathClipId = e.Name.Replace(".mp4", "").Replace(".jpg", "");
+				Logger.Debug("Watcher", $"Waiting for: {cachePathClipId}");
+				FilePathCache.Add(fileId, e.Name);
+				ClipStarted?.Invoke(sender, new MedalClipWatcherEventData
+				{
+					ClipId = cachePathClipId
+				});
+			}
 		}
 
 		private void ThumbnailWatcher_Created(object sender, FileSystemEventArgs e)
 		{
-			Logger.Debug("Watcher", $"Clip Ready: {e.Name}");
-			var relativePath = System.IO.Path.GetFileNameWithoutExtension(e.FullPath.Replace(DotThumbnailWatcher.Path, "").Replace("-thumbnail", ""));
-			ClipReady?.Invoke(sender, new MedalClipWatcherEventData
+			// this file name does not have the same path, so we need to get it from a cache
+			var fileId = System.IO.Path.GetFileNameWithoutExtension(e.Name.Replace("-thumbnail", ""));
+			if (FilePathCache.ContainsKey(fileId))
 			{
-				ClipId = relativePath
-			});
+				var cachedPath = FilePathCache[fileId].Replace(".mp4", "").Replace(".jpg", "");
+				Logger.Debug("Watcher", $"Clip Ready: {cachedPath}");
+				ClipReady?.Invoke(sender, new MedalClipWatcherEventData
+				{
+					ClipId = cachedPath
+				});
+				FilePathCache.Remove(fileId);
+			}
 		}
 
 		public void Pause()
