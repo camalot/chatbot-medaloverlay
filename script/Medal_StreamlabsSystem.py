@@ -843,7 +843,7 @@ def StopCurrentVideo():
     Parent.BroadcastWsEvent("EVENT_MEDAL_STOP", None)
 def PlayRandomVideo():
     # Improve the performance of this!!!
-    randomVideo = random.choice(glob.glob(MedalConfigSettings.clipFolder + "/*.mp4"))
+    randomVideo = random.choice(glob.glob(MedalConfigSettings.clipFolder + "/**/*.mp4"))
     if randomVideo is not None:
         videoId = os.path.splitext(os.path.basename(randomVideo))[0]
         PlayVideoById(videoId)
@@ -851,7 +851,7 @@ def PlayMostRecent():
     # Improve the performance of this!!!
     # fileList = glob.iglob(MedalConfigSettings.clipFolder + "/*.mp4")
     # if fileList is not None and fileList is not []:
-    mostRecent = max(glob.iglob(MedalConfigSettings.clipFolder + "/*.mp4"), key=os.path.getctime)
+    mostRecent = max(glob.iglob(MedalConfigSettings.clipFolder + "/**/*.mp4"), key=os.path.getctime)
     if mostRecent:
         videoId = os.path.splitext(os.path.basename(mostRecent))[0]
         PlayVideoById(videoId)
